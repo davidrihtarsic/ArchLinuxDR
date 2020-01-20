@@ -1,0 +1,31 @@
+wlp3s0: connected to Davids phone
+	"Intel 8265 / 8275"
+	wifi (iwlwifi), 74:E5:F9:19:10:27, hw, mtu 1500
+	ip4 default
+	inet4 192.168.43.162/24
+	route4 0.0.0.0/0
+	route4 192.168.43.0/24
+	inet6 fe80::3532:199b:12d3:4769/64
+	route6 fe80::/64
+	route6 ff00::/8
+
+p2p-dev-wlp3s0: disconnected
+	"p2p-dev-wlp3s0"
+	wifi-p2p, hw
+
+enp4s0: unavailable
+	"Realtek RTL8111/8168/8411"
+	ethernet (r8169), 18:31:BF:73:8C:49, hw, mtu 1500
+
+lo: unmanaged
+	"lo"
+	loopback (unknown), 00:00:00:00:00:00, sw, mtu 65536
+
+DNS configuration:
+	servers: 192.168.43.1
+	interface: wlp3s0
+
+Use "nmcli device show" to get complete information about known devices and
+"nmcli connection show" to get an overview on active connection profiles.
+
+Consult nmcli(1) and nmcli-examples(7) manual pages for complete usage details.

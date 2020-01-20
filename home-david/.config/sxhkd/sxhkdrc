@@ -1,0 +1,243 @@
+##################
+# KEY BINDINGS
+##################
+
+# SUPER
+# - window manager
+# - za zagon programov
+
+# CONTROL
+# - posebne funkcije programov
+# - save, open, ...
+
+# ALT
+# - alternate
+# - spremenjeno delovanje tipke
+
+# SHIFT
+# - uporabljam za premik
+
+# F1 .. F12
+# - funkcije za delovanje operacijskega sistema
+# - internet, monitor, osvetljenost, zvok...
+
+super + {b, B}
+    feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
+
+# program launcher
+super + e
+    terminator -x nvim -S ~/.config/nvim/david_session.sav
+    #uxterm -e "nvim -S ~/.config/nvim/david_session.sav"
+
+super + r
+    dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
+
+super + n
+    termite -e calcurse
+
+super + w
+    google-chrome-stable
+
+#alt + F1
+alt + XF86Suspend 
+    rofi_run -r
+
+#ctrl + F2
+XF86WLAN
+    networkmanager_dmenu
+
+#ctrl + F5
+XF86MonBrightnessDown
+    ~/bin/system/LcdBrightnesDOWN.sh
+
+#ctrl + F6
+XF86MonBrightnessUp
+    ~/bin/system/LcdBrightnesUP.sh
+
+super + F8
+    ~/bin/system/setMyMonitor.sh
+#super #    rofi_run -r terminal emulator #super + t exo-open --launch TerminalEmulator web browser #super + w
+#    exo-open --launch WebBrowser
+
+#super + Return
+#    exo-open --launch TerminalEmulator
+
+# scripts
+super + v
+    ~/bin/emoji/get_emoji.sh
+
+super + m
+    ~/bin/system/mountUSBdisk.sh 
+
+super + F7
+    ~/bin/SwissArmyKnifeGadgets/to-do-calcurse.sh
+
+# Print Screen - OPTIONS pic screen image - ordinarry most common action
+Print
+    import ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+
+super + Print
+    import -window root ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+
+# file manager
+super + alt + Return
+    exo-open --launch FileManager
+
+# make sxhkd reload its configuration files:
+#super + shift + r
+#    ~/.config/bspwm/bspwmrc
+
+# make sxhkd reload its configuration files:
+super + shift + s
+    pkill -USR1 -x sxhkd
+
+# quit bspwm normally
+super + x
+    rofr.sh -l
+
+XF86Sleep
+    systemctl hibernate
+
+XF86Suspend
+    systemctl suspend-then-hibernate
+
+# close and kill
+#super + q
+#    bspc node @brother -R -90 & bspc node --close
+
+#super + shift + q
+#    bspc node @brother -R 90 & bspc node --close
+
+#super + ctrl + q
+#    bspc node --{close, kill}
+#bspc node -{c,k}
+    #bspc node -f @brother && bspc node -R -90 && bspc node -f last.automatic
+# alternate between the tiled and monocle layout
+#super + shift + m
+    #bspc desktop -l next
+
+# if the current node is automatic, send it to the last manual, otherwise pull the last leaf
+#super + y
+    #bspc query -N -n focused.automatic && bspc node -n last.!automatic || bspc node last.leaf -n focused
+
+# swap the current node and the biggest node
+#super + g
+#    bspc node -s biggest
+
+#
+# state/flags
+#
+
+# set the window state
+#super + {t,shift + t,s,f}
+#super + t
+#    bspc node --state \~tiled
+#    bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+#super + @space
+#    bspc node --state \~fullscreen
+
+#super + alt + @space
+#    bspc node --state \~floating
+
+# set the node flags
+#super + ctrl + {x,y,z}
+    #bspc node -g {locked,sticky,private}
+
+########################
+# focus/swap
+########################
+
+# focus the node in the given direction
+#super + {_,shift + }{h,j,k,l}
+#    bspc node -{f,s} {west,south,north,east}
+
+# focus the node in the given direction
+#super + {_,shift + }{Left,Down,Up,Right}
+#    bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+#super + {p,b,comma,period}
+#    bspc node -f @{parent,brother,first,second}
+
+# focus the next/previous node in the current desktop
+#super + {_,shift + }c
+#alt + {_,shift} + @Tab
+#    bspc node -f {next,prev}.local
+
+# focus the next/previous desktop in the current monitor
+#super + bracket{left,right}
+#    bspc desktop -f {prev,next}.local
+
+# focus the last node/desktop
+#super + {grave,Tab}
+#    bspc {node,desktop} -f last
+
+# focus the older or newer node in the focus history
+#super + {o,i}
+#    bspc wm -h off; \
+#    bspc node {older,newer} -f; \
+#    bspc wm -h on
+
+# focus or send to the given desktop
+#super + {_,shift + }{1-9,0}
+#    bspc {desktop -f,node -d} '^{1-9,10}'
+
+########################
+# preselect
+########################
+
+# preselect the direction
+#super + ctrl + {h,j,k,l}
+#    bspc node -p {west,south,north,east}
+
+# preselect the ratio
+#super + ctrl + {1-9}
+#    bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+#super + ctrl + space
+#    bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+#super + ctrl + shift + space
+#    bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+########################
+# move/resize
+########################
+
+# expand a window by moving one of its side outward
+#super + alt + {h,j,k,l}
+#    bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# cotract a window by moving one of its side inward
+#super + alt + shift + {h,j,k,l}
+#    bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+#super + shift + control + {h,j,k,l}
+#    bspc node -v {-40 0,0 40,0 -40,40 0}
+
+# rotate the windows
+#super + ctrl + {_,shift} + Return
+#    bspc node -f {@brother, @/} && bspc node -R -90 && bspc node -f last.automatic
+
+#super + shift + r
+#    bspc node -f @/ && bspc node -R -90 && bspc node -f last.automatic
+
+#alt +control + s
+#    ~/bin/SwissArmyKnifeGadgets/run_my_daily_apps.sh
+
+
+# volume control keys
+XF86AudioMute
+    pamixer -t
+XF86AudioRaiseVolume
+    pamixer -i 10
+XF86AudioLowerVolume
+    pamixer -d 10
+# XF86MonBrightnessUp
+#     xbacklight +20
+# XF86MonBrightnessDown
+#     xbacklight -20
+

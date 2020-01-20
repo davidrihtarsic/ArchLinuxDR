@@ -1,0 +1,20 @@
+wlp3s0: disconnected
+	"Intel 8265 / 8275"
+	wifi (iwlwifi), 0E:12:88:80:75:83, hw, mtu 1500
+
+p2p-dev-wlp3s0: disconnected
+	"p2p-dev-wlp3s0"
+	wifi-p2p, hw
+
+enp4s0: unavailable
+	"Realtek RTL8111/8168/8411"
+	ethernet (r8169), 18:31:BF:73:8C:49, hw, mtu 1500
+
+lo: unmanaged
+	"lo"
+	loopback (unknown), 00:00:00:00:00:00, sw, mtu 65536
+
+Use "nmcli device show" to get complete information about known devices and
+"nmcli connection show" to get an overview on active connection profiles.
+
+Consult nmcli(1) and nmcli-examples(7) manual pages for complete usage details.
