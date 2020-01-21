@@ -125,6 +125,7 @@ alias update='sudo pacman -Syu'
 alias g!='git add .;git commit -v -a;git push;'
 alias mirror='reflector --number 10 --country Slovenia --country Finland --country Germany --country Italy --country Austria --verbose --sort rate'
 
+
 #*******************
 # GIT
 #*******************
@@ -183,9 +184,15 @@ git_prompt_string() {
   # If not inside the Git repo, print exit codes of last command (only if it failed)
   [ ! -n "$git_where" ] && echo "%{$fg[red]%} %(?..[%?])"
 }
-RPROMPT='$(git_prompt_string)'
 #*******************
 
+#*******************
+# RANGER
+#*******************
+[ "$RANGER_LEVEL" -gt 0 ] && RANGER='[RANGER]'
+#*******************
+
+RPROMPT='$(git_prompt_string)%{$fg[green]%}$RANGER%{$reset_color%}'
 #*********************
 # FZF settings
 # ********************
