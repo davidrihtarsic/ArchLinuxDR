@@ -32,6 +32,9 @@ super + e
 super + r
     dmenu_run -i -nb '#191919' -nf '#fea63c' -sb '#fea63c' -sf '#191919' -fn 'NotoMonoRegular:bold:pixelsize=14'
 
+super + t
+    thunderbird
+
 super + n
     termite -e calcurse
 
@@ -56,7 +59,11 @@ XF86MonBrightnessUp
 
 super + F8
     ~/bin/system/setMyMonitor.sh
-#super #    rofi_run -r terminal emulator #super + t exo-open --launch TerminalEmulator web browser #super + w
+#super 
+#    rofi_run -r terminal emulator 
+#super + t exo-open --launch TerminalEmulator web browser 
+
+#super + w
 #    exo-open --launch WebBrowser
 
 #super + Return

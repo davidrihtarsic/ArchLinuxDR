@@ -17,7 +17,11 @@ sudo pacman -S virtualbox
 #instaliral sem tudi linux in linux-headers (ne vem če je potrebno... je delalo po rebootu)
 
 #still testing...
-#trizen -S preload
+#mislim, da dela... browser se res naloži hitrej... in thunderbird tudi...
+#>trizen -S preload
+#moral pa sem enablat in startat service
+#>systemctl enable preload.service
+#>systemctl start preload.service
 
 echo -e '\e[32m'
 echo "################################################################################"
