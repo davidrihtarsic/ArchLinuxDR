@@ -286,7 +286,7 @@ vnoremap ' xi''<ESC>P2li
 vnoremap [ xi[]<ESC>P2li
 vnoremap { xi{}<ESC>P2li
 vnoremap < xi<><ESC>P2li
-
+vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 
 " ------ enable additional features ------
 " enable mouse

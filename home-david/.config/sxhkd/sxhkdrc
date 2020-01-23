@@ -36,7 +36,7 @@ super + t
     thunderbird
 
 super + n
-    termite -e calcurse
+    calcurse-caldav && termite -e calcurse && calcurse-caldav
 
 super + w
     google-chrome-stable

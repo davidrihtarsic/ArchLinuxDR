@@ -12,6 +12,10 @@ sudo pacman -S --noconfirm --needed neofetch
 sudo pip3 install mdv
 
 sudo pacman -S --noconfirm --needed calcurse
+#sinc z googlom
+#potrebno namestiti še httplib2
+#sudo pip3 install httplib2 --upgrade
+#sudo pip3 install --user oauth2client
 
 sudo pacman -S --noconfirm --needed zip unzip
 echo -e '\e[34m' #zelena

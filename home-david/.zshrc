@@ -22,7 +22,7 @@ ZSH_THEME="bira"
 
 # Uncomment the following line to use hyphen-insensitive completion.
 # Case-sensitive completion must be off. _ and - will be interchangeable.
-# HYPHEN_INSENSITIVE="true"
+HYPHEN_INSENSITIVE="true"
 
 # Uncomment the following line to disable bi-weekly auto-update checks.
 # DISABLE_AUTO_UPDATE="true"
@@ -186,11 +186,11 @@ git_prompt_string() {
 }
 #*******************
 
-#*******************
+#**************************************************************************
 # RANGER
 #*******************
 [ "$RANGER_LEVEL" -gt 0 ] && RANGER='[RANGER]'
-#*******************
+#**************************************************************************
 
 RPROMPT='$(git_prompt_string)%{$fg[green]%}$RANGER%{$reset_color%}'
 #*********************
@@ -199,6 +199,7 @@ RPROMPT='$(git_prompt_string)%{$fg[green]%}$RANGER%{$reset_color%}'
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
+#**************************************************************************
 
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
@@ -211,3 +212,11 @@ export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 # Example aliases
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# ***************
+# REMAP KEYS
+# ***************
+# Včasih mi ni delalo, da bi se remap zgodil sam od sebe
+# zato tale skript, da preveri remap in če ni ga zažene
+[ -n "$(xmodmap -pm | grep lock | grep Caps)" ] && xmodmap ~/.Xmodmap && xset r rate 250 70
+#**************************************************************************
