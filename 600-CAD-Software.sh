@@ -17,7 +17,17 @@ echo "##########################################################################
 #... neaah... čakamo na novo verzijo...
 
 # Ker ni delal navaden Freecad sem moral namestiti "freecad-appimage"
-trizen -S --noconfirm --needed freecad-appimage
+#trizen -S --noconfirm --needed freecad-appimage
+#so popravili...
+trizen -S --noconfirm --needed freecad-git
+#assembly2 je pa že not :P
+#  za FEM potrebuješ še calculix in gmsh-bin
+trizen -S --noconfirm --needed calculix
+trizen -S --noconfirm --needed gmsh-bin
+#ne vem če je potrebno a sem nainštaliral še netgen-git
+trizen -S --noconfirm --needed netgen-git
+trizen -S python-yaml
+
 #CURA
 echo -e '\e[32m'
 echo "################################################################################"

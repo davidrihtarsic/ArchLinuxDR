@@ -14,7 +14,8 @@ sudo pacman -S --noconfirm --needed galculator
 # Mail
 sudo pacman -S --noconfirm --needed thunderbird
 # Web
-trizen -S --noconfirm --needed google-chrome
+#trizen -S --noconfirm --needed google-chrome
+trizen -S --noconfirm --needed brave-bin
 sudo pacman -S --noconfirm --needed deluge
 # PDF
 sudo pacman -S --noconfirm --needed zathura

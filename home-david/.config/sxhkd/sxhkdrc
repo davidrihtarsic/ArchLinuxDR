@@ -39,7 +39,8 @@ super + n
     calcurse-caldav && termite -e calcurse && calcurse-caldav
 
 super + w
-    google-chrome-stable
+     brave
+#    google-chrome-stable
 
 #alt + F1
 alt + XF86Suspend 
