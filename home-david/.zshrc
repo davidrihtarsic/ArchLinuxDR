@@ -122,7 +122,7 @@ alias q='exit'
 alias f='~/.config/vifm/vifm_run.sh'
 alias weather='curl wttr.in/~begunje'
 alias update='sudo pacman -Syu'
-alias g!='git add .;git commit -v -a;git push;'
+alias g!='git add . && git commit -v -a && git push'
 alias mirror='reflector --number 10 --country Slovenia --country Finland --country Germany --country Italy --country Austria --verbose --sort rate'
 
 

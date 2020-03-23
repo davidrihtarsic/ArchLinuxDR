@@ -47,6 +47,11 @@ sudo pacman -S ttf-joypixels
 trizen -S ttf-twemoji-color
 trizen -S ttf-symbola
 sudo pacman -S noto-fonts-emoji
+
+# za terminalni addon spaceship potrebuješ fonte:
+# yay -S powerline-fonts
+# sem instarillal pa ni pomagalo, da bi nvim lepo izpisoval statusno vrstico
+
 echo "################################################################################"
 echo "   SYMBOLS & ICONS Font Installed"
 echo "################################################################################"

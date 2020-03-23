@@ -3,25 +3,28 @@
 *.background:  #1c2023
 *.cursorColor: #778899
 
-*.color0:  #1c2023
-*.color1:  #bf616a
-*.color2:  #a3be8c
-*.color3:  #ebcb8b
-*.color4:  #8fa1b3
-*.color5:  #b48ead
-*.color6:  #96b5b4
-*.color7:  #E1E1E1
-*.color8:  #919ba0
-*.color9:  #bf616a
-*.color10: #a3be8c
-*.color11: #ebcb8b
-*.color12: #8fa1b3
-*.color13: #b48ead
-*.color14: #96b5b4
-*.color15: #c0c5ce
+*.alpha: .7
+*.font: Hermit:size=10
+
+*.color0:  #282828
+*.color1:  #CC241D
+*.color2:  #88881A
+*.color3:  #D79921
+*.color4:  #458588
+*.color5:  #B16286
+*.color6:  #689D6A
+*.color7:  #A89984
+*.color8:  #928374
+*.color9:  #FB4934
+*.color10: #B8BB26
+*.color11: #FABD2F
+*.color12: #83A598
+*.color13: #D3869B
+*.color14: #8EC07C
+*.color15: #EBDBB2
 
 ! Rofi
-rofi.font: monospace 12
+rofi.font: Hermit 11
 rofi.padding: 20
 rofi.line-padding: 2
 rofi.color-enabled: true

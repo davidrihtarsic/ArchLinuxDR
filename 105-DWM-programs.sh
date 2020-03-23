@@ -14,6 +14,8 @@ sudo pacman -S --noconfirm --needed rofi
 sudo pacman -S --noconfirm --needed dmenu
 sudo pacman -S --noconfirm --needed terminator
 sudo pacman -S --noconfirm --needed termite
+trizen -S --noconfirm --needed st-luke-git
+
 echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "   DWM PROGRAMS INSTALLED"

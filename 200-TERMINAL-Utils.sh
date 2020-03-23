@@ -17,6 +17,8 @@ sudo pacman -S --noconfirm --needed calcurse
 #sudo pip3 install httplib2 --upgrade
 #sudo pip3 install --user oauth2client
 
+trizen -S --noconfirm --needed python-pywal
+
 sudo pacman -S --noconfirm --needed zip unzip
 echo -e '\e[34m' #zelena
 echo "################################################################################"

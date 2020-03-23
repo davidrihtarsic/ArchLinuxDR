@@ -1,43 +1,41 @@
 " Plugins will be downloaded under the specified directory.
 call plug#begin('~/.vim/plugged')
-
-" Declare the list of plugins.
-Plug 'morhetz/gruvbox'
+" NeoVIM THEME & TUI ================================================
+Plug 'mkitt/tabline.vim'                "Tabs
+Plug 'morhetz/gruvbox'                  "Nice dark theme
+Plug 'vim-airline/vim-airline'          "Simple statusline
+" Plug 'Lokaltog/vim-powerline'
+" CODE HIGHLIGHTINGS ================================================
 Plug 'sheerun/vim-polyglot'
-" Plug 'itchyny/lightline.vim'
-" Plug 'powerline/powerline'
-Plug 'vim-airline/vim-airline'
-Plug 'lifepillar/vim-mucomplete'
-
-" Plug 'rafaqz/ranger.vim'
-Plug 'vifm/vifm.vim'
-Plug 'mkitt/tabline.vim'
-Plug 'davidhalter/jedi-vim'
-Plug 'Lokaltog/vim-powerline'
-Plug 'Nopik/vim-nerdtree-direnter'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'dhruvasagar/vim-table-mode'
+Plug 'nathanaelkane/vim-indent-guides'  "Indentation linses
+" CODE AUTOCOMPLETITION =============================================
+"Plug 'lifepillar/vim-mucomplete'
+"Plug 'davidhalter/jedi-vim'             "Python autocompletition
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+" FILE MANAGER ======================================================
+Plug 'scrooloose/nerdtree'              "File manager
+Plug 'Nopik/vim-nerdtree-direnter'      "dir open bug fix
 Plug 'junegunn/fzf'
+" Plug 'rafaqz/ranger.vim'
+" Plug 'vifm/vifm.vim'
+" MARKDOWN PLUGINS ==================================================
 Plug 'plasticboy/vim-markdown'
-Plug 'Shougo/unite.vim'
-Plug 'majutsushi/tagbar'
-Plug 'rafaqz/citation.vim'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-obsession'
-Plug 'tpope/vim-fugitive'
+Plug 'dhruvasagar/vim-table-mode'
+Plug 'majutsushi/tagbar'                "Side menu of tags
+" OTHER UTILS =======================================================
+Plug 'tpope/vim-obsession'              "Save/Load Vim session with files
+Plug 'tpope/vim-fugitive'               "GIT plugin
+"Plug 'Shougo/unite.vim'                "TUI for others funtionalaties
 
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
 " Sane vim defaults for ArchLabs
 scriptencoding utf8
-
 " Arch defaults
 runtime! archlinux.vim
-
 " system clipboard (requires +clipboard)
 set clipboard^=unnamed,unnamedplus
-
 " additional settings
 set modeline           " enable vim modelines
 set hlsearch           " highlight search items
@@ -48,8 +46,8 @@ set relativenumber
 set confirm            " ask confirmation like save before quit.
 set wildmenu           " Tab completion menu when using command mode
 set expandtab          " Tab key inserts spaces not tabs
-set softtabstop=4      " spaces to enter for each tab
-set shiftwidth=4       " amount of spaces for indentation
+set softtabstop=2      " spaces to enter for each tab
+set shiftwidth=2       " amount of spaces for indentation
 set shortmess+=aAcIws  " Hide or shorten certain messages
 " Change Color when entering Insert Mode
 autocmd InsertEnter * set cursorline
@@ -77,24 +75,83 @@ let g:netrw_browse_split = 3
 "# PLUGIN SETTINGS                   #
 "#####################################
 
-"GIT--------------------------------------------------------
+"======================================================================
+"   GIT
+"======================================================================
 "instaliraj git-fugitive
-	map <leader>gc :Gcommit -a<CR>==gi
-	map <leader>gs :Gstatus<CR>
-	map <leader>gu :Gpush<CR> :Gstatus<CR> :sleep 3<CR> :q<CR>
-	map <leader>ga :Gpull<CR> :Gpush<CR> :Gstatus<CR> :sleep 3<CR> :q<CR>
-	nnoremap <silent> <Esc> :nohlsearch<Bar>:echo<CR>
+  map <leader>gc :Gcommit -a<CR>==gi
+  map <leader>gs :Gstatus<CR>
+  map <leader>gu :Gpush<CR> :Gstatus<CR> :sleep 3<CR> :q<CR>
+  map <leader>ga :Gpull<CR> :Gpush<CR> :Gstatus<CR> :sleep 3<CR> :q<CR>
+  nnoremap <silent> <Esc> :nohlsearch<Bar>:echo<CR>
 
-"pandoc-----------------------------------------------------
-noremap ,s :!panzer -t revealjs -s -o %:p:r.html %:p -V revealjs-url=http://lab.hakim.se/reveal-js
-noremap <leader>d :!pandoc --pdf-engine=xelatex % -o %:p:r.pdf
-"mucomplete - - - - - - - - - - - -
-let g:mucomplete#enable_auto_at_startup = 1
-set completeopt+=menuone
-set completeopt+=noinsert
+" PANDOC
+  noremap ,s :!panzer -t revealjs -s -o %:p:r.html %:p -V revealjs-url=http://lab.hakim.se/reveal-js
+  noremap <leader>d :!pandoc --pdf-engine=xelatex % -o %:p:r.pdf
+"#####################################
+"  AUTOCOMPLETITION
+"#####################################
+"======================================================================
+" MUCOMPLETE
+"======================================================================
+"let g:mucomplete#enable_auto_at_startup = 1
+"set completeopt+=menuone
+"set completeopt+=noinsert
+"======================================================================
+"   Conquer Of Completition - COC
+"======================================================================
+"coc-pair
+"coc-python
+"coc-html
+"coc-dictionary
+"coc-snippets
+"
+set hidden                          " if hidden is not set, TextEdit might fail.
+set nobackup                        " Some servers have issues with backup files, see #649
+set nowritebackup
+set cmdheight=2                     " Better display for messages
+set updatetime=300                  " You will have bad experience for diagnostic messages when it's default 4000.
+set shortmess+=c                    " don't give |ins-completion-menu| messages.
+set signcolumn=yes                  " always show signcolumns
+" Use tab for trigger completion with characters ahead and navigate.
+" Use command ':verbose imap <tab>' to make sure tab is not mapped by other plugin.
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
 
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
 
-"FZF--------------------------------------------------------
+inoremap <silent><expr> <c-space> coc#refresh()                 " Use <c-space> to trigger completion.
+
+" Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
+" Coc only does snippet and additional edit on confirm.
+inoremap <expr> <cr> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+" Or use `complete_info` if your vim support it, like:
+" inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
+" Remap keys for gotos
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+autocmd CursorHold * silent call CocActionAsync('highlight')    " Highlight symbol under cursor on CursorHold
+nmap <leader>rn <Plug>(coc-rename)                              " Remap for rename current word
+" Use K to show documentation in preview window
+" nnoremap <silent> K :call <SID>show_documentation()<CR>
+" function! s:show_documentation()
+  " if (index(['vim','help'], &filetype) >= 0)
+    " execute 'h '.expand('<cword>')
+  " else
+    " call CocAction('doHover')
+  " endif
+" endfunction
+"======================================================================
+"    FUZZY FILE SEARCH
+"======================================================================
   "   - hitro iskanje filov
 let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o -type f -print -o -type l -print 2> /dev/null"
   map ff :FZF<CR>
@@ -102,8 +159,9 @@ let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o 
     \ 'enter': 'tab split',
     \ 'ctrl-x': 'split',
     \ 'ctrl-v': 'vsplit' }
-
-"TAGBAR-----------------------------------------------------
+"======================================================================
+"    TAGBAR
+"======================================================================
 "   - dodatek za programiranje
 "   - v desnem oknu odpre spremenljivke in funkcije
   nmap <F8> :TagbarToggle<CR>
@@ -126,11 +184,15 @@ let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o 
       \ },
       \ 'sort': 0,
   \ }
-
-"TableMode-----------------------
+"======================================================================
+"    TABLEMODE
+"======================================================================
   let g:table_mode_corner="|"
   map <leader>tm :TableModeToggle<CR>
 
+"======================================================================
+"  ✅ SPELL CHECKING
+"======================================================================
 "SPELL CHECK
   map <F6> :set spell spelllang=
   map <S-F6> :set nospell<CR>
@@ -138,22 +200,23 @@ let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o 
   nmap sn ]s
   nmap sp [s
 "-- spell sugestions
-  nmap ss z=
+"  nmap ss z=
+" Find prewieous error and fix it like "I feel lucky"
+  nnoremap ss :normal! ms[s1z=`s<CR>
 
 "#####################################
-"------ leader mapping ------
+"    NeoVIM
 "#####################################
 let g:mapleader = "\<Space>"
 noremap <leader>s :source ~/.config/nvim/init.vim<CR>
 
-
 "--save open close ---
 inoremap <C-s> <ESC>:w<CR>
 nnoremap <C-s> :w<CR>
-
-nnoremap <leader><leader> :Unite buffer<CR>
-
 nnoremap <C-q> :q<CR>
+
+"--save session ---
+"nnoremap <C-S> :mksession! ~/.config/nvim/david_session.sav<CR>
 
 " ------ commands ------
 command! D Explore
@@ -163,18 +226,18 @@ command! -nargs=1 B :call <SID>bufferselect("<args>")
 command! W execute 'silent w !sudo tee % >/dev/null' | edit!
 
 " ------ basic maps ------
-
 " open ranger as a file chooser using the function below
 nnoremap <leader>f :TabVifm<CR>
-
 "nerdtree- - - - - - - - - - -
 map <leader>w :NERDTreeToggle<CR>
 nnoremap cd :cd %:p:h<CR>
 
-
 " match string to switch buffer
 " nnoremap <Leader>b :let b:buf = input('Match: ')<Bar>call <SID>bufferselect(b:buf)<CR>
 
+"======================================================================
+"   NAVIGATION
+"======================================================================
 " change windows with ctrl+(hjkl)
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -184,6 +247,7 @@ nnoremap <C-H> <C-W><C-H>
 " alt defaults
 nnoremap 0 ^
 nnoremap Y y$
+inoremap <c-l> <ESC>$A
 nnoremap n nzzzv
 nnoremap N Nzzzv
 nnoremap <Tab> ==1j
@@ -224,58 +288,35 @@ nnoremap <M-7> 7gt
 nnoremap <M-8> 8gt
 nnoremap <M-9> 9gt
 
-
-" split the window vertically and horizontally
+"======================================================================
+"    splitting windows
+"======================================================================
 nnoremap _ <C-W>s<C-W><Down>
 nnoremap <Bar> <C-W>v<C-W><Right>
 " resize vertical
 nnoremap <C-H> :vertical resize -10<CR>
 nnoremap <C-L> :vertical resize +10<CR>
-
-"MARKDOWN in EDITOR TEXTING BEHAVIOUR - - - - - - - - - - - - - - - - - - -
-" to-do
-" premakni tako , da bodo insrti besedila delovali le v  INSERT MODEu!
+"======================================================================
+"    MARKDOWN in EDITOR TEXTING BEHAVIOUR
+"======================================================================
+autocmd Filetype markdown,rmd nnoremap xxxyypVr-
 map ,n gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
-map ,t :r !	~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
+map ,w :r !	~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
 map ,h 0/<hh:mm><CR>"_c7l<CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJ
 
-"---
 inoremap <Space><Tab> <Esc>/<++><Enter>"_c4l
 vnoremap <Space><Tab> <Esc>/<++><Enter>"_c4l
 map <Space><Tab> <Esc>/<++><Enter>"_c4l
-"BOLD ITALIC UNDERLINE
+"----------------------------------------------------------------------
+"    
+"----------------------------------------------------------------------
 autocmd Filetype markdown,rmd inoremap ,b ****<++><Esc>F*hi
 autocmd Filetype markdown,rmd inoremap ,s ~~~~<++><Esc>F~hi
 autocmd Filetype markdown,rmd inoremap ,i **<++><Esc>F*i
 autocmd Filetype markdown,rmd inoremap ,l []( <++> )<++><Esc>F[a
 autocmd Filetype markdown,rmd inoremap ,p ```python<CR>```<CR><CR><esc>2kO
 autocmd Filetype markdown,rmd inoremap ,c ```cpp<cr>```<cr><cr><esc>2kO
-
-"VSAVLJANJE ELEMENTOV
-autocmd Filetype markdown,rmd inoremap ,n <Esc>gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
-autocmd Filetype markdown,rmd inoremap ,t <Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
-autocmd Filetype markdown,rmd inoremap ,d <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_date.sh<CR>kJJi
-autocmd Filetype markdown,rmd inoremap ,h <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJi
-autocmd Filetype markdown,rmd inoremap ,F <ESC>:r ! ~/bin/markdown/insert_image.sh<CR>0
-autocmd Filetype markdown,rmd inoremap ,E $$  $${#eq:<++>}<++><Esc>F$2hi
-autocmd Filetype markdown,rmd inoremap $$ $$<++><ESC>F$i
-
-"VSTAVLJANJE REFERENC = CITIRANJE
-inoremap ,x [@]<ESC>:r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_bibtex_author.sh<CR>v$xkf@pJxli
-inoremap ,f [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_figure.sh %:p<CR>v$xkf@pJxli
-inoremap ,e [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh %:p<CR>v$xkf@pJxli
-autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split %:p:h/bibtex.bib<CR><CR>
-
-"PDF create
-autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && panzer %:p:t --to latex -o %:p:r.pdf --from markdown --filter pandoc-crossref --filter pandoc-citeproc --listings --pdf-engine=xelatex 2> %:p:h/panzer.md.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && panzer %:p:t --to context -o %:p:r.pdf --from markdown --filter pandoc-crossref --filter pandoc-citeproc --pdf-engine=context 2> %:p:h/panzer.md.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
-"noremap <C-p> :!zathura %:p:r.pdf <c-r> && disown <CR><CR>
-autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>
-
-
-autocmd BufRead markdown,*.md normal zR
-
+autocmd Filetype markdown,rmd inoremap ,v > NALOGA: 
 "auto wrapping selected text
 vnoremap ,b bexi***<ESC>P2li*<ESC>
 vnoremap ,s xi~~~<ESC>P2li~
@@ -287,7 +328,38 @@ vnoremap [ xi[]<ESC>P2li
 vnoremap { xi{}<ESC>P2li
 vnoremap < xi<><ESC>P2li
 vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
+"----------------------------------------------------------------------
+"  🖼 📅  VSAVLJANJE ELEMENTOV
+"----------------------------------------------------------------------
+autocmd Filetype markdown,rmd inoremap ,n <Esc>gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
+autocmd Filetype markdown,rmd inoremap ,w <Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
+autocmd Filetype markdown,rmd inoremap ,d <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_date.sh<CR>kJJi
+autocmd Filetype markdown,rmd inoremap ,h <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJi
+autocmd Filetype markdown,rmd inoremap ,F <ESC>:r ! ~/bin/markdown/insert_image.sh<CR>0
+autocmd Filetype markdown,rmd inoremap ,E $$  $${#eq:<++>}<++><Esc>F$2hi
+autocmd Filetype markdown,rmd inoremap ,T <ESC>:r ! ~/bin/markdown/insert_table.sh<CR>0{
+autocmd Filetype markdown,rmd inoremap $$ $$<++><ESC>F$i
+"----------------------------------------------------------------------
+"  🔖 VSTAVLJANJE REFERENC = CITIRANJE
+"----------------------------------------------------------------------
+inoremap ,x [@]<ESC>:r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_bibtex_author.sh<CR>v$xkf@pJxli
+inoremap ,f [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_figure.sh "%:p"<CR>v$xkf@pJxli
+inoremap ,e [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh "%:p"<CR>v$xkf@pJxli
+inoremap ,t [@]<ESC>:r !~/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/markdown/insert_reference_table.sh "%:p"<CR>v$xkf@pJA
 
+autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split %:p:h/bibtex.bib<CR><CR>
+"----------------------------------------------------------------------
+"   PDF CREATE
+"----------------------------------------------------------------------
+" pandoc --from markdown --template skripta --listings --pdf-engine=xelatex test.md -o index.pdf
+
+"autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && panzer %:p:t --to latex -o %:p:r.pdf --from markdown --template skripta --listings -V lang=sl -V listings-no-page-break=true --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M listings -V listings-no-page-break -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -M listings -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --number-sections -V documentclass=book -V book --toc -M author:"dr. David Rihtaršič" -M date:"$(date '+\%B \%Y')" -M titlepage -M title:"%:r" --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
+"noremap <C-p> :!zathura %:p:r.pdf <c-r> && disown <CR><CR>
+autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>
+autocmd BufRead markdown,*.md normal zR
 " ------ enable additional features ------
 " enable mouse
 set mouse=a
@@ -324,9 +396,7 @@ if !has('nvim')
     endif
 endif
 
-
 " ------ autocmd ------
-
 let g:lasttab = 1
 augroup save_last_tab
     autocmd!

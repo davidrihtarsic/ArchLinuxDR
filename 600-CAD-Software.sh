@@ -28,7 +28,11 @@ trizen -S --noconfirm --needed gmsh-bin
 trizen -S --noconfirm --needed netgen-git
 trizen -S python-yaml
 
+############
 #CURA
+############
+
+
 echo -e '\e[32m'
 echo "################################################################################"
 echo "    CAD Sof. INSTALLED"
