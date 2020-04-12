@@ -153,12 +153,16 @@ export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 
 #####################################
 # PROMPT dir & vi-mode
+L_DIV="╭=["
+M_DIV="%B|%b"
+R_DIV="]==--"
+S_PRT="╰>"
 bindkey -v
 function zle-line-init zle-keymap-select {
     case ${KEYMAP} in
-        (vicmd)      PROMPT='%F{red}╭-[%F{blue}%~%F{red}]$RANGER'$'\n%F{red}╰>%F{white} ';;
-        (main|viins) PROMPT='%F{green}╭-[%F{blue}%~%F{green}]$RANGER'$'\n%F{green}╰>%f ';;
-        (*)          PROMPT='%F{green}╭-[%F{blue}%~%F{green}]$RANGER'$'\n%F{green}╰>%f ';;
+        (vicmd)      PROMPT='%F{red}$L_DIV%F{yellow}ArchLabsDR%F{green}$M_DIV%F{blue}%~%F{red}$R_DIV$RANGER'$'\n%F{red}$S_PRT%F{white} ';;
+        (main|viins) PROMPT='%F{green}$L_DIV%F{yellow}ArchLabsDR%F{green}$M_DIV%F{blue}%~%F{green}$R_DIV$RANGER'$'\n%F{green}$S_PRT%f ';;
+        (*)          PROMPT='%F{green}$L_DIV%F{yellow}ArchLabsDR%F{green}$M_DIV%F{blue}%~%F{green}$R_DIV$RANGER'$'\n%F{green}$S_PRT%f ';;
     esac
     zle reset-prompt
 }
