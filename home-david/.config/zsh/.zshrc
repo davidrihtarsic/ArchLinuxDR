@@ -1,94 +1,4 @@
-# If you come from bash you might have to change your $PATH.
-# export PATH=$HOME/bin:/usr/local/bin:$PATH
-
-# Path to your oh-my-zsh installation.
-export ZSH="$HOME/.oh-my-zsh"
-
-# Set name of the theme to load --- if set to "random", it will
-# load a random theme each time oh-my-zsh is loaded, in which case,
-# to know which specific one was loaded, run: echo $RANDOM_THEME
-# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
-#ZSH_THEME="robbyrussell"
-ZSH_THEME="bira"
-
-# Set list of themes to pick from when loading at random
-# Setting this variable when ZSH_THEME=random will cause zsh to load
-# a theme from this variable instead of looking in ~/.oh-my-zsh/themes/
-# If set to an empty array, this variable will have no effect.
-# ZSH_THEME_RANDOM_CANDIDATES=( "robbyrussell" "agnoster" )
-
-# Uncomment the following line to use case-sensitive completion.
-# CASE_SENSITIVE="true"
-
-# Uncomment the following line to use hyphen-insensitive completion.
-# Case-sensitive completion must be off. _ and - will be interchangeable.
-HYPHEN_INSENSITIVE="true"
-
-# Uncomment the following line to disable bi-weekly auto-update checks.
-# DISABLE_AUTO_UPDATE="true"
-
-# Uncomment the following line to automatically update without prompting.
-# DISABLE_UPDATE_PROMPT="true"
-
-# Uncomment the following line to change how often to auto-update (in days).
-# export UPDATE_ZSH_DAYS=13
-
-# Uncomment the following line if pasting URLs and other text is messed up.
-# DISABLE_MAGIC_FUNCTIONS=true
-
-# Uncomment the following line to disable colors in ls.
-# DISABLE_LS_COLORS="true"
-
-# Uncomment the following line to disable auto-setting terminal title.
-# DISABLE_AUTO_TITLE="true"
-
-# Uncomment the following line to enable command auto-correction.
-# ENABLE_CORRECTION="true"
-
-# Uncomment the following line to display red dots whilst waiting for completion.
-# COMPLETION_WAITING_DOTS="true"
-
-# Uncomment the following line if you want to disable marking untracked files
-# under VCS as dirty. This makes repository status check for large repositories
-# much, much faster.
-# DISABLE_UNTRACKED_FILES_DIRTY="true"
-
-# Uncomment the following line if you want to change the command execution time
-# stamp shown in the history command output.
-# You can set one of the optional three formats:
-# "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# or set a custom format using the strftime function format specifications,
-# see 'man strftime' for details.
-# HIST_STAMPS="mm/dd/yyyy"
-
-# Would you like to use another custom folder than $ZSH/custom?
-# ZSH_CUSTOM=/path/to/new-custom-folder
-
-# Which plugins would you like to load?
-# Standard plugins can be found in ~/.oh-my-zsh/plugins/*
-# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
-# Example format: plugins=(rails git textmate ruby lighthouse)
-# Add wisely, as too many plugins slow down shell startup.
-#plugins=(git)
-################################################################################
-
-###################################################################
-source $ZSH/oh-my-zsh.sh
-# User configuration
-# export MANPATH="/usr/local/man:$MANPATH"
-# You may need to manually set your language environment
-# export LANG=en_US.UTF-8
-# Preferred editor for local and remote sessions
-# if [[ -n $SSH_CONNECTION ]]; then
-#   export EDITOR='vim'
-# else
-#   export EDITOR='mvim'
-# fi
-
-# set some defaults
 #export MANWIDTH=70
-export HISTSIZE=10000
-export SAVEHIST=10000
 ############################################################
 # PREFERED APPLICATIONS
 ############################################################
@@ -104,16 +14,37 @@ export MOV_PLAYRE='mpv'
 # ZSH settings
 #********************
 # typeset -U path=($HOME/bin "${path[@]:#}") #add ~/bin/ to $PATH
+export HISTSIZE=10000
+export SAVEHIST=10000
 HISTFILE=~/.config/zsh/zsh_history  #Where to save history to disk
 HISTDUP=erase                       #Erase duplicates in the history file
 setopt    appendhistory             #Append history to the history file (no overwriting)
 setopt    sharehistory              #Share history across terminals
 setopt    incappendhistory          #Immediately append to the history file, not just when a term is killed
-#********************
+setopt    autocd autopushd
+setopt    prompt_subst              #Ne vem, da potem spremenljivke delajo $VAR
+
+######################################
+# TAB coompletition MENU, color
+autoload -Uz compinit && compinit
+compinit
+zstyle ':completion:*' menu select
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Za-z}'
+zstyle ':completion:*:options:*' list-colors menu select
+zstyle -e ':completion:*:default' list-colors 'reply=("${PREFIX:+=(#bi)($PREFIX:t)(?)*==34=34}:${(s.:.)LS_COLORS}")'
+
+######################################
+# Search history based on text
+autoload -U up-line-or-beginning-search
+autoload -U down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search # Up
+bindkey "^[[B" down-line-or-beginning-search # Down
 
 #********************
 # MAN color scheme
-# *******************
+#********************
 export LESS_TERMCAP_mb=$'\e[1;32m'
 export LESS_TERMCAP_md=$'\e[1;32m'
 export LESS_TERMCAP_me=$'\e[0m'
@@ -125,29 +56,32 @@ export LESS_TERMCAP_us=$'\e[1;4;31m'
 #********************
 # Aliasi
 #********************
-alias r='ranger'
-alias q='exit'
+alias d='dirs -v'
 #alias f='cd $(vifm $(pwd) --choose-dir -)'
 alias f='~/.config/vifm/vifm_run.sh'
-alias weather='curl wttr.in/~begunje'
-alias update='sudo pacman -Syu'
 alias g!='git add .;git commit -v -a;git push;'
+alias ll='ls -ll --color'
+alias ls='ls --color'
 alias mirror='reflector --number 10 --country Slovenia --country Finland --country Germany --country Italy --country Austria --verbose --sort rate'
-
+alias q='exit'
+alias r='ranger'
+alias update='sudo pacman -Syu'
+alias weather='curl wttr.in/~begunje'
 
 #*******************
 # GIT
 #*******************
 # Modify the colors and symbols in these variables as desired.
-GIT_PROMPT_SYMBOL="%{$fg[blue]%}±"                              # plus/minus     - clean repo
-GIT_PROMPT_PREFIX="%{$fg[green]%}[%{$reset_color%}"
-GIT_PROMPT_SUFFIX="%{$fg[green]%}]%{$reset_color%}"
-GIT_PROMPT_AHEAD="%{$fg[red]%}ANUM%{$reset_color%}"             # A"NUM"         - ahead by "NUM" commits
-GIT_PROMPT_BEHIND="%{$fg[cyan]%}BNUM%{$reset_color%}"           # B"NUM"         - behind by "NUM" commits
-GIT_PROMPT_MERGING="%{$fg_bold[magenta]%}⚡︎%{$reset_color%}"     # lightning bolt - merge conflict
-GIT_PROMPT_UNTRACKED="%{$fg_bold[red]%}●%{$reset_color%}"       # red circle     - untracked files
-GIT_PROMPT_MODIFIED="%{$fg_bold[yellow]%}●%{$reset_color%}"     # yellow circle  - tracked files modified
-GIT_PROMPT_STAGED="%{$fg_bold[green]%}●%{$reset_color%}"        # green circle   - staged changes present = ready for "git push"
+GIT_PROMPT_SYMBOL="%F{blue}%}±"           # plus/minus     - clean repo
+GIT_PROMPT_SYMBOL="%F{blue%}±"            # plus/minus     - clean repo
+GIT_PROMPT_PREFIX="%F{green%}[%f"
+GIT_PROMPT_SUFFIX="%F{green%}]%f"
+GIT_PROMPT_AHEAD="%F{red%}ANUM%f"         # A"NUM"         - ahead by "NUM" commits
+GIT_PROMPT_BEHIND="%F{cyan%}BNUM%f"       # B"NUM"         - behind by "NUM" commits
+GIT_PROMPT_MERGING="%F{magenta%}⚡︎%f"     # lightning bolt - merge conflict
+GIT_PROMPT_UNTRACKED="%F{red%}●%f"        # red circle     - untracked files
+GIT_PROMPT_MODIFIED="%F{yellow%}●%f"      # yellow circle  - tracked files modified
+GIT_PROMPT_STAGED="%F{green%}●%f"         # green circle   - staged changes present = ready for "git push"
 
 parse_git_branch() {
   # Show Git branch/tag, or name-rev if on detached head
@@ -193,34 +127,21 @@ git_prompt_string() {
   # If not inside the Git repo, print exit codes of last command (only if it failed)
   [ ! -n "$git_where" ] && echo "%{$fg[red]%} %(?..[%?])"
 }
-#*******************
+
+#RPROMPT='$(git_prompt_string)%{$fg[green]%}$RANGER%{$reset_color%}'
+RPROMPT='$(git_prompt_string)%{$fg[green]%}%{$reset_color%}'
 
 #**************************************************************************
 # RANGER
 #*******************
-[ "$RANGER_LEVEL" -gt 0 ] && RANGER='[RANGER]'
-#**************************************************************************
+[ "$RANGER_LEVEL" -gt 0 ] && RANGER=' '
 
-RPROMPT='$(git_prompt_string)%{$fg[green]%}$RANGER%{$reset_color%}'
 #*********************
 # FZF settings
 # ********************
 source /usr/share/fzf/completion.zsh
 source /usr/share/fzf/key-bindings.zsh
 export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
-#**************************************************************************
-
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-# Set personal aliases, overriding those provided by oh-my-zsh libs,
-# plugins, and themes. Aliases can be placed here, though oh-my-zsh
-# users are encouraged to define aliases within the ZSH_CUSTOM folder.
-# For a full list of active aliases, run `alias`.
-#
-# Example aliases
-# alias zshconfig="mate ~/.zshrc"
-# alias ohmyzsh="mate ~/.oh-my-zsh"
 
 # ***************
 # REMAP KEYS
@@ -229,3 +150,18 @@ export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 # zato tale skript, da preveri remap in če ni ga zažene
 [ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
 #**************************************************************************
+
+#####################################
+# PROMPT dir & vi-mode
+bindkey -v
+function zle-line-init zle-keymap-select {
+    case ${KEYMAP} in
+        (vicmd)      PROMPT='%F{red}╭-[%F{blue}%~%F{red}]$RANGER'$'\n%F{red}╰>%F{white} ';;
+        (main|viins) PROMPT='%F{green}╭-[%F{blue}%~%F{green}]$RANGER'$'\n%F{green}╰>%f ';;
+        (*)          PROMPT='%F{green}╭-[%F{blue}%~%F{green}]$RANGER'$'\n%F{green}╰>%f ';;
+    esac
+    zle reset-prompt
+}
+zle -N zle-line-init
+zle -N zle-keymap-select
+
