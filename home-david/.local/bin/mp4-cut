@@ -1,0 +1,6 @@
+#! /bin/sh
+
+video_file=$1
+end_time=$2
+
+ffmpeg -i $1 -c:v libx264 -crf 35 -preset medium -vf format=yuv420p out_$1

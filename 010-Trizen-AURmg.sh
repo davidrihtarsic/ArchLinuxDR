@@ -6,9 +6,9 @@ echo "##########################################################################
 echo "   Installing trizen"
 echo "################################################################################"
 
-[[ -d ~/build/trizen ]] && rm -R ~/build/trizen
-git clone https://aur.archlinux.org/trizen.git ~/build/trizen
-cd ~/build/trizen && makepkg -si
+[[ -d ~/.local/build/trizen ]] && rm -R ~/.local/build/trizen
+git clone https://aur.archlinux.org/trizen.git ~/.local/build/trizen
+cd ~/.local/build/trizen && makepkg -si
 
 echo -e '\e[32m' #zelena
 echo "################################################################################"

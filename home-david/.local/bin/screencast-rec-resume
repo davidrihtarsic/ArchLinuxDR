@@ -1,0 +1,17 @@
+#! /bin/sh
+
+# To je RESUME in poženeš le ffmpeg za snemanje... ker "Front Camera" je vključena...
+
+# ffplay -window_title "Front Camera" /dev/video0 & \
+# notify-send "RECORDING tarts in 7s..." && \
+# sleep 7 && \
+notify-send "STARTING in 2, 1, ..." && \
+sleep 2 && \
+#killall picom && \
+# killall compton && \
+notify-send "REC" && \
+# bolj prijazno do CPUja... je pa potrebno konvertirat...
+ffmpeg -r 25 -f x11grab -s 1920x1080 -i :0.0 -f alsa -i default -c:v libx264rgb -crf 0 -preset ultrafast /home/david/Files/Pictures/ScreenCasts/screen_cast_$(date +%Y%m%d-%H%M%S).mp4
+
+#tale je preveč požrešna za CPU bil je obremenjen na 130%
+#ffmpeg -f x11grab -s 1920x1080 -i :0.0 -f alsa -i default -c:v libx264 -r 30 /home/david/Files/Pictures/ScreenCasts/screen_cast_$(date +%Y%m%d-%H%M%S).mp4

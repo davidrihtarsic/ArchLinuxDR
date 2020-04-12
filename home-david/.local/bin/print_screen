@@ -1,0 +1,10 @@
+#! /bin/zsh
+# POSSIBLE ARGUMENTS
+# 1. none = window
+# 2. none = region
+# 3. "-window root" the whole screen
+file_name=$HOME/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+import $* $file_name
+cat $file_name | xclip -selection clipboard -target image/png -i
+
+

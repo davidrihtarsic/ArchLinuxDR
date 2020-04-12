@@ -89,17 +89,26 @@ source $ZSH/oh-my-zsh.sh
 #export MANWIDTH=70
 export HISTSIZE=10000
 export SAVEHIST=10000
+############################################################
+# PREFERED APPLICATIONS
+############################################################
 export EDITOR='nvim'
+export BROWSER='firefox'
+export TERM='st'
+export GUI_EDITOR=''
+export FILEMANAGER='nemo'
+export IMG_VIEWER='feh'
+export MOV_PLAYRE='mpv'
 
-#********************
+#*******************
 # ZSH settings
 #********************
 # typeset -U path=($HOME/bin "${path[@]:#}") #add ~/bin/ to $PATH
-HISTFILE=~/.zsh_history     #Where to save history to disk
-HISTDUP=erase               #Erase duplicates in the history file
-setopt    appendhistory     #Append history to the history file (no overwriting)
-setopt    sharehistory      #Share history across terminals
-setopt    incappendhistory  #Immediately append to the history file, not just when a term is killed
+HISTFILE=~/.config/zsh/zsh_history  #Where to save history to disk
+HISTDUP=erase                       #Erase duplicates in the history file
+setopt    appendhistory             #Append history to the history file (no overwriting)
+setopt    sharehistory              #Share history across terminals
+setopt    incappendhistory          #Immediately append to the history file, not just when a term is killed
 #********************
 
 #********************
@@ -122,7 +131,7 @@ alias q='exit'
 alias f='~/.config/vifm/vifm_run.sh'
 alias weather='curl wttr.in/~begunje'
 alias update='sudo pacman -Syu'
-alias g!='git add . && git commit -v -a && git push'
+alias g!='git add .;git commit -v -a;git push;'
 alias mirror='reflector --number 10 --country Slovenia --country Finland --country Germany --country Italy --country Austria --verbose --sort rate'
 
 
@@ -218,5 +227,5 @@ export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 # ***************
 # Včasih mi ni delalo, da bi se remap zgodil sam od sebe
 # zato tale skript, da preveri remap in če ni ga zažene
-[ -n "$(xmodmap -pm | grep lock | grep Caps)" ] && xmodmap ~/.Xmodmap && xset r rate 250 70
+[ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
 #**************************************************************************

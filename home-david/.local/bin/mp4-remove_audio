@@ -1,0 +1,6 @@
+#! /bin/sh
+
+video_file=$1
+
+ffmpeg -i $1 -c copy -an no_snd_$1
+

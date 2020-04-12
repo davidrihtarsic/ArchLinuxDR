@@ -1,19 +1,31 @@
 #!/bin/sh
 # sourced at boot by ~/.xinitrc and most display managers
+
+# for nicer setup I move ZSH files into:
+#export ZDOTDIR="$HOME/.config/zsh"
+
 XDG_CONFIG_HOME="$HOME/.config"
 export XDG_CONFIG_HOME
+XDG_DATA_HOME="$HOME/.local/share"
+export XDG_DATA_HOME
 
 [ "$PATH" == *"$HOME/bin"* ] || PATH="$HOME/bin:$PATH"
+[ "$PATH" == *"$HOME/.local/bin"* ] || PATH="$HOME/.local/bin:$PATH"
 
 compton -b &
+#picom --backend xrender -b
 sxhkd &
-feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
+#feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
+feh --bg-fill ~/Pictures/wallpapers/ArchLabsLinux7.png
 
+# set dual monitor = home settup
+[ -n '$(xrandr | grep "HDMI2 connected")' ] && xrandr --output HDMI2 --mode 1920x1080 --pos 1920x0
 # remap/switch caps and ecape
 #setxkbmap -option caps:escape
 
 #remap tipko [dz] - "/"
 #xmodmap -e "keycode 35 = slash"
 
+[ -r $HOME/.config/X11/.Xmodmap ] && xmodmap $HOME/.config/X11/.Xmodmap
 xset dpms 600 900 1200
 xset r rate 250 70

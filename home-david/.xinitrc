@@ -10,7 +10,7 @@ fi
 
 # user init scripts and settings
 [ -r /etc/X11/xinit/.Xmodmap ] && xmodmap /etc/X11/xinit/.Xmodmap
-[ -r ~/.Xmodmap ] && xmodmap ~/.Xmodmap
+[ -r $HOME/.config/X11/.Xmodmap ] && xmodmap $HOME/.config/X11/.Xmodmap
 [ -r ~/.Xresources ] && xrdb -merge ~/.Xresources
 [ -r ~/.xprofile ] && . ~/.xprofile
 

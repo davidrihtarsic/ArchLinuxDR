@@ -24,6 +24,9 @@
 super + {b, B}
     feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
 
+super + {c, C}
+    {galculator, st -e insect}
+
 # program launcher
 super + e
     st -e nvim -S ~/.config/nvim/david_session.sav
@@ -37,14 +40,19 @@ super + t
     thunderbird
 
 super + n
-    calcurse-caldav && termite -e calcurse && calcurse-caldav
+    calcurse-caldav && st -e calcurse && calcurse-caldav
 
 super + w
-     brave
+    firefox
+#    $BROWSER
+#     brave
 #    google-chrome-stable
 
 #alt + F1
 alt + XF86Suspend 
+    rofi_run -r
+
+Menu
     rofi_run -r
 
 #ctrl + F2
@@ -83,14 +91,24 @@ super + F7
 
 # Print Screen - OPTIONS pic screen image - ordinarry most common action
 Print
-    import ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+    print_screen
+    #import ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
 
 super + Print
-    import -window root ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+    print_screen -window root
+    #import -window root ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+
+super + shift + Print
+    screencast-dmenu
+
+super + control + Print
+    draw_on_screen
 
 # file manager
 super + alt + Return
-    exo-open --launch FileManager
+    nemo
+#    $FILEMANAGER
+#exo-open --launch FileManager
 
 # make sxhkd reload its configuration files:
 #super + shift + r

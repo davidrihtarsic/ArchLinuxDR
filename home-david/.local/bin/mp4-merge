@@ -1,0 +1,14 @@
+#! /bin/sh
+
+# just run this script and it will join all
+# files started with:
+# mrg_*.mp4
+
+[ -e rec-merge.tmp ] && rm rac-merge.tmp
+
+for i in mrg_*.mp4
+do 
+  echo "file $i" >> rec-merge.tmp
+done
+
+ffmpeg -f concat -i rec-merge.tmp -codec copy rec-merge-$(date +%H%M%S.mp4) && rm rec-merge.tmp

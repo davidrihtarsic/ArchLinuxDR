@@ -1,0 +1,8 @@
+#! /bin/zsh
+
+SCREEN_CAPTURE=" PAUSE screencast-rec-pause
+ STOP screencast-rec-stop
+ RESUME screencast-rec-resume
+ REC screencast-rec-start"
+
+$(echo $SCREEN_CAPTURE | dmenu -l -5 -p "Screen capture:"| sed "s/^.*\ .*\ //")

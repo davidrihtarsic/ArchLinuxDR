@@ -6,9 +6,9 @@ echo "##########################################################################
 echo "   Installing YAY"
 echo "################################################################################"
 
-[[ -d ~/build/yay ]] && rm -R ~/build/yay
-git clone https://aur.archlinux.org/yay.git ~/build/yay
-cd ~/build/yay && makepkg -si
+[[ -d ~/.local/build/yay ]] && rm -R ~/.local/build/yay
+git clone https://aur.archlinux.org/yay.git ~/.local/build/yay
+cd ~/.local/build/yay && makepkg -si
 
 echo -e '\e[32m' #zelena
 echo "################################################################################"

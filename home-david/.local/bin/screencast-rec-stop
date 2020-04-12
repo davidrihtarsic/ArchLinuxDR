@@ -1,0 +1,6 @@
+#! /bin/sh
+
+killall ffmpeg; \
+killall ffplay; \
+#picom --backend xrender &
+#compton &

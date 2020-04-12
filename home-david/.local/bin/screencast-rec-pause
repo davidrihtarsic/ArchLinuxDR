@@ -1,0 +1,8 @@
+#! /bin/sh
+# Don't kill ffplay, ker je to PAVZA in bi moral na novo nastavljati
+# window za "Front Camera" window...
+
+killall ffmpeg;
+#picom --backend xrender &
+# compton &
+#killall ffplay

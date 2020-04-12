@@ -7,18 +7,18 @@ echo "##########################################################################
 
 PWD=$(pwd)
 
-[[ -d ~/build/dwm ]] && rm -R ~/build/dwm
-git clone https://git.suckless.org/dwm ~/build/dwm
-cd ~/build/dwm && sudo make 
+[[ -d ~/.local/build/dwm ]] && rm -R ~/.local/build/dwm
+git clone https://git.suckless.org/dwm ~/.local/build/dwm
+cd ~/.local/build/dwm && sudo make 
 
-patch ~/build/dwm/config.h /home/david/Files/GitHub_noSync/ArchLinuxDR/home-david/.config/dwm/davids_dwm.patch
+patch ~/.local/build/dwm/config.h /home/david/Files/GitHub_noSync/ArchLinuxDR/home-david/.config/dwm/davids_dwm.patch
 
 echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "   DWM patched"
 echo "################################################################################"
 
-cd ~/build/dwm && sudo make clean install
+cd ~/.local/build/dwm && sudo make clean install
 echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "   DWM INSTALLED & PATCHED"

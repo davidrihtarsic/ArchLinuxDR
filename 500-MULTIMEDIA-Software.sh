@@ -22,6 +22,7 @@ sudo pacman -S --noconfirm --needed mpv
 
 # music
 sudo pacman -S --noconfirm --needed cmus
+sudo pacman -S --noconfirm --needed audacity
 
 # social
 trizen -S --noconfirm --needed skypeforlinux-stable-bin

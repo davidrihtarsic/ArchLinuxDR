@@ -4,23 +4,23 @@
 *.cursorColor: #778899
 
 *.alpha: .7
-*.font: Hermit:size=10
+*.font: Hermit:size=12
 
 *.color0:  #282828
-*.color1:  #CC241D
-*.color2:  #88881A
-*.color3:  #D79921
-*.color4:  #458588
-*.color5:  #B16286
-*.color6:  #689D6A
-*.color7:  #A89984
 *.color8:  #928374
+*.color1:  #CC241D
 *.color9:  #FB4934
+*.color2:  #88881A
 *.color10: #B8BB26
+*.color3:  #D79921
 *.color11: #FABD2F
+*.color4:  #458588
 *.color12: #83A598
+*.color5:  #B16286
 *.color13: #D3869B
+*.color6:  #689D6A
 *.color14: #8EC07C
+*.color7:  #A89984
 *.color15: #EBDBB2
 
 ! Rofi

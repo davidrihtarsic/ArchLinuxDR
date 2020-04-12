@@ -1,6 +1,6 @@
 #! /bin/bash
 
-file=~/.calcurse/todo
+file=~/.local/share/calcurse/todo
 # selectedItem=$(calcurse -Q --days 30 | sed '/^$/d;/[0-9]:/N;s/\n//;/->/N;s/\n//;s/^ -/          -/;s/\t/    /;/\.\.:\.\. -> \.\.:\.\./d'|dmenu -l 20 -p "Calcurse:")
 selectedItem=$(calcurse -Q --days 30 | sed '/^$/d;/->/N;s/\n//;s/^ - \|\t\| \* /     /g'|dmenu -l 20 -p "Calcurse:")
 echo $selectedItem

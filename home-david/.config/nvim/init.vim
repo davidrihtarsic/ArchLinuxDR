@@ -8,6 +8,7 @@ Plug 'vim-airline/vim-airline'          "Simple statusline
 " CODE HIGHLIGHTINGS ================================================
 Plug 'sheerun/vim-polyglot'
 Plug 'nathanaelkane/vim-indent-guides'  "Indentation linses
+Plug 'ap/vim-css-color'                 "Colored Hexcodes :) #987654
 " CODE AUTOCOMPLETITION =============================================
 "Plug 'lifepillar/vim-mucomplete'
 "Plug 'davidhalter/jedi-vim'             "Python autocompletition
@@ -26,6 +27,7 @@ Plug 'majutsushi/tagbar'                "Side menu of tags
 Plug 'tpope/vim-obsession'              "Save/Load Vim session with files
 Plug 'tpope/vim-fugitive'               "GIT plugin
 "Plug 'Shougo/unite.vim'                "TUI for others funtionalaties
+"Plug 'vimwiki/vimwiki'                 "vim WIKI - module for Wiki page
 
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -91,6 +93,8 @@ let g:netrw_browse_split = 3
 "#####################################
 "  AUTOCOMPLETITION
 "#####################################
+"imap <expr> <CR> pumvisible() ? "\<C-y>" : "\<C-g>u\<CR>"
+
 "======================================================================
 " MUCOMPLETE
 "======================================================================
@@ -100,7 +104,7 @@ let g:netrw_browse_split = 3
 "======================================================================
 "   Conquer Of Completition - COC
 "======================================================================
-"coc-pair
+"coc-pair - run :CocInstall coc-pairs
 "coc-python
 "coc-html
 "coc-dictionary
@@ -189,13 +193,14 @@ let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o 
 "======================================================================
   let g:table_mode_corner="|"
   map <leader>tm :TableModeToggle<CR>
-
 "======================================================================
 "  ✅ SPELL CHECKING
 "======================================================================
 "SPELL CHECK
-  map <F6> :set spell spelllang=
-  map <S-F6> :set nospell<CR>
+
+autocmd FileType markdown setlocal spell spelllang=sl
+  map <F18> :set spell spelllang=
+  map <C-F18> :set nospell<CR>
 "-- next spell error
   nmap sn ]s
   nmap sp [s
@@ -235,6 +240,28 @@ nnoremap cd :cd %:p:h<CR>
 " match string to switch buffer
 " nnoremap <Leader>b :let b:buf = input('Match: ')<Bar>call <SID>bufferselect(b:buf)<CR>
 
+"#####################################
+"   NeoVIM
+"#####################################
+let g:nvimWiki="/home/david/Files/GitHub_noSync/davidrihtarsic.github.io/Linux/LinuxWiki"
+nmap <leader>ww :execute "call OpenWikiPage('" . g:nvimWiki . "')"<CR>:lcd %:p:h<CR>
+
+function! OpenWikiPage(link)
+  if filereadable(a:link . ".md")
+    echo "SpecificFile exists"
+    let g:l_file = a:link . ".md"
+    echom g:l_file
+    execute "edit " . a:link . ".md"
+  else
+    echo "File doesn't exist - try to make new one. <leader>wn"
+    :tabclose
+  endif
+endfunction
+
+nmap <CR> wbyw:tabnew<CR>:call OpenWikiPage('<C-r>"')<CR>
+nmap <BS> :bprev<CR>
+nmap <leader>wn wbyw:tabnew<CR>:w <C-r>".md<CR>
+
 "======================================================================
 "   NAVIGATION
 "======================================================================
@@ -243,6 +270,8 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-L> <C-W><C-L>
 nnoremap <C-H> <C-W><C-H>
+
+nnoremap <C-e> :buffers<CR>:buffer<Space>
 
 " alt defaults
 nnoremap 0 ^
@@ -313,10 +342,10 @@ map <Space><Tab> <Esc>/<++><Enter>"_c4l
 autocmd Filetype markdown,rmd inoremap ,b ****<++><Esc>F*hi
 autocmd Filetype markdown,rmd inoremap ,s ~~~~<++><Esc>F~hi
 autocmd Filetype markdown,rmd inoremap ,i **<++><Esc>F*i
-autocmd Filetype markdown,rmd inoremap ,l []( <++> )<++><Esc>F[a
+autocmd Filetype markdown,rmd inoremap ,l [](<++>)<++><Esc>F[a
 autocmd Filetype markdown,rmd inoremap ,p ```python<CR>```<CR><CR><esc>2kO
 autocmd Filetype markdown,rmd inoremap ,c ```cpp<cr>```<cr><cr><esc>2kO
-autocmd Filetype markdown,rmd inoremap ,v > NALOGA: 
+autocmd Filetype markdown,rmd inoremap ,v > ### NALOGA: 
 "auto wrapping selected text
 vnoremap ,b bexi***<ESC>P2li*<ESC>
 vnoremap ,s xi~~~<ESC>P2li~
@@ -354,8 +383,8 @@ autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split %:p:h/bibtex.bib
 " pandoc --from markdown --template skripta --listings --pdf-engine=xelatex test.md -o index.pdf
 
 "autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && panzer %:p:t --to latex -o %:p:r.pdf --from markdown --template skripta --listings -V lang=sl -V listings-no-page-break=true --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M listings -V listings-no-page-break -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -M listings -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --number-sections -V documentclass=book -V book --toc -M author:"dr. David Rihtaršič" -M date:"$(date '+\%B \%Y')" -M titlepage -M title:"%:r" --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -M listings -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --number-sections -V documentclass=book -V book --toc -M author:"dr. David Rihtaršič" -M date:"$(date '+\%B \%Y')" -M titlepage -M title:"%:t:r" --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
 "noremap <C-p> :!zathura %:p:r.pdf <c-r> && disown <CR><CR>
 autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>
