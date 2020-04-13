@@ -134,7 +134,8 @@ RPROMPT='$(git_prompt_string)%{$fg[green]%}%{$reset_color%}'
 #**************************************************************************
 # RANGER
 #*******************
-[ "$RANGER_LEVEL" -gt 0 ] && RANGER=' '
+#[ "$RANGER_LEVEL" -gt 0 ] && RANGER=' [=]'
+[ "$RANGER_LEVEL" -gt 0 ] && RANGER='Ranger' || RANGER='ArchLabsDR'
 
 #*********************
 # FZF settings
@@ -160,9 +161,9 @@ S_PRT="╰>"
 bindkey -v
 function zle-line-init zle-keymap-select {
     case ${KEYMAP} in
-        (vicmd)      PROMPT='%F{red}$L_DIV%F{yellow}ArchLabsDR%F{green}$M_DIV%F{blue}%~%F{red}$R_DIV$RANGER'$'\n%F{red}$S_PRT%F{white} ';;
-        (main|viins) PROMPT='%F{green}$L_DIV%F{yellow}ArchLabsDR%F{green}$M_DIV%F{blue}%~%F{green}$R_DIV$RANGER'$'\n%F{green}$S_PRT%f ';;
-        (*)          PROMPT='%F{green}$L_DIV%F{yellow}ArchLabsDR%F{green}$M_DIV%F{blue}%~%F{green}$R_DIV$RANGER'$'\n%F{green}$S_PRT%f ';;
+        (vicmd)      PROMPT='%F{red}$L_DIV%F{yellow}$RANGER%F{green}$M_DIV%F{blue}%~%F{red}$R_DIV'$'\n%F{red}$S_PRT%F{white} ';;
+        (main|viins) PROMPT='%F{green}$L_DIV%F{yellow}$RANGER%F{green}$M_DIV%F{blue}%~%F{green}$R_DIV'$'\n%F{green}$S_PRT%f ';;
+        (*)          PROMPT='%F{green}$L_DIV%F{yellow}$RANGER%F{green}$M_DIV%F{blue}%~%F{green}$R_DIV'$'\n%F{green}$S_PRT%f ';;
     esac
     zle reset-prompt
 }
