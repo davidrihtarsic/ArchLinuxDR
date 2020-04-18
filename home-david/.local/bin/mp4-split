@@ -1,0 +1,8 @@
+#! /bin/sh
+
+video_file=$1
+# split time in format 00:mm:ss.0
+split_time=$2 
+
+ffmpeg -i $1 -t $2 -vcodec copy -acodec copy 1st_$1
+ffmpeg -i $1 -ss $2 -vcodec copy -acodec copy 2nd_$1

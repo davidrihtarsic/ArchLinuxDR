@@ -29,5 +29,6 @@ fi
 # xmodmap /home/david/.Xmodmap
 # launch the session, commands below this line will be ignored
 /home/david/bin/system/dwm-status-dwd.sh &
+xautolock -time 7 -locker "systemctl suspend-then-hibernate" &  
 exec dwm
 ################################

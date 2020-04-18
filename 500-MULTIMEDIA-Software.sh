@@ -11,6 +11,10 @@ echo "##########################################################################
 sudo pacman -S --noconfirm --needed feh
 sudo pacman -S --noconfirm --needed gimp
 trizen -S --noconfirm --needed gimp-plugin-registry
+## sxiv
+[[ -d ~/.local/build/sxiv ]] && rm -R ~/.local/build/sxiv
+git clone https://github.com/muennich/sxiv.git
+cd ~/.local/build/sxiv && sudo make clean install
 
 sudo pacman -S --noconfirm --needed darktable
 

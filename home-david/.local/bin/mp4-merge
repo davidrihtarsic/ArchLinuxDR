@@ -6,9 +6,9 @@
 
 [ -e rec-merge.tmp ] && rm rac-merge.tmp
 
-for i in mrg_*.mp4
+for i in $@
 do 
   echo "file $i" >> rec-merge.tmp
 done
 
-ffmpeg -f concat -i rec-merge.tmp -codec copy rec-merge-$(date +%H%M%S.mp4) && rm rec-merge.tmp
+ffmpeg -f concat -i rec-merge.tmp -c:v libx264 -crf 30 -c:a copy rec-merge-$(date +%H%M%S.mp4) && rm rec-merge.tmp
