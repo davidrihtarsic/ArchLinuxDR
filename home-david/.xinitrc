@@ -29,6 +29,10 @@ fi
 # xmodmap /home/david/.Xmodmap
 # launch the session, commands below this line will be ignored
 /home/david/bin/system/dwm-status-dwd.sh &
-xautolock -time 7 -locker "systemctl suspend-then-hibernate" &  
+xautolock \
+  -time 7 \
+  -locker "systemctl suspend-then-hibernate" \
+  -notify 30 \
+  -notifier "notify-send -t 30000 'GOING TO SLEEP in 30s.'"&  
 exec dwm
 ################################

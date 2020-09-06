@@ -8,6 +8,7 @@ echo "##########################################################################
 # Office
 # sudo pacman -S --noconfirm --needed libreoffice-still
 trizen -S --noconfirm --needed libreoffice-dev-bin
+trizen -S docx2txt
 # ker ni delal Base ...
 sudo  pacman -S jdk11-openjdk
 sudo pacman -S --noconfirm --needed galculator

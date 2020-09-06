@@ -1,0 +1,19 @@
+#!/bin/sh
+while read file
+do
+        fullpath="$(pwd)/$file"
+        case "$1" in
+        "I")
+          notify-send -i "$fullpath" "EXIF DATA" "$(exiv2 $file | awk -F "\n" '{printf "%-55s\n", $1}')";;
+        "i")
+          notify-send -i "$fullpath" "EXIF DATA" "$(exiftool -common $file | awk -F "\n" '{printf "%-55s\n", $1}')";;
+        "C-d")
+                mv "$file" ~/.trash ;;
+        "C-r")
+                convert -rotate 90 "$file" "$file" ;;
+        "C-c")
+                echo -n "$file" | xclip -selection clipboard ;;
+        "C-w")
+                nitrogen --save --set-zoom-fill "$file" ;;
+        esac
+done

@@ -84,9 +84,10 @@ handle_extension() {
             exit 1
             ;;
         md)
-            mdv -A "${FILE_PATH}" && exit 5
+            mdv -A -n 1-3 "${FILE_PATH}" && exit 5
+            mdv -t 960.847 -n 1-3 "${FILE_PATH}" && exit 5
             cat "${FILE_PATH}" && exit 5
-            cat "${FILE_PATH}" | mdv -c ${PV_WIDTH}  -t 960.847 -n 1-3 - && exit 0
+            exit 2
             ;;
         mm)
             cat "${FILE_PATH}" && exit 5

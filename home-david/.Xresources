@@ -23,6 +23,10 @@
 *.color7:  #A89984
 *.color15: #EBDBB2
 
+!SXIV
+Sxiv.foreground:#A89984
+Sxiv.background:#282828
+
 ! Rofi
 rofi.font: Hermit 11
 rofi.padding: 20

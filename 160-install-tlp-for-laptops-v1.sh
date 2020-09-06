@@ -28,6 +28,10 @@ sudo pacman -S --noconfirm --needed tlp
 sudo systemctl enable tlp.service
 # tega ni treba več od različice 1.2
 #sudo systemctl start tlp-sleep.service
+# install tlp-rdw
+# sudo systemctl mask systemd-rfkill.service
+# sudo systemctl mask systemd-rfkill.socket
+
 
 trizen -S --noconfirm --needed xautolock
 # add to .xinitrc

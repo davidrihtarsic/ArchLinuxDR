@@ -6,16 +6,18 @@
 # - window manager
 # - za zagon programov
 
-# CONTROL
-# - posebne funkcije programov
-# - save, open, ...
+# SHIFT
+# - druga opcija na tipki (ki ni defalult)
+# - uporabljam za premik
 
 # ALT
-# - alternate
+# - alternativa osnvni funkciji delovcanja
 # - spremenjeno delovanje tipke
 
-# SHIFT
-# - uporabljam za premik
+# CONTROL
+# - give user more CONTROLL over the functionality
+# - posebne funkcije programov
+# - save, open, ...
 
 # F1 .. F12
 # - funkcije za delovanje operacijskega sistema
@@ -43,16 +45,16 @@ super + n
     calcurse-caldav && st -e calcurse && calcurse-caldav
 
 super + w
-    firefox
+     brave
+#    firefox
 #    $BROWSER
-#     brave
 #    google-chrome-stable
 
 #alt + F1
-alt + XF86Suspend 
-    rofi_run -r
+#alt + XF86Suspend 
+#    rofi_run -r
 
-Menu
+super + Menu
     rofi_run -r
 
 #ctrl + F2
@@ -61,14 +63,14 @@ XF86WLAN
 
 #ctrl + F5
 XF86MonBrightnessDown
-    ~/bin/system/LcdBrightnesDOWN.sh
+    ~/.local/bin/SystemControll/LcdBrightnesDOWN.sh
 
 #ctrl + F6
 XF86MonBrightnessUp
-    ~/bin/system/LcdBrightnesUP.sh
+    ~/.local/bin/SystemControll/LcdBrightnesUP.sh
 
 super + F8
-    ~/bin/system/setMyMonitor.sh
+    ~/.local/bin/SystemControll/setMyMonitor.sh
 #super 
 #    rofi_run -r terminal emulator 
 #super + t exo-open --launch TerminalEmulator web browser 
@@ -91,18 +93,20 @@ super + F7
 
 # Print Screen - OPTIONS pic screen image - ordinarry most common action
 Print
-    print_screen
-    #import ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+    ~/.local/bin/PrintScreenTools/print_screen
+
+#import ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
 
 super + Print
-    print_screen -window root
-    #import -window root ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+    ~/.local/bin/PrintScreenTools/print_screen -window root
+
+#import -window root ~/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
 
 super + shift + Print
-    screencast-dmenu
+    ~/.local/bin/DravOnScreen/draw_on_screen
 
 super + control + Print
-    draw_on_screen
+    ~/.local/bin/ScreenRecorder/screencast-dmenu
 
 # file manager
 super + alt + Return
@@ -113,6 +117,10 @@ super + alt + Return
 # make sxhkd reload its configuration files:
 #super + shift + r
 #    ~/.config/bspwm/bspwmrc
+
+# transform my keys to my needs
+super + control + alt + Return
+    xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
 
 # make sxhkd reload its configuration files:
 super + shift + s
@@ -128,6 +136,8 @@ XF86Sleep
 XF86Suspend
     systemctl suspend-then-hibernate
 
+control + XF86Suspend
+    sleep_dmenu
 # close and kill
 #super + q
 #    bspc node @brother -R -90 & bspc node --close

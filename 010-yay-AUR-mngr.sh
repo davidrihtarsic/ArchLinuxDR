@@ -10,6 +10,10 @@ echo "##########################################################################
 git clone https://aur.archlinux.org/yay.git ~/.local/build/yay
 cd ~/.local/build/yay && makepkg -si
 
+#instaliraj tudi rpm-tools za instalacijo rpm paketov
+# maprimer MS teams je na voljo za linux le v RPM paketu.
+# yay -S rpm-tools
+
 echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "    YAY AUR manager INSTALLED"

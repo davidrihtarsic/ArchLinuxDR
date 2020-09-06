@@ -3,13 +3,21 @@
 # PREFERED APPLICATIONS
 ############################################################
 export EDITOR='nvim'
-export BROWSER='firefox'
-export TERM='st'
+export BROWSER='brave'
+export TERM='alacritty'
 export GUI_EDITOR=''
 export FILEMANAGER='nemo'
-export IMG_VIEWER='feh'
+export IMG_VIEWER='sxiv'
 export MOV_PLAYRE='mpv'
 
+# Add all sub-directories in PATH
+add_sub_dir_in="$HOME/.local/bin"
+if [[ "$PATH" != *"$add_sub_dir_in"* ]]
+  then
+    add_to_path=$add_sub_dir_in
+    for d in $(ls -d $add_sub_dir_in**/*(/)); do add_to_path="$add_to_path:$d"; done
+    export PATH=$PATH:$add_to_path
+fi
 #*******************
 # ZSH settings
 #********************
@@ -62,7 +70,7 @@ alias f='~/.config/vifm/vifm_run.sh'
 alias g!='git add .;git commit -v -a;git push;'
 alias gs='git status'
 alias la='ls -A'
-alias ll='ls -ll --color'
+alias ll='ls -llh --color'
 alias ls='ls --color'
 alias less='less -R'
 alias mirror='reflector --number 10 --country Slovenia --country Finland --country Germany --country Italy --country Austria --verbose --sort rate'
@@ -70,6 +78,29 @@ alias q='exit'
 alias r='ranger'
 alias update='sudo pacman -Syu'
 alias weather='curl wttr.in/~begunje'
+
+#++++++++++++++++++++++++++++++++++++++
+# DIRRECTORY MAPPINGS
+#++++++++++++++++++++++++++++++++++++++
+alias gh='cd ~'
+alias gc='cd ~/.config'
+alias gl='cd ~/.local'
+alias gs='cd ~/.local/bin'
+alias gD='cd ~/Downloads'
+alias gP='cd ~/Pictures'
+alias gf='cd ~/Files'
+alias gd='cd ~/Files/Work/DRTI'
+alias gp='cd ~/Files/Work/Projekti'
+alias gu='cd ~/Files/Work/UL-PeF'
+alias gš='cd ~/Files/Work/UL-PeF/Študentje'
+alias ga='cd ~/Files/Work/UL-PeF/Articles'
+alias gv='cd ~/Files/Work/UL-PeF/Vaje'
+alias gw='cd ~/Files/GitHub_noSync/davidrihtarsic.github.io'
+alias gM='cd ~/Music'
+alias gm='cd /run/media/david'
+alias ge='cd /etc'
+alias go='cd /opt'
+alias gm='cd /mnt'
 
 #*******************
 # GIT
@@ -91,19 +122,19 @@ parse_git_branch() {
   ( git symbolic-ref -q HEAD || git name-rev --name-only --no-undefined --always HEAD ) 2> /dev/null
 }
 
-parse_git_state() {
+parse_git_state(){
   # Show different symbols as appropriate for various Git repository states
   # Compose this value via multiple conditional appends.
   local GIT_STATE=""
-  local NUM_AHEAD="$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d ' ')"
+  local NUM_AHEAD=$(git log --oneline @{u}.. 2> /dev/null | wc -l | tr -d ' ')
   if [ "$NUM_AHEAD" -gt 0 ]; then
     GIT_STATE=$GIT_STATE${GIT_PROMPT_AHEAD//NUM/$NUM_AHEAD}
   fi
-  local NUM_BEHIND="$(git log --oneline ..@{u} 2> /dev/null | wc -l | tr -d ' ')"
+  local NUM_BEHIND=$(git log --oneline ..@{u} 2> /dev/null | wc -l | tr -d ' ')
   if [ "$NUM_BEHIND" -gt 0 ]; then
     GIT_STATE=$GIT_STATE${GIT_PROMPT_BEHIND//NUM/$NUM_BEHIND}
   fi
-  local GIT_DIR="$(git rev-parse --git-dir 2> /dev/null)"
+  local GIT_DIR=$(git rev-parse --git-dir 2> /dev/null)
   if [ -n $GIT_DIR ] && test -r $GIT_DIR/MERGE_HEAD; then
     GIT_STATE=$GIT_STATE$GIT_PROMPT_MERGING
   fi

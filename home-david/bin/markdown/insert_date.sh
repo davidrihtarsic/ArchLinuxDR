@@ -1,2 +1,2 @@
 #!/bin/zsh
-echo `date +"%Y-%m-%d"`
+echo `date +"%Y_%m_%d"`

@@ -13,22 +13,29 @@ Plug 'ap/vim-css-color'                 "Colored Hexcodes :) #987654
 "Plug 'lifepillar/vim-mucomplete'
 "Plug 'davidhalter/jedi-vim'             "Python autocompletition
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"Plug 'ycm-core/YouCompleteMe'
 " FILE MANAGER ======================================================
-Plug 'scrooloose/nerdtree'              "File manager
-Plug 'Nopik/vim-nerdtree-direnter'      "dir open bug fix
+" Uporabljam coc-explorer
+"Plug 'scrooloose/nerdtree'              "File manager
+"Plug 'Nopik/vim-nerdtree-direnter'      "dir open bug fix
 Plug 'junegunn/fzf'
-" Plug 'rafaqz/ranger.vim'
+Plug 'kevinhwang91/rnvimr'
+"Plug 'rafaqz/ranger.vim'
 " Plug 'vifm/vifm.vim'
 " MARKDOWN PLUGINS ==================================================
 Plug 'plasticboy/vim-markdown'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'majutsushi/tagbar'                "Side menu of tags
+Plug 'sotte/presenting.vim'             "Presentation slides from markdown
+Plug 'junegunn/limelight.vim'           "Highlite only a paragraph
+Plug 'junegunn/goyo.vim'                "Center the text
 " OTHER UTILS =======================================================
 Plug 'tpope/vim-obsession'              "Save/Load Vim session with files
 Plug 'tpope/vim-fugitive'               "GIT plugin
 "Plug 'Shougo/unite.vim'                "TUI for others funtionalaties
 "Plug 'vimwiki/vimwiki'                 "vim WIKI - module for Wiki page
-
+" GAMES ===== =======================================================
+Plug 'johngrib/vim-game-snake'
 
 " List ends here. Plugins become visible to Vim after this call.
 call plug#end()
@@ -60,6 +67,8 @@ syntax enable
 "au ColorScheme myspecialcolors hi Normal ctermbg=red guibg=red
 set termguicolors
 set t_Co=256
+let g:gruvbox_italic=1
+let g:gruvbox_contrast_dark='hard'
 colorscheme gruvbox
 highlight bCursor guifg=white guibg=steelblue
 set guicursor=n-v-c:block-bCursor
@@ -73,6 +82,38 @@ set list listchars=tab:>>,trail:~
 let g:netrw_altv = 1
 let g:netrw_liststyle = 3
 let g:netrw_browse_split = 3
+"#####################################
+"    NeoVIM
+"#####################################
+let g:mapleader = "\<Space>"
+noremap <leader>s :source ~/.config/nvim/init.vim<CR>
+
+"--save open close ---
+inoremap <C-s> <ESC>:w<CR>
+nnoremap <C-s> :w<CR>
+nnoremap <C-q> :q<CR>
+
+"--save session ---
+"nnoremap <C-S> :mksession! ~/.config/nvim/david_session.sav<CR>
+
+" ------ commands ------
+command! D Explore
+command! R call <SID>ranger()
+command! Q call <SID>quitbuffer()
+command! -nargs=1 B :call <SID>bufferselect("<args>")
+command! W execute 'silent w !sudo tee % >/dev/null' | edit!
+
+" ------ basic maps ------
+" open ranger as a file chooser using the function below
+"nnoremap <leader>f :TabVifm<CR>
+"nerdtree- - - - - - - - - - -
+map <leader><CR> :CocCommand explorer<CR>
+"map <leader>w :NERDTreeToggle<CR>
+"nnoremap cd :cd %:p:h<CR>
+
+" match string to switch buffer
+" nnoremap <Leader>b :let b:buf = input('Match: ')<Bar>call <SID>bufferselect(b:buf)<CR>
+
 "#####################################
 "# PLUGIN SETTINGS                   #
 "#####################################
@@ -102,13 +143,31 @@ let g:netrw_browse_split = 3
 "set completeopt+=menuone
 "set completeopt+=noinsert
 "======================================================================
+"   YouCompleteMe
+"======================================================
+"...hm, nič mi ni bilo potrebno nastavit... vse je delalo iz prve...
+let g:ycm_semantic_triggers = {
+  \   'cpp': [ 're!.' ],
+  \   'ino': [ 're!.' ],
+  \   'c++': [ 're!.' ]
+  \ }
+let g:ycm_filetype_blacklist={'notes': 1, 'unite': 1, 'tagbar': 1, 'pandoc': 1, 'qf': 1, 'vimwiki': 1, 'text': 1, 'infolog': 1, 'mail': 1}
+let g:ycm_add_preview_to_completeopt = 0
+let g:ycm_autoclose_preview_window_after_completion = 0
+"======================================================================
 "   Conquer Of Completition - COC
 "======================================================================
-"coc-pair - run :CocInstall coc-pairs
+"EXTENSIONS
+"if you want to install an extension do:
+":CocInstall _extension_name
+"Installed extensions
+"  coc-pair :CocInstall coc-pairs
+"  coc-clangd
+"  coc-cmake
+"  coc-snippets
 "coc-python
 "coc-html
 "coc-dictionary
-"coc-snippets
 "
 set hidden                          " if hidden is not set, TextEdit might fail.
 set nobackup                        " Some servers have issues with backup files, see #649
@@ -143,7 +202,7 @@ nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
 autocmd CursorHold * silent call CocActionAsync('highlight')    " Highlight symbol under cursor on CursorHold
-nmap <leader>rn <Plug>(coc-rename)                              " Remap for rename current word
+nmap <leader>rn :call CocAction('rename')<CR>
 " Use K to show documentation in preview window
 " nnoremap <silent> K :call <SID>show_documentation()<CR>
 " function! s:show_documentation()
@@ -153,98 +212,72 @@ nmap <leader>rn <Plug>(coc-rename)                              " Remap for rena
     " call CocAction('doHover')
   " endif
 " endfunction
-"======================================================================
-"    FUZZY FILE SEARCH
-"======================================================================
-  "   - hitro iskanje filov
-let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o -type f -print -o -type l -print 2> /dev/null"
-  map ff :FZF<CR>
-  let g:fzf_action = {
-    \ 'enter': 'tab split',
-    \ 'ctrl-x': 'split',
-    \ 'ctrl-v': 'vsplit' }
-"======================================================================
-"    TAGBAR
-"======================================================================
-"   - dodatek za programiranje
-"   - v desnem oknu odpre spremenljivke in funkcije
-  nmap <F8> :TagbarToggle<CR>
-  nnoremap <leader>e :TagbarOpenAutoClose<CR>
-  let g:tagbar_autofocus = 1
-  let g:tagbar_show_linenumbers = 2
-"tagbar markdown language...................................
-" Add support for markdown files in tagbar.
-  let g:tagbar_type_markdown = {
-      \ 'ctagstype': 'markdown',
-      \ 'ctagsbin' : '/home/david/bin/markdown/markdown2ctags.py',
-      \ 'ctagsargs' : '-f - --sort=no --sro=»',
-      \ 'kinds' : [
-          \ 's:sections',
-          \ 'i:images'
-      \ ],
-      \ 'sro' : '»',
-      \ 'kind2scope' : {
-          \ 's' : 'section',
-      \ },
-      \ 'sort': 0,
-  \ }
-"======================================================================
-"    TABLEMODE
-"======================================================================
-  let g:table_mode_corner="|"
-  map <leader>tm :TableModeToggle<CR>
-"======================================================================
-"  ✅ SPELL CHECKING
-"======================================================================
-"SPELL CHECK
+"coc-snippets-------------------------------------
+  let g:coc_snippet_next = '<c-n>'
+  let g:coc_snippet_prev = '<c-p>'
+  "======================================================================
+  "    FUZZY FILE SEARCH
+  "======================================================================
+    "   - hitro iskanje filov
+  let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o -type f -print -o -type l -print 2> /dev/null"
+    map ff :FZF<CR>
+    let g:fzf_action = {
+      \ 'enter': 'tab split',
+      \ 'ctrl-x': 'split',
+      \ 'ctrl-v': 'vsplit' }
+  "======================================================================
+  "    TAGBAR
+  "======================================================================
+  "   - dodatek za programiranje
+  "   - v desnem oknu odpre spremenljivke in funkcije
+    nmap <F8> :TagbarToggle<CR>
+    nnoremap <leader>e :TagbarOpenAutoClose<CR>
+    let g:tagbar_autofocus = 1
+    let g:tagbar_show_linenumbers = 2
+  "tagbar markdown language...................................
+  " Add support for markdown files in tagbar.
+    let g:tagbar_type_markdown = {
+        \ 'ctagstype': 'markdown',
+        \ 'ctagsbin' : '/home/david/bin/markdown/markdown2ctags.py',
+        \ 'ctagsargs' : '-f - --sort=no --sro=»',
+        \ 'kinds' : [
+            \ 's:sections',
+            \ 'i:images'
+        \ ],
+        \ 'sro' : '»',
+        \ 'kind2scope' : {
+            \ 's' : 'section',
+        \ },
+        \ 'sort': 0,
+    \ }
+  "======================================================================
+  "    TABLEMODE
+  "======================================================================
+    let g:table_mode_corner="|"
+    map <leader>tm :TableModeToggle<CR>
+  "======================================================================
+  "  ✅ SPELL CHECKING
+  "======================================================================
+  "SPELL CHECK
 
-autocmd FileType markdown setlocal spell spelllang=sl
-  map <F18> :set spell spelllang=
-  map <C-F18> :set nospell<CR>
-"-- next spell error
-  nmap sn ]s
-  nmap sp [s
-"-- spell sugestions
-"  nmap ss z=
-" Find prewieous error and fix it like "I feel lucky"
-  nnoremap ss :normal! ms[s1z=`s<CR>
-
-"#####################################
-"    NeoVIM
-"#####################################
-let g:mapleader = "\<Space>"
-noremap <leader>s :source ~/.config/nvim/init.vim<CR>
-
-"--save open close ---
-inoremap <C-s> <ESC>:w<CR>
-nnoremap <C-s> :w<CR>
-nnoremap <C-q> :q<CR>
-
-"--save session ---
-"nnoremap <C-S> :mksession! ~/.config/nvim/david_session.sav<CR>
-
-" ------ commands ------
-command! D Explore
-command! R call <SID>ranger()
-command! Q call <SID>quitbuffer()
-command! -nargs=1 B :call <SID>bufferselect("<args>")
-command! W execute 'silent w !sudo tee % >/dev/null' | edit!
-
-" ------ basic maps ------
-" open ranger as a file chooser using the function below
-nnoremap <leader>f :TabVifm<CR>
-"nerdtree- - - - - - - - - - -
-map <leader>w :NERDTreeToggle<CR>
-nnoremap cd :cd %:p:h<CR>
-
-" match string to switch buffer
-" nnoremap <Leader>b :let b:buf = input('Match: ')<Bar>call <SID>bufferselect(b:buf)<CR>
+  autocmd FileType markdown setlocal spell spelllang=sl,en
+    map <F18> :set spell spelllang=
+    map <C-F18> :set nospell<CR>
+  "-- next spell error
+    nmap sn ]s
+    nmap sp [s
+  "-- spell sugestions
+  "  nmap ss z=
+  " Find prewieous error and fix it like "I feel lucky"
+    nnoremap ss :normal! ms[s1z=`s<CR>
 
 "#####################################
 "   NeoVIM
 "#####################################
 let g:nvimWiki="/home/david/Files/GitHub_noSync/davidrihtarsic.github.io/Linux/LinuxWiki"
+let g:homeWiki="/home/david/Files/Personal/HomeWiki/HomeWiki"
 nmap <leader>ww :execute "call OpenWikiPage('" . g:nvimWiki . "')"<CR>:lcd %:p:h<CR>
+nmap <leader>wh :execute "call OpenWikiPage('" . g:homeWiki . "')"<CR>:lcd %:p:h<CR>
 
 function! OpenWikiPage(link)
   if filereadable(a:link . ".md")
@@ -258,7 +291,32 @@ function! OpenWikiPage(link)
   endif
 endfunction
 
-nmap <CR> wbyw:tabnew<CR>:call OpenWikiPage('<C-r>"')<CR>
+"nmap <CR> wbyw:tabnew<CR>:call OpenWikiPage('<C-r>"')<CR>
+function! OpenFile()
+  let file_name=expand("<cfile>")
+  let ext=expand("<cfile>:e")
+  if ext == "pdf"
+    execute ":silent !(zathura " . file_name ." &)"
+  elseif ext=="png"||ext=="gif"||ext=="jpg"||ext=="svg"
+    execute ":!sxiv " . file_name ." &)"
+  elseif ext=="html"||ext=="htm"||ext=="com"
+    execute ":!$BROWSER" . file_name ." &)"
+  else
+    execute ":tabnew " . file_name
+  endif
+endfunction
+
+function! Test()
+  let a = "b"
+  if a=="a" || a=="b"
+    echo "true"
+  else
+    echo "false"
+  endif
+endfunction
+
+nnoremap gf :execute "call OpenFile()"<CR>
+nmap <CR> :wincmd gf<CR>
 nmap <BS> :bprev<CR>
 nmap <leader>wn wbyw:tabnew<CR>:w <C-r>".md<CR>
 
@@ -326,9 +384,22 @@ nnoremap <Bar> <C-W>v<C-W><Right>
 nnoremap <C-H> :vertical resize -10<CR>
 nnoremap <C-L> :vertical resize +10<CR>
 "======================================================================
+"  Presentation of MARKDOWN documents
+"======================================================================
+" Raje uporabljam:
+"   + Limelight in
+"   + Goyo
+"Osvetljevanje od poglavja do poglavja #Poglavje1 -> Pogla2
+let g:limelight_bop = '^#\zs'
+let g:limelight_eop = '\n^#\ze'
+let g:limelight_default_coefficient = 0.8
+nmap <F5> :Goyo <bar> Limelight!!<CR>
+nmap gn : /^#<CR>zt
+"======================================================================
 "    MARKDOWN in EDITOR TEXTING BEHAVIOUR
 "======================================================================
 autocmd Filetype markdown,rmd nnoremap xxxyypVr-
+autocmd Filetype markdown,rmd TableModeEnable
 map ,n gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
 map ,w :r !	~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
 map ,h 0/<hh:mm><CR>"_c7l<CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJ
@@ -371,20 +442,20 @@ autocmd Filetype markdown,rmd inoremap $$ $$<++><ESC>F$i
 "----------------------------------------------------------------------
 "  🔖 VSTAVLJANJE REFERENC = CITIRANJE
 "----------------------------------------------------------------------
-inoremap ,x [@]<ESC>:r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_bibtex_author.sh<CR>v$xkf@pJxli
+inoremap ,x [@]<ESC>:r ! ~/bin/markdown/insert_bibtex_author.sh<CR>v$xkf@pJxli
 inoremap ,f [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_figure.sh "%:p"<CR>v$xkf@pJxli
 inoremap ,e [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh "%:p"<CR>v$xkf@pJxli
 inoremap ,t [@]<ESC>:r !~/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/markdown/insert_reference_table.sh "%:p"<CR>v$xkf@pJA
 
-autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split %:p:h/bibtex.bib<CR><CR>
+autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib<CR><CR>
 "----------------------------------------------------------------------
 "   PDF CREATE
 "----------------------------------------------------------------------
 " pandoc --from markdown --template skripta --listings --pdf-engine=xelatex test.md -o index.pdf
 
 "autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && panzer %:p:t --to latex -o %:p:r.pdf --from markdown --template skripta --listings -V lang=sl -V listings-no-page-break=true --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -M listings -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=bibtex.bib -V table-use-row-colors --number-sections -V documentclass=book -V book --toc -M author:"dr. David Rihtaršič" -M date:"$(date '+\%B \%Y')" -M titlepage -M title:"%:t:r" --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc2notebook "%:p:t" 2> %:p:h/pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
 "noremap <C-p> :!zathura %:p:r.pdf <c-r> && disown <CR><CR>
 autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>
