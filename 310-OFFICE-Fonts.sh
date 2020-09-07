@@ -44,13 +44,14 @@ trizen -S --noconfirm --needed nerd-fonts-dejavu-complete
 
 # trizen -S --noconfirm --needed noto-fonts-emoji noto-fonts-emoji-blob noto-fonts-emoji-lollipop noto-fonts-emoji-marshmallow
 sudo pacman -S ttf-joypixels
-trizen -S ttf-twemoji-color
-trizen -S ttf-symbola
+yay -S ttf-twemoji-color
+yay -S ttf-symbola
 sudo pacman -S noto-fonts-emoji
 
 # za terminalni addon spaceship potrebuješ fonte:
-# yay -S powerline-fonts
-# sem instarillal pa ni pomagalo, da bi nvim lepo izpisoval statusno vrstico
+yay -S powerline-fonts
+# in nato v .vimrc moraš prilepiti:
+# let g:airline_powerline_fonts = 1
 
 echo "################################################################################"
 echo "   SYMBOLS & ICONS Font Installed"

@@ -75,6 +75,16 @@ set guicursor=n-v-c:block-bCursor
 "set guicursor+=i:ver100-iCursor
 "set guicursor+=n-v-c:blinkon0
 "set guicursor+=i:blinkwait10
+"#####################################
+"    AirLine
+"#####################################
+let g:airline_powerline_fonts = 1
+
+if !exists('g:airline_symbols')
+    let g:airline_symbols = {}
+endif
+
+
 
 set linebreak breakindent
 set list listchars=tab:>>,trail:~

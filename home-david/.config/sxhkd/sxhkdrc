@@ -31,7 +31,8 @@ super + {c, C}
 
 # program launcher
 super + e
-    st -e nvim -S ~/.config/nvim/david_session.sav
+    alacritty -e nvim -S ~/.config/nvim/david_session.sav
+    #st -e nvim -S ~/.config/nvim/david_session.sav
     #terminator -x nvim -S ~/.config/nvim/david_session.sav
     #uxterm -e "nvim -S ~/.config/nvim/david_session.sav"
 
