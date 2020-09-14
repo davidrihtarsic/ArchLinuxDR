@@ -27,14 +27,14 @@ Plug 'plasticboy/vim-markdown'
 Plug 'dhruvasagar/vim-table-mode'
 Plug 'majutsushi/tagbar'                "Side menu of tags
 Plug 'sotte/presenting.vim'             "Presentation slides from markdown
-Plug 'junegunn/limelight.vim'           "Highlite only a paragraph
-Plug 'junegunn/goyo.vim'                "Center the text
+Plug 'junegunn/limelight.vim'           "Highlite only the paragraph,prezentacija
+Plug 'junegunn/goyo.vim'                "Center the text [ = ]      ,prezentacija
 " OTHER UTILS =======================================================
 Plug 'tpope/vim-obsession'              "Save/Load Vim session with files
 Plug 'tpope/vim-fugitive'               "GIT plugin
 "Plug 'Shougo/unite.vim'                "TUI for others funtionalaties
 "Plug 'vimwiki/vimwiki'                 "vim WIKI - module for Wiki page
-" GAMES ===== =======================================================
+" GAMES =============================================================
 Plug 'johngrib/vim-game-snake'
 
 " List ends here. Plugins become visible to Vim after this call.
@@ -75,15 +75,15 @@ set guicursor=n-v-c:block-bCursor
 "set guicursor+=i:ver100-iCursor
 "set guicursor+=n-v-c:blinkon0
 "set guicursor+=i:blinkwait10
+
 "#####################################
-"    AirLine
+"  ⎁  AirLine
 "#####################################
 let g:airline_powerline_fonts = 1
 
 if !exists('g:airline_symbols')
     let g:airline_symbols = {}
 endif
-
 
 
 set linebreak breakindent
@@ -462,12 +462,9 @@ autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-
 "   PDF CREATE
 "----------------------------------------------------------------------
 " pandoc --from markdown --template skripta --listings --pdf-engine=xelatex test.md -o index.pdf
-
-"autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && panzer %:p:t --to latex -o %:p:r.pdf --from markdown --template skripta --listings -V lang=sl -V listings-no-page-break=true --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc2notebook "%:p:t" 2> %:p:h/pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
-"noremap <C-p> :!zathura %:p:r.pdf <c-r> && disown <CR><CR>
 autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>
 autocmd BufRead markdown,*.md normal zR
 " ------ enable additional features ------

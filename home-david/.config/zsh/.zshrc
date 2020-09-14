@@ -78,7 +78,6 @@ alias q='exit'
 alias r='ranger'
 alias update='sudo pacman -Syu'
 alias weather='curl wttr.in/~begunje'
-
 #++++++++++++++++++++++++++++++++++++++
 # DIRRECTORY MAPPINGS
 #++++++++++++++++++++++++++++++++++++++

@@ -138,7 +138,7 @@ XF86Suspend
     systemctl suspend-then-hibernate
 
 control + XF86Suspend
-    sleep_dmenu
+    $HOME/.local/bin/SleepProcessControll/sleep_dmenu
 # close and kill
 #super + q
 #    bspc node @brother -R -90 & bspc node --close

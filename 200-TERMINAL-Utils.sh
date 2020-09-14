@@ -20,6 +20,8 @@ sudo pacman -S --noconfirm --needed calcurse
 trizen -S --noconfirm --needed python-pywal
 
 sudo pacman -S --noconfirm --needed zip unzip
+# primeri kako uporabljati razne ukaze zip, tar, convet, ffmpeg ...
+sudo pacman -S --noconfirm --needed tldr
 echo -e '\e[34m' #zelena
 echo "################################################################################"
 echo "   ALL Utils INSTALLED"
