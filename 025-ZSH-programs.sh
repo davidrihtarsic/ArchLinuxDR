@@ -12,6 +12,8 @@ sudo pacman -S --noconfirm --needed xclip
 trizen -S --noconfirm --needed ranger-git
 [ ! -d "$HOME/.deleted_files" ] && mkdir ~/.deleted_files
 
+yay -S --noconfirm --needed dragon-drag-and-drop #terminal drag-and-drop
+
 sudo pacman -S --noconfirm --needed neovim
 curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
 
