@@ -28,7 +28,9 @@ fi
 #xmodmap -e "keycode 35 = slash"
 # xmodmap /home/david/.Xmodmap
 # launch the session, commands below this line will be ignored
-/home/david/bin/system/dwm-status-dwd.sh &
+/home/david/.local/bin/dmwStatusBar/dwmStatusBar &
+# /home/david/bin/system/dwm-status-dwd.sh &
+# slstatus &
 xautolock \
   -time 7 \
   -locker "systemctl suspend-then-hibernate" \

@@ -1,0 +1,32 @@
+#! /bin/sh
+# Skriipt naredi skripto z:
+#    - naslovnico
+#    - avtorjem...
+
+FILENAME=$(basename $1 .md)
+TITLE=$(echo ${FILENAME^^} | sed 's/_/ /g')
+#echo $FILENAME
+#echo ".md"
+#echo $TITLE
+
+pandoc  $1 --to latex -o $FILENAME.pdf --from markdown \
+  --template skripta \
+  -V lang=sl \
+  -M listings \
+  -F pandoc-crossref \
+  -F pandoc-citeproc \
+  -V caption-justification=centering \
+  --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib \
+  -V table-use-row-colors \
+  -V urlcolor=violet \
+  --number-sections \
+  -V documentclass=book \
+  -V book \
+  --toc \
+  -M author:"dr. David Rihtaršič" \
+  -M date:"$(date '+%Y-%B')" \
+  -M titlepage \
+  -M title:"$TITLE" \
+  --pdf-engine=pdflatex
+
+

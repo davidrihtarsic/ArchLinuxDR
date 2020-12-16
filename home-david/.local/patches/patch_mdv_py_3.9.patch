@@ -1,0 +1,28 @@
+348a349,350
+>     import html as html_par #DWD
+> 
+970c972,973
+<                     t = html_parser.unescape(t)
+---
+>                     #t = html_parser.unescape(t)
+>                     t = html_par.unescape(t)
+1062c1065,1066
+<                     childs = el.getchildren()
+---
+>                     #childs = el.getchildren()#DWD
+>                     childs = el
+1092c1096,1097
+<                     for Row in el[he_bo].getchildren():
+---
+>                     #for Row in el[he_bo].getchildren():#DWD
+>                     for Row in el[he_bo]:
+1095c1100,1101
+<                         for cell in Row.getchildren():
+---
+>                         #for cell in Row.getchildren():#DWD
+>                         for cell in Row:
+1393c1399,1400
+<         raw = html_parser.unescape(ph[0])
+---
+>         #raw = html_parser.unescape(ph[0])#DWD
+>         raw = html_par.unescape(ph[0])

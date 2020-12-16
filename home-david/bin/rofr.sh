@@ -34,7 +34,8 @@ while getopts ":hvqwcbrl" opt; do
         r)
             rofi -modi window,run,drun -show drun -line-padding 4 \
                 -columns 2 -padding 50 -hide-scrollbar \
-                -show-icons -drun-icon-theme "ArchLabs-Light"
+                -show-icons -theme-str 'element-icon { size: 1.2ch;}' \
+                -drun-icon-theme "ArchLabs-Light"
             ;;
         w)
             rofi -modi window -show window -hide-scrollbar \

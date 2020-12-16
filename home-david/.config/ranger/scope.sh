@@ -84,8 +84,8 @@ handle_extension() {
             exit 1
             ;;
         md)
-            mdv -A -n 1-3 "${FILE_PATH}" && exit 5
             mdv -t 960.847 -n 1-3 "${FILE_PATH}" && exit 5
+            mdv -A -n 1-3 "${FILE_PATH}" && exit 5
             cat "${FILE_PATH}" && exit 5
             exit 2
             ;;
@@ -93,6 +93,9 @@ handle_extension() {
             cat "${FILE_PATH}" && exit 5
             exit 1
             ;;
+        csv|CSV)
+          column -s, -t < "${FILE_PATH}" && exit 5
+          exit 1
     esac
 }
 

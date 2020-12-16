@@ -1,0 +1,6 @@
+#! /bin/sh
+
+vreme_padavine
+vreme_radar
+vreme_vertikalna_sondaza
+curl wttr.in/~begunje

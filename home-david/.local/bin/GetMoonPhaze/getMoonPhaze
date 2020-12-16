@@ -1,0 +1,4 @@
+#! /bin/sh
+# Get data about the moon phases
+
+curl wttr.in/Moon

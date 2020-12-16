@@ -1,0 +1,54 @@
+#! /bin/zsh
+
+DIR="$HOME/.local/bin/Tektronix_TDS1002B/settings"
+echo "Loading Oscilloscope Settings from:"
+echo $DIR
+
+echo -n "Generating time line data with dT steps of "
+# Time axies - X
+echo -n "" > $DIR/../data/data_x.csv
+D_TIME=$(sed 's/E/\*10\*\*/' $DIR/HOR_SCALE)
+for x in {0..2499}
+  do echo "$(( x*D_TIME/250 ))" >> $DIR/../data/data_x.csv
+  done
+echo $D_TIME "seconds ... done."
+
+echo -n "Getting accuired waweforms ..."
+SRCs_SEL=$(echo "SEL?" > /dev/usbtmc1 && head -1 /dev/usbtmc1)
+CH1_SEL=$(echo $SRCs_SEL|grep '^1;.;.;.*')
+CH2_SEL=$(echo $SRCs_SEL|grep '^.;1;.;.*')
+MAT_SEL=$(echo $SRCs_SEL|grep '^.;.;1;.*')
+CH_lst=""
+[[  -n $CH1_SEL ]] && CH_lst+="CH1"
+[[  -n $CH2_SEL ]] && CH_lst+=" CH2"
+echo "found $CH_lst. Done."
+
+echo -n"" > $DIR/../data/data_CH1.csv
+echo -n"" > $DIR/../data/voltage_CH1.csv
+echo -n"" > $DIR/../data/data_CH2.csv
+echo -n"" > $DIR/../data/voltage_CH2.csv
+
+tek_getSettings $CH_lst
+for CH_X in $(echo $CH_lst); do
+    echo "Prepare setting for $CH_X."
+    echo "DATa:SOURCe $CH_X" > /dev/usbtmc1
+    echo "DATa:ENCdg ASCII" > /dev/usbtmc1
+    echo "DATa:WIDth 1" > /dev/usbtmc1
+    echo "DATa:STARt 1" > /dev/usbtmc1
+    echo "DATa:STOP 2500" > /dev/usbtmc1
+    
+    echo -n "Accuireing data for $CH_X ..."
+    yDATA=$(echo "CURVe?" > /dev/usbtmc1 && head -1 /dev/usbtmc1)
+    echo " done."
+    
+    echo -n "Transforming raw data to voltages ..."
+    echo $yDATA | sed 's/,/\n/g' > $DIR/../data/data_$CH_X.csv
+    DIV=$(sed 's/E/\*10\*\*/' $DIR/$CH_X-VOLTS)
+    POS=$(sed 's/E/\*10\*\*/' $DIR/$CH_X-POSITION)
+    N=$(( DIV*POS*-1 ))
+    awk '{print $1/25*'$DIV'+'$N'}' $DIR/../data/data_$CH_X.csv > $DIR/../data/voltage_$CH_X.csv
+    echo "done."
+  done
+echo -n "Gathering data ..."
+paste -d ',' $DIR/../data/data_x.csv $DIR/../data/voltage_CH1.csv $DIR/../data/voltage_CH2.csv > $DIR/../data/data_xy.csv
+echo "done."

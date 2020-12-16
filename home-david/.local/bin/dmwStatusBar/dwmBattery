@@ -1,0 +1,16 @@
+#!/bin/zsh
+
+bat_chg(){
+    bat_per=$(grep ACITY= /sys/class/power_supply/BAT0/uevent | sed 's/^[A-Z_]*=//')
+    echo "  $bat_per%" 
+}
+
+bat_dis(){
+    bat_eng=$(grep ENERGY_NOW /sys/class/power_supply/BAT0/uevent | sed 's/^[A-Z_]*=//')
+    bat_pwr=$(grep POWER_NOW /sys/class/power_supply/BAT0/uevent | sed 's/^[A-Z_]*=//')
+    time_lft=`printf "%.1fh" $((1.0*bat_eng/bat_pwr))`
+    echo "  $time_lft"
+}
+
+bat_sts=$(grep STATUS /sys/class/power_supply/BAT0/uevent | sed 's/^[A-Z_]*=//')
+[[ $bat_sts == Discharging ]] && bat_dis || bat_chg

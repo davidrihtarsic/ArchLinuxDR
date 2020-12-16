@@ -1,0 +1,16 @@
+#! /bin/zsh
+# Give me a sleep menu to have controll on sleeping behavior.
+
+DMENU_TEXT="Pause
+Resume"
+
+XAL_PID=$(ps -e | grep xautolock | awk '{print $1}')
+XAL_STAT=$(ps -u | grep "\ $XAL_PID\ " | awk '{print $8}' | sed 's/T//;s/S//')
+CHOICE=$(echo $DMENU_TEXT | dmenu -l 10 -p "$XAL_STAT xautolock:")
+
+case $CHOICE in
+  "Pause")
+      kill -STOP $XAL_PID;;
+  "Resume")
+      kill -CONT $XAL_PID;;
+esac

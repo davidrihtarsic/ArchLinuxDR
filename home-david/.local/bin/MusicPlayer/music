@@ -1,0 +1,11 @@
+#! /bin/sh
+
+CMUS_IS_PLAYIG=$(ps -u | grep cmus | grep -v grep)
+
+#echo "CMUS_IS_PLAYIG=$CMUS_IS_PLAYIG"
+if [ -n "$CMUS_IS_PLAYIG" ]
+  then
+    cmus-remote --pause
+  else
+    xterm -class "floating" -geometry 55x10+3335+20 -e cmus
+fi

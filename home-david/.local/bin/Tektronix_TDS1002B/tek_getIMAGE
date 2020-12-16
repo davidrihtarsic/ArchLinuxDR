@@ -1,0 +1,6 @@
+#! /bin/zsh
+
+tek_getData
+tek_plotData
+
+

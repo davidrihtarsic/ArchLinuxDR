@@ -1,0 +1,1205 @@
+diff -ruN /home/david/Downloads/Marlin-2.0.x/Marlin/Configuration_adv.h ./Marlin-2.0.x/Marlin/Configuration_adv.h
+--- /home/david/Downloads/Marlin-2.0.x/Marlin/Configuration_adv.h	2020-12-10 22:08:41.673815263 +0100
++++ ./Marlin-2.0.x/Marlin/Configuration_adv.h	2020-12-11 23:44:26.389764832 +0100
+@@ -1192,7 +1192,7 @@
+ 
+   // Reverse SD sort to show "more recent" files first, according to the card's FAT.
+   // Since the FAT gets out of order with usage, SDCARD_SORT_ALPHA is recommended.
+-  #define SDCARD_RATHERRECENTFIRST
++  //#define SDCARD_RATHERRECENTFIRST
+ 
+   #define SD_MENU_CONFIRM_START             // Confirm the selected SD file before printing
+ 
+@@ -1256,8 +1256,17 @@
+    *  - SDSORT_CACHE_NAMES will retain the sorted file listing in RAM. (Expensive!)
+    *  - SDSORT_DYNAMIC_RAM only uses RAM when the SD menu is visible. (Use with caution!)
+    */
+-  #define SDCARD_SORT_ALPHA
+-
++  
++  /* DWDchg: SDCARD_SORT_ALPHA
++   * =========================
++   * To sem zakomentiral, ker mi ni ok da je po abecedi...
++   * Sem pa izbrisal vse dirrektroije ne SD, ker sem nekje prebral,
++   * da se ti dve stvari izključujeta.
++   * !! POPRAVEK !!
++   * moral sem dati nazaj, ker so se izbrali drugi fili!!!!!
++  */
++  #define SDCARD_SORT_ALPHA        
++  
+   // SD Card Sorting options
+   #if ENABLED(SDCARD_SORT_ALPHA)
+     #define SDSORT_LIMIT       40     // Maximum number of sorted items (10-256). Costs 27 bytes each.
+Binary files /home/david/Downloads/Marlin-2.0.x/Marlin/DWIN_SET/0_start.jpg and ./Marlin-2.0.x/Marlin/DWIN_SET/0_start.jpg differ
+Binary files /home/david/Downloads/Marlin-2.0.x/Marlin/DWIN_SET/1_English.jpg and ./Marlin-2.0.x/Marlin/DWIN_SET/1_English.jpg differ
+Binary files /home/david/Downloads/Marlin-2.0.x/Marlin/DWIN_SET/2_Chinese.jpg and ./Marlin-2.0.x/Marlin/DWIN_SET/2_Chinese.jpg differ
+Binary files /home/david/Downloads/Marlin-2.0.x/Marlin/DWIN_SET/9.ICO and ./Marlin-2.0.x/Marlin/DWIN_SET/9.ICO differ
+Binary files /home/david/Downloads/Marlin-2.0.x/Marlin/DWIN_SET/T5UIC1.CFG and ./Marlin-2.0.x/Marlin/DWIN_SET/T5UIC1.CFG differ
+Binary files /home/david/Downloads/Marlin-2.0.x/Marlin/DWIN_SET/T5UIC1_V20_4页面_191022.BIN and ./Marlin-2.0.x/Marlin/DWIN_SET/T5UIC1_V20_4页面_191022.BIN differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/Marlin/README.md ./Marlin-2.0.x/Marlin/README.md
+--- /home/david/Downloads/Marlin-2.0.x/Marlin/README.md	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/Marlin/README.md	2020-12-10 22:08:41.680482077 +0100
+@@ -0,0 +1,17 @@
++# Ender 3 V2
++
++## Flashing Firmware
++
++The bootloader which handles flashing new firmware on this board remembers the last filename you used.
++
++Therefore, to flash the compiled firmware binary onto the board you must give the "`firmware.bin`" file on the SD card a unique name, different from the name of the previous firmware file, or you will be greeted with a blank screen on the next boot.
++
++# Updating the Display
++
++To update the graphics and icons on the display:
++
++- Copy the `DWIN_SET` folder to an SD card and insert the card into the slot on the back of the display unit.
++- Power on the machine and wait for the screen to change from blue to orange.
++- Power off the machine.
++- Remove the SD card from the back of the display.
++- Power on to confirm a successful flash.
+diff -ruN /home/david/Downloads/Marlin-2.0.x/Marlin/README.md_ ./Marlin-2.0.x/Marlin/README.md_
+--- /home/david/Downloads/Marlin-2.0.x/Marlin/README.md_	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/Marlin/README.md_	2020-12-10 22:08:41.680482077 +0100
+@@ -0,0 +1,17 @@
++# Ender 3 V2
++
++## Flashing Firmware
++
++The bootloader which handles flashing new firmware on this board remembers the last filename you used.
++
++Therefore, to flash the compiled firmware binary onto the board you must give the "`firmware.bin`" file on the SD card a unique name, different from the name of the previous firmware file, or you will be greeted with a blank screen on the next boot.
++
++# Updating the Display
++
++To update the graphics and icons on the display:
++
++- Copy the `DWIN_SET` folder to an SD card and insert the card into the slot on the back of the display unit.
++- Power on the machine and wait for the screen to change from blue to orange.
++- Power off the machine.
++- Remove the SD card from the back of the display.
++- Power on to confirm a successful flash.
+diff -ruN /home/david/Downloads/Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.cpp ./Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.cpp
+--- /home/david/Downloads/Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.cpp	2020-12-05 06:59:39.000000000 +0100
++++ ./Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.cpp	2020-12-13 18:43:01.893755554 +0100
+@@ -100,7 +100,8 @@
+ #define USE_STRING_HEADINGS
+ 
+ #define DWIN_FONT_MENU font8x16
+-#define DWIN_FONT_STAT font10x20
++//#define DWIN_FONT_STAT font10x20
++#define DWIN_FONT_STAT font8x16
+ #define DWIN_FONT_HEAD font10x20
+ 
+ #define MENU_CHAR_LIMIT  24
+@@ -143,7 +144,12 @@
+                    TITLE_HEIGHT = 30,                   // Title bar height
+                    MLINE = 53,                          // Menu line height
+                    LBLX = 60,                           // Menu item label X
+-                   MENU_CHR_W = 8, STAT_CHR_W = 10;
++                   MENU_CHR_W = 8, STAT_CHR_W = 8,
++                   STAT_X_HOTEND_TMP = 33, STAT_Y_HOTEND_TMP = 382,
++                   STAT_X_HOTEND_TRG = 33 + 4*STAT_CHR_W, STAT_Y_HOTEND_TRG = 382,
++                   STAT_X_BED_TMP = 178, STAT_Y_BED_TMP = 382,
++                   STAT_X_BED_TRG = 178 + 3*STAT_CHR_W, STAT_Y_BED_TRG = 382;
++
+ 
+ #define MBASE(L) (49 + MLINE * (L))
+ 
+@@ -242,7 +248,7 @@
+ void ICON_Print() {
+   if (select_page.now == 0) {
+     DWIN_ICON_Show(ICON, ICON_Print_1, 17, 130);
+-    DWIN_Draw_Rectangle(0, Color_White, 17, 130, 126, 229);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 17, 130, 126, 229);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 1, 447, 28, 460, 58, 201);
+     else
+@@ -260,7 +266,7 @@
+ void ICON_Prepare() {
+   if (select_page.now == 1) {
+     DWIN_ICON_Show(ICON, ICON_Prepare_1, 145, 130);
+-    DWIN_Draw_Rectangle(0, Color_White, 145, 130, 254, 229);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 145, 130, 254, 229);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 31, 447, 58, 460, 186, 201);
+     else
+@@ -278,7 +284,7 @@
+ void ICON_Control() {
+   if (select_page.now == 2) {
+     DWIN_ICON_Show(ICON, ICON_Control_1, 17, 246);
+-    DWIN_Draw_Rectangle(0, Color_White, 17, 246, 126, 345);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 17, 246, 126, 345);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 61, 447, 88, 460, 58, 318);
+     else
+@@ -296,7 +302,7 @@
+ void ICON_StartInfo(bool show) {
+   if (show) {
+     DWIN_ICON_Show(ICON, ICON_Info_1, 145, 246);
+-    DWIN_Draw_Rectangle(0, Color_White, 145, 246, 254, 345);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 145, 246, 254, 345);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 91, 447, 118, 460, 186, 318);
+     else
+@@ -314,7 +320,7 @@
+ void ICON_Leveling(bool show) {
+   if (show) {
+     DWIN_ICON_Show(ICON, ICON_Leveling_1, 145, 246);
+-    DWIN_Draw_Rectangle(0, Color_White, 145, 246, 254, 345);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 145, 246, 254, 345);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 211, 447, 238, 460, 186, 318);
+     else
+@@ -332,7 +338,7 @@
+ void ICON_Tune() {
+   if (select_print.now == 0) {
+     DWIN_ICON_Show(ICON, ICON_Setup_1, 8, 252);
+-    DWIN_Draw_Rectangle(0, Color_White, 8, 252, 87, 351);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 8, 252, 87, 351);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 121, 447, 148, 458, 34, 325);
+     else
+@@ -350,7 +356,7 @@
+ void ICON_Pause() {
+   if (select_print.now == 1) {
+     DWIN_ICON_Show(ICON, ICON_Pause_1, 96, 252);
+-    DWIN_Draw_Rectangle(0, Color_White, 96, 252, 175, 351);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 96, 252, 175, 351);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 181, 447, 208, 459, 124, 325);
+     else
+@@ -368,7 +374,7 @@
+ void ICON_Continue() {
+   if (select_print.now == 1) {
+     DWIN_ICON_Show(ICON, ICON_Continue_1, 96, 252);
+-    DWIN_Draw_Rectangle(0, Color_White, 96, 252, 175, 351);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 96, 252, 175, 351);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 1, 447, 28, 460, 124, 325);
+     else
+@@ -386,7 +392,7 @@
+ void ICON_Stop() {
+   if (select_print.now == 2) {
+     DWIN_ICON_Show(ICON, ICON_Stop_1, 184, 252);
+-    DWIN_Draw_Rectangle(0, Color_White, 184, 252, 263, 351);
++    DWIN_Draw_Rectangle(0, Icon_Frame, 184, 252, 263, 351);
+     if (HMI_IsChinese())
+       DWIN_Frame_AreaCopy(1, 151, 447, 178, 459, 210, 325);
+     else
+@@ -437,11 +443,25 @@
+ 
+ inline void Draw_Menu_Cursor(const uint8_t line) {
+   // DWIN_ICON_Show(ICON,ICON_Rectangle, 0, MBASE(line) - 18);
+-  DWIN_Draw_Rectangle(1, Rectangle_Color, 0, MBASE(line) - 18, 14, MBASE(line + 1) - 20);
++  //DWIN_Draw_Rectangle(1, Rectangle_Color, 0, MBASE(line) - 18, 14, MBASE(line + 1) - 20);
++
++  /* DWDchg: CURSOR SHAPE IS FRAME
++     =============================
++     V SubMenu-jih je bil kurzoz prikazan kot okvirček na levi strani, 
++     sedah je okvirček čez celotno besedilo v sub-menuju.
++     Tako je bolj sistematično z Main Menu-jem. 
++  */
++  DWIN_Draw_Rectangle(0, Rectangle_Color, 10, MBASE(line) - 10 , 262, MBASE(line) + 25);
+ }
+ 
+ inline void Erase_Menu_Cursor(const uint8_t line) {
+-  DWIN_Draw_Rectangle(1, Color_Bg_Black, 0, MBASE(line) - 18, 14, MBASE(line + 1) - 20);
++  //DWIN_Draw_Rectangle(1, Color_Bg_Black, 0, MBASE(line) - 18, 14, MBASE(line + 1) - 20);
++  
++  /* DWDchg: CURSOR SHAPE IS FRAME
++     =============================
++     Da zbrišemo okvirček kurzprja.
++  */
++  DWIN_Draw_Rectangle(0, Color_Bg_Black, 10, MBASE(line) - 10 , 262, MBASE(line) + 25);
+ }
+ 
+ inline void Move_Highlight(const int16_t from, const uint16_t newline) {
+@@ -1595,21 +1615,21 @@
+   /* Bottom temperature update */
+   #if HAS_HOTEND
+     if (last_temp_hotend_current != thermalManager.temp_hotend[0].celsius) {
+-      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 33, 382, thermalManager.temp_hotend[0].celsius);
++      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, STAT_X_HOTEND_TMP, STAT_Y_HOTEND_TMP, thermalManager.temp_hotend[0].celsius);
+       last_temp_hotend_current = thermalManager.temp_hotend[0].celsius;
+     }
+     if (last_temp_hotend_target != thermalManager.temp_hotend[0].target) {
+-      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 33 + 4 * STAT_CHR_W + 6, 382, thermalManager.temp_hotend[0].target);
++      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, STAT_X_HOTEND_TRG, STAT_Y_HOTEND_TRG, thermalManager.temp_hotend[0].target);
+       last_temp_hotend_target = thermalManager.temp_hotend[0].target;
+     }
+   #endif
+   #if HAS_HEATED_BED
+     if (last_temp_bed_current != thermalManager.temp_bed.celsius) {
+-      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 178, 382, thermalManager.temp_bed.celsius);
++      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, STAT_X_BED_TMP, STAT_Y_BED_TMP, thermalManager.temp_bed.celsius);
+       last_temp_bed_current = thermalManager.temp_bed.celsius;
+     }
+     if (last_temp_bed_target != thermalManager.temp_bed.target) {
+-      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 178 + 4 * STAT_CHR_W + 6, 382, thermalManager.temp_bed.target);
++      DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, STAT_X_BED_TRG, STAT_Y_BED_TRG, thermalManager.temp_bed.target);
+       last_temp_bed_target = thermalManager.temp_bed.target;
+     }
+   #endif
+@@ -1703,7 +1723,7 @@
+     Draw_Menu_Line(row, ICON_Folder, "..");
+     return;
+   }
+-
++  
+   card.getfilename_sorted(item - is_subdir);
+   char * const name = card.longest_filename();
+ 
+@@ -1823,9 +1843,12 @@
+   //
+   #if HAS_HOTEND
+     DWIN_ICON_Show(ICON, ICON_HotendTemp, 13, 381);
+-    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 33, 382, thermalManager.temp_hotend[0].celsius);
+-    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 33 + 3 * STAT_CHR_W + 5, 383, F("/"));
+-    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 33 + 4 * STAT_CHR_W + 6, 382, thermalManager.temp_hotend[0].target);
++    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, STAT_X_HOTEND_TMP, STAT_Y_HOTEND_TMP, thermalManager.temp_hotend[0].celsius);
++    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_SkyBlue, Color_Bg_Black, STAT_X_HOTEND_TMP + 3*STAT_CHR_W, STAT_Y_HOTEND_TMP, F("["));
++    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, STAT_X_HOTEND_TRG, STAT_Y_HOTEND_TRG, thermalManager.temp_hotend[0].target);
++    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_SkyBlue, Color_Bg_Black, STAT_X_HOTEND_TRG + 3*STAT_CHR_W, STAT_Y_HOTEND_TRG, F("]"));
++    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, STAT_X_HOTEND_TRG + 5*STAT_CHR_W, STAT_Y_HOTEND_TRG, F("C"));
++    DWIN_Draw_Rectangle(0, Color_White, STAT_X_HOTEND_TRG + 4.5*STAT_CHR_W, STAT_Y_HOTEND_TRG, STAT_X_HOTEND_TRG + 4.5*STAT_CHR_W+3, STAT_Y_HOTEND_TRG+3);
+   #endif
+   #if HOTENDS > 1
+     // DWIN_ICON_Show(ICON,ICON_HotendTemp, 13, 381);
+@@ -1833,9 +1856,12 @@
+ 
+   #if HAS_HEATED_BED
+     DWIN_ICON_Show(ICON, ICON_BedTemp, 158, 381);
+-    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 178, 382, thermalManager.temp_bed.celsius);
+-    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 178 + 3 * STAT_CHR_W + 5, 383, F("/"));
+-    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 3, 178 + 4 * STAT_CHR_W + 6, 382, thermalManager.temp_bed.target);
++    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, STAT_X_BED_TMP, STAT_Y_BED_TMP, thermalManager.temp_bed.celsius);
++    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_SkyBlue, Color_Bg_Black, STAT_X_BED_TMP + 2*STAT_CHR_W, STAT_Y_BED_TMP, F("["));
++    DWIN_Draw_IntValue(true, true, 0, DWIN_FONT_STAT, Color_White, Color_Bg_Black, 2, STAT_X_BED_TRG, STAT_Y_BED_TRG, thermalManager.temp_bed.target);
++    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_SkyBlue, Color_Bg_Black, STAT_X_BED_TRG + 2*STAT_CHR_W, STAT_Y_HOTEND_TRG, F("]"));
++    DWIN_Draw_String(false, false, DWIN_FONT_STAT, Color_White, Color_Bg_Black, STAT_X_BED_TRG + 4*STAT_CHR_W, STAT_Y_BED_TRG, F("C"));
++    DWIN_Draw_Rectangle(0, Color_White, STAT_X_BED_TRG + 3.5*STAT_CHR_W, STAT_Y_BED_TRG, STAT_X_BED_TRG + 3.5*STAT_CHR_W+3, STAT_Y_BED_TRG+3);
+   #endif
+ 
+   DWIN_ICON_Show(ICON, ICON_Speed, 13, 429);
+diff -ruN /home/david/Downloads/Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.h ./Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.h
+--- /home/david/Downloads/Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.h	2020-12-05 06:59:39.000000000 +0100
++++ ./Marlin-2.0.x/Marlin/src/lcd/dwin/e3v2/dwin.h	2020-12-13 18:35:41.948642429 +0100
+@@ -215,17 +215,19 @@
+ 
+ // Color
+ #define Color_White       0xFFFF
++#define Icon_Frame        0xFE29      // DWDchg: Dark Orange frame - za okvirček kjer je kurzor
+ #define Color_Yellow      0xFF0F
+-#define Color_Bg_Window   0x31E8  // Popup background color
+-#define Color_Bg_Blue     0x1125  // Dark blue background color
+-#define Color_Bg_Black    0x0841  // Black background color
+-#define Color_Bg_Red      0xF00F  // Red background color
+-#define Popup_Text_Color  0xD6BA  // Popup font background color
+-#define Line_Color        0x3A6A  // Split line color
+-#define Rectangle_Color   0xEE2F  // Blue square cursor color
+-#define Percent_Color     0xFE29  // Percentage color
+-#define BarFill_Color     0x10E4  // Fill color of progress bar
+-#define Select_Color      0x33BB  // Selected color
++#define Color_SkyBlue     0x0EFF      // DWDchg: Mach SkyBlue theme on CREALITY
++#define Color_Bg_Window   0x31E8      // Popup background color
++#define Color_Bg_Blue     0x1125      // Dark blue background color
++#define Color_Bg_Black    0x0841      // Black background color
++#define Color_Bg_Red      0xF00F      // Red background color
++#define Popup_Text_Color  0xD6BA      // Popup font background color
++#define Line_Color        0x3A6A      // Split line color
++#define Rectangle_Color   Icon_Frame  // DWDchg: SubMenu Cursor (default color: 0xEE2F)  
++#define Percent_Color     0xFE29      // Percentage color
++#define BarFill_Color     0x10E4      // Fill color of progress bar
++#define Select_Color      0xFA0B      // Selected color 0x33BB  
+ 
+ extern uint8_t checkkey;
+ extern float zprobe_zoffset;
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/project.checksum ./Marlin-2.0.x/.pio/build/project.checksum
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/project.checksum	2020-12-12 21:56:19.600536712 +0100
++++ ./Marlin-2.0.x/.pio/build/project.checksum	2020-12-11 19:48:06.329398422 +0100
+@@ -1 +1 @@
+-91dbc7d6b738c9ea6140a67881e32147b2f4d16b
+\ No newline at end of file
++ac100c54e0eb02ec877d27cc1f127c94e85bebc2
+\ No newline at end of file
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/copytousb.sh ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/copytousb.sh
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/copytousb.sh	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/copytousb.sh	2020-12-13 18:02:21.864935326 +0100
+@@ -0,0 +1,12 @@
++#! /bin/sh
++
++USB="/run/media/david/50EB-34A9"
++udisksctl mount --block-device /dev/sdc1
++
++rm $USB/firmware*.bin
++FILE=$(ls -1t firmware*.bin | head -1)
++cp $FILE $USB/
++
++ls -all $USB | grep "firmware"
++udisksctl unmount --block-device /dev/sdc1
++
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215620.bin and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215620.bin differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215620.elf and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215620.elf differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215754.bin and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215754.bin differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215754.elf and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215754.elf differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201213-184304.bin and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201213-184304.bin differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201213-184304.elf and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201213-184304.elf differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/avr/dtostrf.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/avr/dtostrf.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/cxxabi-compat.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/cxxabi-compat.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/ext_interrupts.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/ext_interrupts.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/HardwareSerial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/HardwareSerial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/HardwareTimer.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/HardwareTimer.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/hooks.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/hooks.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/IPAddress.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/IPAddress.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/itoa.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/itoa.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/adc.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/adc.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/adc_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/adc_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/bkp_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/bkp_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/dac.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/dac.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/dma.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/dma.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/dma_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/dma_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/exc.S.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/exc.S.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/exti.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/exti.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/exti_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/exti_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/flash.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/flash.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/fsmc_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/fsmc_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/gpio.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/gpio.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/gpio_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/gpio_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/i2c.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/i2c.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/i2c_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/i2c_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/iwdg.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/iwdg.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/nvic.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/nvic.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/pwr.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/pwr.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/rcc.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/rcc.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/rcc_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/rcc_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/spi.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/spi.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/spi_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/spi_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/stm32f1/performance/isrs.S.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/stm32f1/performance/isrs.S.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/systick.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/systick.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/timer.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/timer.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/timer_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/timer_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usart.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usart.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usart_f1.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usart_f1.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usart_private.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usart_private.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/stm32f1/usb_cdcacm.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/stm32f1/usb_cdcacm.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/stm32f1/usb.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/stm32f1/usb.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/stm32f1/usb_reg_map.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/stm32f1/usb_reg_map.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_core.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_core.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_init.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_init.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_mem.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_mem.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_regs.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/usb/usb_lib/usb_regs.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/util.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/libmaple/util.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/main.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/main.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/new.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/new.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/Print.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/Print.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/pwm.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/pwm.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/sdio.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/sdio.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/util_hooks.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/util_hooks.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/wiring_pulse_f1.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/wiring_pulse_f1.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/wirish_debug.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/wirish_debug.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/wirish_digital_f1.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/stm32f1/wirish_digital_f1.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/Stream.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/Stream.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/tone.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/tone.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/usb_serial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/usb_serial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_analog.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_analog.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_digital.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_digital.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_math.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_math.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_shift.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_shift.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_time.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/wirish_time.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/WString.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduino/WString.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/board.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/board.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/boards.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/boards.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/boards_setup.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/boards_setup.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/start_c.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/start_c.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/start.S.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/start.S.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/syscalls.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/FrameworkArduinoVariant/wirish/syscalls.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/libUSBComposite.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/libUSBComposite.a differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/AbsMouse.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/AbsMouse.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Consumer.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Consumer.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/HIDReports.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/HIDReports.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Joystick.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Joystick.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Keyboard.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Keyboard.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/MinSysex.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/MinSysex.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Mouse.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/Mouse.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBComposite.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBComposite.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_composite_serial.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_composite_serial.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBCompositeSerial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBCompositeSerial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_generic.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_generic.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_hid.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_hid.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBHID.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBHID.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_mass.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_mass.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_mass_mal.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_mass_mal.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBMassStorage.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBMassStorage.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBMIDI.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBMIDI.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_midi_device.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_midi_device.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_scsi.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_scsi.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_scsi_data.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_scsi_data.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_setup.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_setup.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_x360.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/usb_x360.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBXBox360.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib16a/USBComposite/USBXBox360.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib1cd/libServo.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib1cd/libServo.a differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib1cd/Servo/Servo.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib1cd/Servo/Servo.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib2bf/libSTM32ADC.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib2bf/libSTM32ADC.a differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib2bf/STM32ADC/STM32ADC.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib2bf/STM32ADC/STM32ADC.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib2bf/STM32ADC/utility/util_adc.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib2bf/STM32ADC/utility/util_adc.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/libWire.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/libWire.a differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/Wire/SoftWire.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/Wire/SoftWire.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/Wire/utility/WireBase.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/Wire/utility/WireBase.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/Wire/Wire.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib3e2/Wire/Wire.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib41d/EEPROM/EEPROM.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib41d/EEPROM/EEPROM.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib41d/EEPROM/flash_stm32.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib41d/EEPROM/flash_stm32.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib41d/libEEPROM.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib41d/libEEPROM.a differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/MapleFreeRTOS.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/MapleFreeRTOS.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/croutine.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/croutine.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/heap_2.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/heap_2.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/list.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/list.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/port.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/port.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/queue.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/queue.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/tasks.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/tasks.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/timers.c.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/FreeRTOS701/utility/timers.c.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/libFreeRTOS701.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/lib4a6/libFreeRTOS701.a differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/libSoftwareSerialM.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/libSoftwareSerialM.a differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d	2020-12-12 21:56:36.731420857 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d	1970-01-01 01:00:00.000000000 +0100
+@@ -1,5 +0,0 @@
+-.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.o: \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_LPC1768.cpp \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_LPC1768.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d	2020-12-12 21:56:36.781423450 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d	1970-01-01 01:00:00.000000000 +0100
+@@ -1,5 +0,0 @@
+-.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.o: \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_SAMD51.cpp \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_SAMD51.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32.cpp.d	2020-12-12 21:56:36.801424487 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32.cpp.d	1970-01-01 01:00:00.000000000 +0100
+@@ -1,5 +0,0 @@
+-.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32.cpp.o: \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32.cpp \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d	2020-12-12 21:56:36.928097722 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d	1970-01-01 01:00:00.000000000 +0100
+@@ -1,50 +0,0 @@
+-.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.o: \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.cpp \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/HAL_softserial_STM32F1.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/SoftwareSerial.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/SoftwareSerial.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/SoftwareSerial.cpp.d	2020-12-12 21:56:37.138108615 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/SoftwareSerial.cpp.d	1970-01-01 01:00:00.000000000 +0100
+@@ -1,167 +0,0 @@
+-.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/SoftwareSerial.cpp.o: \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/SoftwareSerial.cpp \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/pgmspace.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/dtostrf.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/interrupt.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_types.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/gpio.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/gpio.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/exti.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/exti.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/adc.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/adc.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/board/board.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/io.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/bit_constants.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/pwm.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/ext_interrupts.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_debug.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_math.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_time.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/systick.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_constants.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wiring_pulse.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareSerial.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Print.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Printable.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/usb_serial.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WCharacter.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/tone.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/variant.h \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/SoftwareSerial.h \
+- /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial.h \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h \
+- .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/pgmspace.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/dtostrf.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/interrupt.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_types.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/gpio.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/gpio.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/exti.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/exti.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/adc.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/adc.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/board/board.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/io.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/bit_constants.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/pwm.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/ext_interrupts.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_debug.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_math.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_time.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/systick.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_constants.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wiring_pulse.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareSerial.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Print.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Printable.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/usb_serial.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WCharacter.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/tone.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/variant.h:
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/SoftwareSerial.h:
+-
+-/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h:
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial.h:
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+-
+-.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/SoftwareSerial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libc8e/SoftwareSerialM/SoftwareSerial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/libSoftwareSerialM.a and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/libSoftwareSerialM.a differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_LPC1768.cpp.d	2020-12-12 21:32:11.427446741 +0100
+@@ -0,0 +1,5 @@
++.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_LPC1768.cpp.o: \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_LPC1768.cpp \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_LPC1768.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_LPC1768.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_SAMD51.cpp.d	2020-12-12 21:32:11.460783695 +0100
+@@ -0,0 +1,5 @@
++.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_SAMD51.cpp.o: \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_SAMD51.cpp \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_SAMD51.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_SAMD51.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32.cpp.d	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32.cpp.d	2020-12-12 21:32:11.497454344 +0100
+@@ -0,0 +1,5 @@
++.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32.cpp.o: \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32.cpp \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32F1.cpp.d	2020-12-12 21:32:11.560794557 +0100
+@@ -0,0 +1,50 @@
++.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32F1.cpp.o: \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.cpp \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32F1.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/HAL_softserial_STM32F1.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/SoftwareSerial.cpp.d ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/SoftwareSerial.cpp.d
+--- /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/SoftwareSerial.cpp.d	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/SoftwareSerial.cpp.d	2020-12-12 21:32:11.834157580 +0100
+@@ -0,0 +1,167 @@
++.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/SoftwareSerial.cpp.o: \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/SoftwareSerial.cpp \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/pgmspace.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/dtostrf.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/interrupt.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_types.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/gpio.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/gpio.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/exti.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/exti.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/adc.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/adc.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/board/board.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/io.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/bit_constants.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/pwm.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/ext_interrupts.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_debug.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_math.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_time.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/systick.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_constants.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wiring_pulse.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareSerial.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Print.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Printable.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/usb_serial.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WCharacter.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/tone.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/variant.h \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/SoftwareSerial.h \
++ /home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial.h \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h \
++ .pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/pgmspace.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/dtostrf.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/avr/interrupt.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/stm32.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/stm32.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple_types.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_types.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/gpio.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/gpio.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/exti.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/exti.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/rcc.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/rcc.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/bitband.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/timer.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/timer.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/libmaple.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/util.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/delay.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/nvic.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/nvic.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/adc.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/stm32f1/include/series/adc.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/board/board.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/io.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/bit_constants.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/pwm.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/ext_interrupts.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_debug.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_math.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_time.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include/libmaple/systick.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wirish_constants.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/wiring_pulse.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareSerial.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Print.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WString.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Printable.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/boards.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/HardwareTimer.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/usb_serial.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/WCharacter.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/tone.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Arduino.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/variants/generic_stm32f103r/variant.h:
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/SoftwareSerial.h:
++
++/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple/Stream.h:
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial.h:
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_platform.h:
++
++.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM/HAL_softserial_STM32F1.h:
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/SoftwareSerial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/libe4d/SoftwareSerialM/SoftwareSerial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/.sconsign38.dblite and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/.sconsign38.dblite differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/.sconsign39.dblite and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/.sconsign39.dblite differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/core/serial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/core/serial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/core/utility.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/core/utility.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/feature/babystep.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/feature/babystep.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/feature/bedlevel/bedlevel.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/feature/bedlevel/bedlevel.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/feature/powerloss.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/feature/powerloss.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/calibrate/G28.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/calibrate/G28.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M200-M205.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M200-M205.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M220.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M220.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M221.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M221.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M301.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M301.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M302.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M302.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M304.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M304.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M92.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/config/M92.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M108_M112_M410.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M108_M112_M410.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M111.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M111.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M120_M121.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M120_M121.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M17_M18_M84.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M17_M18_M84.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M211.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M211.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M280.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M280.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M350_M351.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M350_M351.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M400.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M400.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M80_M81.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M80_M81.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M85.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M85.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M993_M994.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M993_M994.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M997.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M997.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M999.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/M999.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/T.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/control/T.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/eeprom/M500-M504.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/eeprom/M500-M504.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/feature/digipot/M907-M910.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/feature/digipot/M907-M910.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/feature/powerloss/M1000.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/feature/powerloss/M1000.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/feature/powerloss/M413.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/feature/powerloss/M413.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/gcode.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/gcode.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/gcode_d.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/gcode_d.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/geometry/G92.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/geometry/G92.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/geometry/M206_M428.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/geometry/M206_M428.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M110.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M110.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M113.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M113.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M114.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M114.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M115.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M115.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M118.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M118.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M119.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/host/M119.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M0_M1.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M0_M1.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M117.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M117.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M145.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M145.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M300.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/lcd/M300.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/G0_G1.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/G0_G1.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/G2_G3.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/G2_G3.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/G4.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/G4.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/M290.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/motion/M290.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/parser.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/parser.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/queue.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/queue.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M1001.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M1001.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M20.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M20.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M21_M22.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M21_M22.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M23.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M23.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M24_M25.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M24_M25.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M26.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M26.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M27.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M27.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M28_M29.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M28_M29.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M30.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M30.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M32.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M32.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M33.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M33.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M34.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M34.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M524.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M524.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M928.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/sd/M928.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/stats/M31.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/stats/M31.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/stats/M75-M78.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/stats/M75-M78.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M104_M109.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M104_M109.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M105.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M105.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M106_M107.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M106_M107.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M140_M190.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M140_M190.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M141_M191.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M141_M191.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M155.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M155.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M303.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/temp/M303.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/units/M82_M83.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/gcode/units/M82_M83.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/eeprom_api.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/eeprom_api.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/eeprom_if_i2c.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/eeprom_if_i2c.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/eeprom_if_spi.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/eeprom_if_spi.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/esp_wifi.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/esp_wifi.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/HAL_spi_L6470.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/HAL_spi_L6470.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/servo.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/shared/servo.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/dogm/u8g_com_stm32duino_swspi.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/dogm/u8g_com_stm32duino_swspi.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_bl24cxx.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_bl24cxx.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_flash.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_flash.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_if_iic.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_if_iic.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_sdcard.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_sdcard.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_wired.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/eeprom_wired.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/HAL.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/HAL.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/HAL_SPI.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/HAL_SPI.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/MarlinSerial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/MarlinSerial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/msc_sd.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/msc_sd.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/onboard_sd.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/onboard_sd.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/sdio.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/sdio.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/Servo.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/Servo.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/SoftwareSerial.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/SoftwareSerial.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/SPI.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/SPI.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/tft/tft_fsmc.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/tft/tft_fsmc.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/tft/tft_spi.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/tft/tft_spi.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/tft/xpt2046.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/tft/xpt2046.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/timers.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/timers.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/watchdog.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/HAL/STM32F1/watchdog.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/dwin/dwin_lcd.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/dwin/dwin_lcd.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/dwin/e3v2/dwin.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/dwin/e3v2/dwin.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/dwin/e3v2/rotary_encoder.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/dwin/e3v2/rotary_encoder.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/extui/ui_api.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/extui/ui_api.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/fontutils.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/fontutils.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/ultralcd.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/lcd/ultralcd.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/BL24CXX.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/BL24CXX.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/buzzer.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/buzzer.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/crc16.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/crc16.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/numtostr.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/numtostr.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/stopwatch.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/stopwatch.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/vector_3.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/libs/vector_3.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/MarlinCore.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/MarlinCore.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/endstops.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/endstops.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/motion.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/motion.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/planner.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/planner.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/servo.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/servo.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/settings.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/settings.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/stepper/indirection.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/stepper/indirection.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/stepper.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/stepper.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/temperature.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/temperature.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/tool_change.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/module/tool_change.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/cardreader.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/cardreader.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/Sd2Card.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/Sd2Card.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdBaseFile.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdBaseFile.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdFatUtil.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdFatUtil.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdFile.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdFile.cpp.o differ
+Binary files /home/david/Downloads/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdVolume.cpp.o and ./Marlin-2.0.x/.pio/build/STM32F103RET6_creality/src/src/sd/SdVolume.cpp.o differ
+diff -ruN /home/david/Downloads/Marlin-2.0.x/platformio.ini ./Marlin-2.0.x/platformio.ini
+--- /home/david/Downloads/Marlin-2.0.x/platformio.ini	2020-12-12 21:56:16.377037976 +0100
++++ ./Marlin-2.0.x/platformio.ini	2020-12-10 23:24:18.357466591 +0100
+@@ -1117,6 +1117,15 @@
+ extends       = env:chitu_f103
+ build_flags   = ${env:chitu_f103.build_flags} -DCHITU_V5_Z_MIN_BUGFIX
+ 
++# dwd change
++# dodano, ker ni delalo...
++[env:fysetc_STM32F1]
++platform      = ststm32
++platform_packages =
++  tool-stm32duino
++framework     = arduino
++board         = genericSTM32F103RC
++
+ #
+ # Creality (STM32F103RET6)
+ #
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.vscode/c_cpp_properties.json ./Marlin-2.0.x/.vscode/c_cpp_properties.json
+--- /home/david/Downloads/Marlin-2.0.x/.vscode/c_cpp_properties.json	2020-12-12 21:56:29.354372408 +0100
++++ ./Marlin-2.0.x/.vscode/c_cpp_properties.json	2020-12-13 12:25:43.545156638 +0100
+@@ -6,7 +6,7 @@
+         {
+             "name": "Linux",
+             "includePath": [
+-                "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/Marlin",
++                "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/Marlin",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/Servo/src",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/FreeRTOS701",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/FreeRTOS701/utility",
+@@ -15,8 +15,8 @@
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/USBComposite",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/EEPROM",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/STM32ADC/src",
+-                "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM",
+-                "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/Marlin/src/HAL/STM32F1",
++                "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM",
++                "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/Marlin/src/HAL/STM32F1",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple",
+                 "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include",
+@@ -55,7 +55,7 @@
+             "browse": {
+                 "limitSymbolsToIncludedHeaders": true,
+                 "path": [
+-                    "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/Marlin",
++                    "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/Marlin",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/Servo/src",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/FreeRTOS701",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/FreeRTOS701/utility",
+@@ -64,8 +64,8 @@
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/USBComposite",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/EEPROM",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/libraries/STM32ADC/src",
+-                    "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM",
+-                    "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/Marlin/src/HAL/STM32F1",
++                    "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/.pio/libdeps/STM32F103RET6_creality/SoftwareSerialM",
++                    "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/Marlin/src/HAL/STM32F1",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/cores/maple",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple",
+                     "/home/david/.platformio/packages/framework-arduinoststm32-maple/STM32F1/system/libmaple/include",
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.vscode/launch.json ./Marlin-2.0.x/.vscode/launch.json
+--- /home/david/Downloads/Marlin-2.0.x/.vscode/launch.json	2020-12-12 21:56:29.357705914 +0100
++++ ./Marlin-2.0.x/.vscode/launch.json	2020-12-13 12:25:43.548489452 +0100
+@@ -12,7 +12,7 @@
+             "type": "platformio-debug",
+             "request": "launch",
+             "name": "PIO Debug",
+-            "executable": "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215625.elf",
++            "executable": "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201213-122540.elf",
+             "projectEnvName": "STM32F103RET6_creality",
+             "toolchainBinDir": "/home/david/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+             "svdPath": "/home/david/.platformio/platforms/ststm32/misc/svd/STM32F103xx.svd",
+@@ -26,7 +26,7 @@
+             "type": "platformio-debug",
+             "request": "launch",
+             "name": "PIO Debug (skip Pre-Debug)",
+-            "executable": "/home/david/Downloads/Marlin-2.0.x/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201212-215625.elf",
++            "executable": "/home/david/.local/build/Ender3v2SourceCode/Marlin-2.0.x/.pio/build/STM32F103RET6_creality/firmware-20201213-122540.elf",
+             "projectEnvName": "STM32F103RET6_creality",
+             "toolchainBinDir": "/home/david/.platformio/packages/toolchain-gccarmnoneeabi/bin",
+             "svdPath": "/home/david/.platformio/platforms/ststm32/misc/svd/STM32F103xx.svd",
+diff -ruN /home/david/Downloads/Marlin-2.0.x/.vscode/settings.json ./Marlin-2.0.x/.vscode/settings.json
+--- /home/david/Downloads/Marlin-2.0.x/.vscode/settings.json	1970-01-01 01:00:00.000000000 +0100
++++ ./Marlin-2.0.x/.vscode/settings.json	2020-12-13 14:46:10.748127986 +0100
+@@ -0,0 +1,10 @@
++{
++    "files.associations": {
++        "array": "cpp",
++        "istream": "cpp",
++        "limits": "cpp",
++        "functional": "cpp",
++        "type_traits": "cpp",
++        "typeinfo": "cpp"
++    }
++}
+\ No newline at end of file

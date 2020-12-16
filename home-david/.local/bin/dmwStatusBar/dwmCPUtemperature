@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+echo " $(sed 's/000$/°C/' /sys/devices/platform/coretemp.0/hwmon/hwmon*/temp1_input)"

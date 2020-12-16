@@ -1,3 +1,6 @@
+!Cursos settings
+Xcursor.theme: cursor-theme
+
 ! Base colors
 *.foreground:  #E1E1E1
 *.background:  #1c2023

@@ -1,0 +1,64 @@
+#! /bin/zsh
+DIR="$HOME/.local/bin/Tektronix_TDS1002B/settings"
+echo "Loading Oscilloscope Settings from:"
+echo -n "$DIR ... "
+CH1DIV=$(sed 's/E/\*10\*\*/' $DIR/CH1-VOLTS)
+CH1POS=$(sed 's/E/\*10\*\*/' $DIR/CH1-POSITION)
+CH1N=$(( CH1DIV*CH1POS ))
+CH1MAX_Y=$(( CH1DIV*4-CH1N ))
+CH1MIN_Y=$(( CH1DIV*-4-CH1N ))
+
+CH2DIV=$(sed 's/E/\*10\*\*/' $DIR/CH2-VOLTS)
+CH2POS=$(sed 's/E/\*10\*\*/' $DIR/CH2-POSITION)
+CH2N=$(( CH2DIV*CH2POS ))
+CH2MAX_Y=$(( CH2DIV*4-CH2N ))
+CH2MIN_Y=$(( CH2DIV*-4-CH2N ))
+
+D_TIME=$(sed 's/E/\*10\*\*/' $DIR/HOR_SCALE)
+MAX_TTIME=$(( D_TIME*10 ))
+
+CLR_GRID="#BBBBBB"
+CLR_CH1="#990000"
+CLR_CH2="#000099"
+echo " done."
+echo -n "CGI of Voltage waweform ..."
+gnuplot -e " \
+  set term png font 'Hermit,10'; \
+  set output 'Tektronix.png'; \
+  set grid ytics lc rgb '"$CLR_GRID"' lt 0 lw 1; \
+  set grid xtics lc rgb '"$CLR_GRID"' lt 0 lw 1; \
+  set xrange [0:$MAX_TTIME]; \
+  set xtics $D_TIME; \
+  set xtics format '%.1s%cs' rotate by -90 left; \
+  time_div=gprintf('%.0s%c', $D_TIME); \
+  set yrange [$CH1MIN_Y:$CH1MAX_Y]; \
+  set ytics $CH1DIV format '%.1s%cV'; \
+  volt_div=gprintf('%.0s%c', $CH1DIV); \
+  set ytics textcolor rgb '"$CLR_CH1"'; \
+  set label 'CH1' at 0,0 right offset -1,1 textcolor '"$CLR_CH1"';\
+  set label 'CH2' at second $MAX_TTIME, second 0 left offset 1,1 textcolor '"$CLR_CH2"';\
+  set y2range [$CH2MIN_Y:$CH2MAX_Y]; \
+  set y2tics $CH2DIV format '%.1s%cV'; \
+  volt2_div=gprintf('%.0s%c', $CH2DIV); \
+  set y2tics textcolor rgb '"$CLR_CH2"'; \
+  set datafile separator ','; \
+  plot '"$DIR"/../data/data_xy.csv' using 1:2 title 'CH1 '.volt_div.'V/DIV' axis x1y1 with lines ls 1 lw 1 lc rgb '"$CLR_CH1"', \
+       '"$DIR"/../data/data_xy.csv' using 1:3 title 'CH2 '.volt2_div.'V/DIV' axis x1y2 with lines ls 1 lw 1 lc rgb '"$CLR_CH2"'; \
+  "
+echo " done."
+  #set label '$(cat ./CH1_COUPLING)' at 2570,90; \
+  #set label '$(cat ./settings/CH1_VOLTS)' at 2720,6; \
+  #set label '$(cat ./settings/MEASURE_1)' at 2570,5; \
+  #set label '$(cat ./settings/MEASURE_2)' at 2570,4; \
+  #set label '$(cat ./settings/MEASURE_3)' at 2570,3; \
+  #set label '$(cat ./settings/MEASURE_4)' at 2570,2; \
+  #set label '$(cat ./settings/MEASURE_5)' at 2570,1; \
+
+  #plot 'data_xy.csv' with lines title 'CH1' ls 1 lw 4 lc rgb '#990000'; \
+  #set xtics 250; \
+  #set ytics format ' '; \
+  #set y2tics format ' '; \
+  #set y2label 'Voltage [ '.volt2_div.'V/DIV ]'; \
+  #set ylabel 'Voltage [ '.volt_div.'V/DIV ]'; \
+  #set xtics format ' '; \
+  #set xlabel 'Time [ '.time_div.'s/DIV ]'; \

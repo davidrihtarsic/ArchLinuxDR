@@ -6,7 +6,7 @@ echo "   Installing RANGER"
 echo "################################################################################"
 PWD=$(pwd)
 
-trizen -S ranger-git
+yay -S ranger-git
 [ ! -d "$HOME/.deleted_files" ] && mkdir ~/.deleted_files
 sudo pacman -S --noconfirm --needed python-pip
 # IMAGEs preview

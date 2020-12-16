@@ -462,7 +462,7 @@ autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-
 "   PDF CREATE
 "----------------------------------------------------------------------
 " pandoc --from markdown --template skripta --listings --pdf-engine=xelatex test.md -o index.pdf
-autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -V urlcolor=violet -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc2notebook "%:p:t" 2> %:p:h/pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
 autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>

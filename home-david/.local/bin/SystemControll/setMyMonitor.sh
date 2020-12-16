@@ -1,0 +1,1 @@
+/home/david/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/system/setMyMonitor.sh

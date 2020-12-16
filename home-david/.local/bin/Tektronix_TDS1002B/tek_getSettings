@@ -1,0 +1,27 @@
+#! /bin/sh
+DIR="$HOME/.local/bin/Tektronix_TDS1002B/settings"
+
+echo "Filling-up the Oscilloscope's settongs data in:"
+echo "$DIR"
+
+for CH_X in "$@";do
+  echo "$CH_X:VOLts?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/$CH_X-VOLTS"
+  echo "$CH_X:POSition?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/$CH_X-POSITION"
+  echo "$CH_X:COUPling?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/$CH_X-COUPLING"
+  echo "$CH_X:VOLts?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/$CH_X-VOLTS"
+  echo "$CH_X:POSition?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/$CH_X-POSITION"
+done
+
+echo "HORizontal:MAIn:SCAle?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/HOR_SCALE"
+echo "HORizontal:POSition?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/HOR_POSITION"
+
+allMeasurements="1 2 3 4 5"
+for n in $allMeasurements
+  do 
+    echo "MEASUrement:MEAS$n:SOUrce?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > "$DIR/MEASURE_$n"
+    echo "MEASUrement:MEAS$n:TYPe?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 >> "$DIR/MEASURE_$n"
+    echo "MEASUrement:MEAS$n:VALue?" > /dev/usbtmc1 && printf %.1f "$(head -1 /dev/usbtmc1)" >> "$DIR/MEASURE_$n"
+    echo "MEASUrement:MEAS$n:UNIts?" > /dev/usbtmc1 && head -1 /dev/usbtmc1 >> "$DIR/MEASURE_$n"
+  done
+#echo "" > /dev/usbtmc1 && head -1 /dev/usbtmc1 > ./<++>
+

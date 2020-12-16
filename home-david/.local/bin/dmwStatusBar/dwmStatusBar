@@ -1,0 +1,14 @@
+#!/bin/zsh
+
+MY_PATH="/home/david/.local/bin/dmwStatusBar"
+
+while true; do
+xsetroot -name " \
+| $($MY_PATH/dwmCPUusage) \
+| $($MY_PATH/dwmCPUtemperature) \
+| $($MY_PATH/dwmBattery) \
+| $($MY_PATH/dwmVolume) \
+| $($MY_PATH/dwmNetwork) \
+| $($MY_PATH/dwmDateTime)"
+sleep 1
+done

@@ -46,7 +46,8 @@ for arg in "$@"; do
         -r|--run)
             rofi -modi run,drun -show drun -line-padding 4 \
                 -columns 2 -padding 50 -hide-scrollbar \
-                -show-icons -drun-icon-theme "ArchLabs-Light"
+                -show-icons -theme-str 'element-icon { size: 3ch;}' \
+                -drun-icon-theme "ArchLabs-Light"
             ;;
         -w|--window)
             rofi -modi window -show window -hide-scrollbar -padding 50 -line-padding 4

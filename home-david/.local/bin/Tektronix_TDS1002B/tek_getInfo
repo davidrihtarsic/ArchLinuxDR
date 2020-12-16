@@ -1,0 +1,4 @@
+#! /bin/zsh
+
+echo "Current Oscilloscope Settings: ..."
+echo "WFMPRe?" > /dev/usbtmc1 &&  head -1 /dev/usbtmc1

@@ -27,7 +27,7 @@ super + {b, B}
     feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
 
 super + {c, C}
-    {galculator, st -e insect}
+    {galculator, xterm -c "floating" -e insect}
 
 # program launcher
 super + e
@@ -43,7 +43,7 @@ super + t
     thunderbird
 
 super + n
-    calcurse-caldav && st -e calcurse && calcurse-caldav
+    calcurse-caldav && alacritty -e calcurse && calcurse-caldav
 
 super + w
      brave
@@ -274,6 +274,8 @@ XF86AudioRaiseVolume
     pamixer -i 10
 XF86AudioLowerVolume
     pamixer -d 10
+XF86AudioPlay
+    /home/david/.local/bin/MusicPlayer/music
 # XF86MonBrightnessUp
 #     xbacklight +20
 # XF86MonBrightnessDown

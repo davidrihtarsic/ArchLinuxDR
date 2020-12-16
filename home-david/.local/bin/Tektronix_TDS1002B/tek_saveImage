@@ -1,0 +1,9 @@
+#! /bin/zsh
+
+if [[ -z $1 ]]
+then
+  echo "Enter file name, like: 'SquareWawe.jpg'"
+else
+  echo "SAVe:IMAge A:\\$1" > /dev/usbtmc1 && cat /dev/usbtmc1
+fi
+

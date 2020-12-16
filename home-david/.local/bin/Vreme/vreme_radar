@@ -1,0 +1,7 @@
+#! /bin/sh
+# Vremenska radarska slika se nahaja na url-ju:
+# http://meteo.arso.gov.si/uploads/probase/www/observ/radar/si0-rm-anim.gif
+
+SRV="http://meteo.arso.gov.si/uploads/probase/www/observ/radar/si0-rm-anim.gif"
+mpv --loop "$SRV"
+

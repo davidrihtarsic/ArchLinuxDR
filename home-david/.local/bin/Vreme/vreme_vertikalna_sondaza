@@ -1,0 +1,7 @@
+#! /bin/sh
+# Vremenska vertikalna sondaža za LJUBLJANO je na urlju:
+# https://meteo.arso.gov.si/uploads/probase/www/observ/upper/sigps_ljubljana-bezigrad_zoom.png
+
+SRV="https://meteo.arso.gov.si/uploads/probase/www/observ/upper/sigps_ljubljana-bezigrad_zoom.png"
+mpv --loop "$SRV"
+

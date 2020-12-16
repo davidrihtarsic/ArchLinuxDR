@@ -1,0 +1,9 @@
+#! /bin/zsh
+# POSSIBLE ARGUMENTS
+# 1. none = window
+# 2. none = region
+# 3. "-window root" the whole screen
+file_name=$HOME/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
+#import $* $file_name
+import -window root -crop 1920x1080+0+0 $file_name
+mypaint -f $file_name

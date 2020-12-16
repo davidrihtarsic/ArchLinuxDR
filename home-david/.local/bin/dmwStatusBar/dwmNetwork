@@ -1,0 +1,9 @@
+#!/bin/zsh
+
+WIFI_IP_ADDR=$(ip addr show wlan0 | grep "inet " | awk '{printf($2)}' | sed 's/\/.*//')
+SIGNAL_dB=$(cat /proc/net/wireless | grep wlan0 | awk '{printf $4"dB"}' | sed 's/\.//')
+SIGNAL_PERC=$(cat /proc/net/wireless | grep wlan0 | awk '{printf $3}' | sed 's/\.//')
+
+ETH_IP_ADDR=$(ip addr show enp0s20f0u4u1 | grep "inet " | awk '{printf($2)}' | sed 's/\/.*//')
+
+echo " $ETH_IP_ADDR | $SIGNAL_dB $WIFI_IP_ADDR"

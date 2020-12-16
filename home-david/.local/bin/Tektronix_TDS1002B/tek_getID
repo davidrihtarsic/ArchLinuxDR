@@ -1,0 +1,4 @@
+#! /bin/sh
+
+echo "Tektronics ID testing: ..."
+echo "*IDN?" > /dev/usbtmc1 && head -1 /dev/usbtmc1

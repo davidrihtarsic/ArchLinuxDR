@@ -1,0 +1,19 @@
+#! /bin/sh
+# https://meteo.arso.gov.si/uploads/probase/www/model/ecmwf/ef_20200615-1200_pp_SLOVENIA_NORTH-WEST_.png
+# 
+# Sedaj je ura 2020-08-27 9:56 in je na  spletni strani
+# najnovejši podatek 2020-08-26 1200
+# Zato predvidevam, da gre takole najprej je 0000 in nato 1200
+# Napoved pa se verjetno izračuna vsakih 12 ur.
+# Torej od trenutnega časa odšteješ 12 ur:
+#   date -d '12 hours ago' "+%Y%m%d'
+
+SRV="https://meteo.arso.gov.si/uploads/probase/www/model/ecmwf/ef_"
+SLO="00_pp_SLOVENIA_NORTH-WEST_.png"
+
+DAT=$(date -d '12 hours ago' '+%Y%m%d')
+HOUR=$(date -d '12 hours ago' '+%H')
+[ $HOUR -gt 12 ] && HOUR=12 || $HOUR=00
+
+mpv --loop "$SRV$DAT-00$SLO"
+
