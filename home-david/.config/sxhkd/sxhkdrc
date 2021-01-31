@@ -31,8 +31,8 @@ super + {c, C}
 
 # program launcher
 super + e
-    alacritty -e nvim -S ~/.config/nvim/david_session.sav
-    #st -e nvim -S ~/.config/nvim/david_session.sav
+    st -e nvim -S ~/.config/nvim/david_session.sav
+    #alacritty -e nvim -S ~/.config/nvim/david_session.sav
     #terminator -x nvim -S ~/.config/nvim/david_session.sav
     #uxterm -e "nvim -S ~/.config/nvim/david_session.sav"
 
@@ -43,7 +43,7 @@ super + t
     thunderbird
 
 super + n
-    calcurse-caldav && alacritty -e calcurse && calcurse-caldav
+    calcurse-caldav && st -e calcurse && calcurse-caldav
 
 super + w
      brave

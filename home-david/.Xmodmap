@@ -91,7 +91,7 @@ keycode  46 = l L Right L lstroke Lstroke lstroke
 ! keycode  50 = Mode_switch NoSymbol Shift_L
 ! ==============================================================================
 ! keycode  51 = zcaron Zcaron zcaron Zcaron currency dead_breve currency
- keycode  51 = cacute Cacute cacute Cacute currency dead_breve currency
+ keycode  51 = zcaron Zcaron cacute Cacute currency dead_breve currency
 ! keycode  52 = y Y y Y leftsinglequotemark guillemotright leftsinglequotemark
 ! keycode  53 = x X x X rightsinglequotemark guillemotleft rightsinglequotemark
 ! keycode  54 = c C c C cent copyright cent

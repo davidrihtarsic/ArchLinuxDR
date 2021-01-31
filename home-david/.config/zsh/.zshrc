@@ -33,6 +33,17 @@ setopt    autocd autopushd
 setopt    prompt_subst              #Ne vem, da potem spremenljivke delajo $VAR
 
 ######################################
+# LS COLORS
+FILE_TYPE='di=34;1:fi=0:ln=36:pi=5:so=5:bd=5:cd=5:or=31:mi=0:ex=32'
+SYSTEM_FILE='*.rpm=90'
+IMAGE_FILE='*.png=33:*.jpg=33:*.JPG=33:*.jpeg=33:*.gif=33:*.mp4=35'
+DOCUMENT_FILE='*.doc=36:*.docx=36:*.odt=36:*.xls=36:*.xlsx=36:*.ods=36:*.pdf=36'
+CONTAINER_FILE='*.zip=37:*.rar=37:*.7z=37'
+LS_COLORS=:$FILE_TYPE:$SYSTEM_FILE:$IMAGE_FILE:$DOCUMENT_FILE:$CONTAINER_FILE
+export LS_COLORS
+
+
+######################################
 # TAB coompletition MENU, color
 autoload -Uz compinit && compinit
 compinit
@@ -82,7 +93,7 @@ alias howto='tldr'
 #++++++++++++++++++++++++++++++++++++++
 # DIRRECTORY MAPPINGS
 #++++++++++++++++++++++++++++++++++++++
-alias gh='cd ~'
+alias gh='cd ~/Files/Personal'
 alias gc='cd ~/.config'
 alias gl='cd ~/.local'
 alias gs='cd ~/.local/bin'

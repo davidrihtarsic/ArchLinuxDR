@@ -393,6 +393,8 @@ nnoremap <Bar> <C-W>v<C-W><Right>
 " resize vertical
 nnoremap <C-H> :vertical resize -10<CR>
 nnoremap <C-L> :vertical resize +10<CR>
+nnoremap <C-J> :resize -4<CR>
+nnoremap <C-K> :resize +4<CR>
 "======================================================================
 "  Presentation of MARKDOWN documents
 "======================================================================
@@ -427,6 +429,8 @@ autocmd Filetype markdown,rmd inoremap ,l [](<++>)<++><Esc>F[a
 autocmd Filetype markdown,rmd inoremap ,p ```python<CR>```<CR><CR><esc>2kO
 autocmd Filetype markdown,rmd inoremap ,c ```cpp<cr>```<cr><cr><esc>2kO
 autocmd Filetype markdown,rmd inoremap ,v > ### NALOGA: 
+autocmd Filetype markdown,rmd inoremap ,a <!--<CR><CR>--><ESC>ki
+
 "auto wrapping selected text
 vnoremap ,b bexi***<ESC>P2li*<ESC>
 vnoremap ,s xi~~~<ESC>P2li~
@@ -449,20 +453,21 @@ autocmd Filetype markdown,rmd inoremap ,F <ESC>:r ! ~/bin/markdown/insert_image.
 autocmd Filetype markdown,rmd inoremap ,E $$  $${#eq:<++>}<++><Esc>F$2hi
 autocmd Filetype markdown,rmd inoremap ,T <ESC>:r ! ~/bin/markdown/insert_table.sh<CR>0{
 autocmd Filetype markdown,rmd inoremap $$ $$<++><ESC>F$i
+autocmd Filetype markdown,rmd inoremap ,Y <ESC>:r ! ~/.local/bin/snippets/html-youtube-iframe.sh<CR>0
 "----------------------------------------------------------------------
 "  🔖 VSTAVLJANJE REFERENC = CITIRANJE
 "----------------------------------------------------------------------
 inoremap ,x [@]<ESC>:r ! ~/bin/markdown/insert_bibtex_author.sh<CR>v$xkf@pJxli
-inoremap ,f [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_figure.sh "%:p"<CR>v$xkf@pJxli
+inoremap ,f [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_figure.sh "%:p"<CR>v$x`tpJxli
 inoremap ,e [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh "%:p"<CR>v$xkf@pJxli
-inoremap ,t [@]<ESC>:r !~/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/markdown/insert_reference_table.sh "%:p"<CR>v$xkf@pJA
+inoremap ,t [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/markdown/insert_reference_table.sh "%:p"<CR>v$x`tpJxli
 
 autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib<CR><CR>
 "----------------------------------------------------------------------
 "   PDF CREATE
 "----------------------------------------------------------------------
 " pandoc --from markdown --template skripta --listings --pdf-engine=xelatex test.md -o index.pdf
-autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -V urlcolor=violet -F pandoc-crossref -F pandoc-citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/panzer.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -V urlcolor=violet -F pandoc-crossref --citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/.pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc2notebook "%:p:t" 2> %:p:h/pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
 autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>

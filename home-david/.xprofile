@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/zsh
 # sourced at boot by ~/.xinitrc and most display managers
 
 # for nicer setup I move ZSH files into:
@@ -31,12 +31,14 @@ fi
 
 compton -b &
 #picom --backend xrender -b
-sxhkd &
 #feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
 feh --bg-fill ~/Pictures/wallpapers/ArchLabsLinux7.png
 
 # set dual monitor = home settup
-[ -n '$(xrandr | grep "DP1 connected")' ] && xrandr --output DP1 --mode 1920x1080 --pos 1920x0
+# add new mode
+#xrandr --newmode "1920x1080_home"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+#xrandr --addmode DP1 1920x1080_home
+[ -n '$(xrandr | grep "^DP1 connected")' ] && xrandr --output DP1 --mode 1920x1080 --pos 1920x0
 # remap/switch caps and ecape
 #setxkbmap -option caps:escape
 
@@ -46,3 +48,4 @@ feh --bg-fill ~/Pictures/wallpapers/ArchLabsLinux7.png
 [ -r $HOME/.config/X11/.Xmodmap ] && xmodmap $HOME/.config/X11/.Xmodmap
 xset dpms 600 900 1200
 xset r rate 250 70
+sxhkd &

@@ -8,6 +8,8 @@ Xcursor.theme: cursor-theme
 
 *.alpha: .7
 *.font: Hermit:size=12
+!*.font: Noto:size=12
+
 
 *.color0:  #282828
 *.color8:  #928374

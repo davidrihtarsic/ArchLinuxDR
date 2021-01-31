@@ -1,0 +1,141 @@
+#! /bin/sh
+FILE="/home/david/.local/bin/archfetch/fetch.inf"
+get_OS(){
+  OS=$(cat /etc/os-release | awk -F '"' '/PRETTY_NAME/ {printf $2}')
+  sed -i "s/^OS.*/OS: $OS/" $FILE
+}
+get_HOST(){
+  # to ni mišljeno host ampak katera mašina je
+  HOST=$(cat /proc/sys/kernel/hostname)
+  sed -i "s/^Host.*/Host: $HOST/" $FILE
+}
+get_KERNEL(){
+  KERNEL=$(uname -r)
+  sed -i "s/^Kernel.*/Kernel: $KERNEL/" $FILE
+}
+get_UPTIME(){
+  UPTIME=$(uptime --pretty|sed 's/^up // ; s/hours/h/ ; s/minutes/min/' )
+  sed -i "s/^Uptime.*/Uptime: $UPTIME/" $FILE
+}
+get_PKGs(){
+  PKG=$(pacman -Q |wc -l)
+  sed -i "s/^Packages.*/Packages: $PKG/" $FILE
+}
+get_SH(){
+  SH=$(basename $SHELL)
+  sed -i "s/^Shell.*/Shell: $SH/" $FILE
+}
+get_RES(){
+  RES=$(xrandr| awk '/\*/ {printf $1 " "}')
+  sed -i "s/^Resolution.*/Resolution: $RES/" $FILE
+}
+get_WM(){
+  WM="dwm"
+  sed -i "s/^WM.*/WM: $WM/" $FILE
+}
+get_THEME(){
+  THEME=$(cat /usr/share/gtk-3.0/settings.ini| awk '/gtk-theme-name/ {printf $3}')
+  sed -i "s/^Theme.*/Theme: $THEME/" $FILE
+}
+get_FONT(){
+  FONT=$(cat /usr/share/gtk-3.0/settings.ini| awk '/gtk-font-name/ {printf $3}')
+  sed -i "s/^Font.*/Font: $FONT/" $FILE
+}
+get_TERM(){
+  FIND_PPID=$(ps j $PPID | tail -1 | awk '{printf $1}')
+  TRM=$(cat /proc/$FIND_PPID/comm)
+  sed -i "s/^Terminal.*/Terminal: $TRM/" $FILE
+}
+get_TERM_FONT(){
+  TERM_FONT=$(cat ~/.Xresources | grep "*.font" | sed 's/^.*: // ; s/:si.*//')
+  sed -i "s/^Term\. Font.*/Term\. Font: $TERM_FONT/" $FILE
+}
+get_CPU(){
+  CPU=$(lscpu | awk '/Model name/ {printf $5}')
+  sed -i "s/^Cpu.*/Cpu: $CPU/" $FILE
+}
+get_GPU(){
+  GPU1=$(lspci | awk '/NVIDIA/ {printf $4" " $8" " $9}')
+  GPU2=$(lspci | awk '/VGA/ {printf $5" "$7" " $9}')
+  sed -i "s/^Gpu1.*/Gpu1: $GPU1/" $FILE
+  sed -i "s/^Gpu2.*/Gpu2: $GPU2/" $FILE
+}
+get_RAM(){
+  RAM=$(free -h | awk '/^Mem:/ {printf $3"\\/"$2}')
+  sed -i "s/^RAM.*/RAM: $RAM/" $FILE
+}
+get_OS &
+#get_HOST &
+get_KERNEL &
+get_UPTIME &
+get_PKGs &
+get_SH &
+get_RES &
+get_WM &
+get_THEME &
+get_FONT &
+get_TERM &
+get_TERM_FONT &
+get_CPU &
+get_GPU &
+get_RAM &
+
+mapfile -t FETCH < $FILE
+
+USER_HOST=${FETCH[0]}
+OS=${FETCH[2]}
+HOST=${FETCH[3]}
+KERNEL=${FETCH[4]}
+UPTIME=${FETCH[5]}
+PKGs=${FETCH[6]}
+SH=${FETCH[7]}
+RES=${FETCH[8]}
+WM=${FETCH[9]}
+THEME=${FETCH[10]}
+FONT=${FETCH[11]}
+TRM=${FETCH[12]}
+TERM_FONT=${FETCH[13]}
+CPU=${FETCH[14]}
+GPU1=${FETCH[15]}
+GPU2=${FETCH[16]}
+RAM=${FETCH[17]}
+BR="========================"
+SP="⌜ ⌟"
+CLR_Dark='\e[40m'$SP'\e[41m'$SP'\e[42m'$SP'\e[43m'$SP'\e[44m'$SP'\e[45m'$SP'\e[46m'$SP'\e[47m'$SP'\e[49m'
+CLR_Light='\e[100m'$SP'\e[101m'$SP'\e[102m'$SP'\e[103m'$SP'\e[104m'$SP'\e[105m'$SP'\e[106m'$SP'\e[107m'$SP'\e[49m'
+
+#COLORS
+c1="\e[31m" #Red
+c2="\e[32m" #Green
+c3="\e[33m" #Yellow
+c4="\e[34m" #Blue
+c5="\e[35m" #Violet
+c6="\e[36m" #
+c7="\e[37m" #Red
+c8="\e[38m" #Red
+c9="\e[39m" #Red
+c10="\e[40m" #Red
+c20="\e[0m" #Normal
+
+echo -e ${c4}""
+echo -e ${c4}'                      c           '${c4}''${c4}'            '${c3}$USER_HOST
+echo -e ${c4}'                     kKk,         '${c4}''${c4}'            '${c20}$BR
+echo -e ${c4}'                   .dKKKx.        '${c4}''${c4}'            '${c3}$OS
+echo -e ${c4}'                  .oKXKXKd.       '${c4}''${c4}'            '${c3}$HOST
+echo -e ${c4}'                 .l0XXXXKKo.      '${c4}''${c4}'            '${c3}$KERNEL
+echo -e ${c4}'                 c0KXXXXKX0l.     '${c4}''${c4}'            '${c3}$UPTIME
+echo -e ${c4}'                :0XKKOxxOKX0l.    '${c4}''${c4}'            '${c3}$PKGs
+echo -e ${c4}'               :OXKOc. .c0XX0l.   '${c4}''${c4}'            '${c3}$SH
+echo -e ${c4}'              :OK0o.  '${c1}'.j'${c4}' dKKX0l.              '${c3}$RES
+echo -e ${c4}'             :OX0c  '${c1}';xOx'${c4}'  dKXX0l.             '${c3}$WM
+echo -e ${c4}'            :0KKo.'${c1}'.o0XXKd.'${c4}' lKXX0l.            '${c3}$THEME
+echo -e ${c4}'           c0XKd.'${c1}'.oKXXXXKd..'${c4}'oKKX0l.           '${c3}$FONT
+echo -e ${c4}'         .c0XKk;'${c1}'.l0K0OO0XKd..'${c4}'oKXXKo.          '${c3}$TRM
+echo -e ${c4}'        .l0XXXk:'${c1}',dKx,.`l0XKo.'${c4}'.kXXXKo.         '${c3}$TERM_FONT
+echo -e ${c4}'       .o0XXXX0d,'${c1}':x;   .oKKx'${c4}' .dXKXXKd.        '${c3}$CPU
+echo -e ${c4}'      .oKXXXXKK0c.'${c1}';.    :00c'${c4}' cOXXXXXKd.       '${c3}$GPU1
+echo -e ${c4}'     .dKXXXXXXXXk,'${c1}'.     cKx'${c4}'  xKXXXXXXKx       '${c3}$GPU2
+echo -e ${c4}'    .xKXXXXK0kdl:.     '${c1}'.ok; '${c4}' .cdk0KKXXXKx     '${c3}$RAM
+echo -e ${c4}'   .xKK0koc,..         '${c1}'c, '${c4}'     ..,cok0KKk,    '${c20}$BR
+echo -e ${c4}'  ,xko:..             '${c1}'.. '${c4}'           .,:okx;   '${c3}$CLR_Dark
+echo -e ${c4}' .,;.                                  .;,.;'${c4}''${c4}'  '${c3}$CLR_Light

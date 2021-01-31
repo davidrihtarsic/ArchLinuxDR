@@ -1,0 +1,19 @@
+david@archlabs
+========================
+OS: ArchLabs Linux
+Host: archlabs
+Kernel: 5.9.14-arch1-1
+Uptime: 9 h, 54 min
+Packages: 1655
+Shell: zsh
+Resolution: 1920x1080 
+WM: dwm
+Theme: Adwaita
+Font: Cantarell
+Terminal: st
+Term. Font: Hermit
+Cpu: i7-7700HQ
+Gpu1: NVIDIA GTX 1050
+Gpu2: Intel HD 630
+RAM: 1.6Gi/15Gi
+========================
