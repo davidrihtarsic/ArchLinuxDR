@@ -7,5 +7,7 @@ if [ -n "$CMUS_IS_PLAYIG" ]
   then
     cmus-remote --pause
   else
-    xterm -class "floating" -geometry 55x10+3335+20 -e cmus
+    #xterm -class "floating" -geometry 55x10+3335+20 -e cmus
+    #st -c "floating" -g 55x10+3335+20 -e cmus
+    st -c "floating" -e cmus
 fi

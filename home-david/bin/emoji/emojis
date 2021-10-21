@@ -5198,6 +5198,8 @@ X Chi greek LaTeX
 \ast asterisk math LaTex
 ∘ circle math LaTex
 \circ circle math LaTex
+∅ diameter math LaTex
+\varnothing diameter math LaTex
 ∙ bullet math LaTex
 \bullet math LaTex
 √ square math LaTex
@@ -5282,8 +5284,11 @@ X Chi greek LaTeX
 ≝ math LaTex
 ≞ math LaTex
 ≟ math LaTex
+≈ approximately math LaTex
+\approx math LaTex
 ≠ math LaTex
-≡ math LaTex
+≡ equivalent math LaTex
+\equiv math LaTex
 ≢ math LaTex
 ≣ math LaTex
 ≤ math LaTex

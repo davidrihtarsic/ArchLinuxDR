@@ -53,6 +53,9 @@ yay -S powerline-fonts
 # in nato v .vimrc moraš prilepiti:
 # let g:airline_powerline_fonts = 1
 
+# install microsoft fonts (e.g. Arial, New Times Roman...)
+yay -S ttf-ms-fonts
+
 echo "################################################################################"
 echo "   SYMBOLS & ICONS Font Installed"
 echo "################################################################################"

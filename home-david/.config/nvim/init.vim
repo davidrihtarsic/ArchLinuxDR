@@ -19,6 +19,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "Plug 'scrooloose/nerdtree'              "File manager
 "Plug 'Nopik/vim-nerdtree-direnter'      "dir open bug fix
 Plug 'junegunn/fzf'
+Plug 'junegunn/fzf.vim'
 Plug 'kevinhwang91/rnvimr'
 "Plug 'rafaqz/ranger.vim'
 " Plug 'vifm/vifm.vim'
@@ -140,7 +141,7 @@ map <leader><CR> :CocCommand explorer<CR>
 
 " PANDOC
   noremap ,s :!panzer -t revealjs -s -o %:p:r.html %:p -V revealjs-url=http://lab.hakim.se/reveal-js
-  noremap <leader>d :!pandoc --pdf-engine=xelatex % -o %:p:r.pdf
+"  noremap <leader>d :!pandoc --pdf-engine=xelatex % -o %:p:r.pdf
 "#####################################
 "  AUTOCOMPLETITION
 "#####################################
@@ -230,17 +231,43 @@ nmap <leader>rn :call CocAction('rename')<CR>
   "======================================================================
     "   - hitro iskanje filov
   let $FZF_DEFAULT_COMMAND = "find /home/david/ . -path '*/\.*' -type d -prune -o -type f -print -o -type l -print 2> /dev/null"
-    map ff :FZF<CR>
+    "map ff :FZF<CR>
     let g:fzf_action = {
-      \ 'enter': 'tab split',
+      \ 'enter': 'edit',
+      \ 'ctrl-t': 'tab split',
       \ 'ctrl-x': 'split',
       \ 'ctrl-v': 'vsplit' }
+    function! Fuzzy_Files()
+        let g:fzf_action = {
+            \ 'enter': 'tab split',
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
+        :Files
+    endfunction
+    map ff :call Fuzzy_Files()<CR>
+    command! -bang -nargs=* FToC
+      \ call fzf#vim#grep(
+      \   'grep --with-filename --color=always --line-number ^#'.shellescape(<q-args>).' '.shellescape(expand('%')) , 1,
+      \   fzf#vim#with_preview(), <bang>0)
+    function! Fuzzy_ToC()
+        let g:fzf_action = {
+            \ 'enter': 'edit',
+            \ 'ctrl-t': 'tab split',
+            \ 'ctrl-x': 'split',
+            \ 'ctrl-v': 'vsplit' }
+        :lcd %:p:h
+        :FToC
+    endfunction
+    map <leader>ft :call Fuzzy_ToC()<CR>
   "======================================================================
   "    TAGBAR
   "======================================================================
   "   - dodatek za programiranje
   "   - v desnem oknu odpre spremenljivke in funkcije
-    nmap <F8> :TagbarToggle<CR>
+  "   - mogoče bi se dalo dobiti samo s fzf določene vrstice
+  "   - https://github.com/junegunn/fzf.vim/issues/374
+    "nmap <leader>t :TagbarToggle<CR>
     nnoremap <leader>e :TagbarOpenAutoClose<CR>
     let g:tagbar_autofocus = 1
     let g:tagbar_show_linenumbers = 2
@@ -264,7 +291,8 @@ nmap <leader>rn :call CocAction('rename')<CR>
   "    TABLEMODE
   "======================================================================
     let g:table_mode_corner="|"
-    map <leader>tm :TableModeToggle<CR>
+  "  call TableModeEnable
+  "  map <leader>tm :TableModeToggle<CR>
   "======================================================================
   "  ✅ SPELL CHECKING
   "======================================================================
@@ -361,16 +389,16 @@ nmap <buffer><silent><expr>j v:count ? 'j' : 'gj'
 nmap <buffer><silent><expr>k v:count ? 'k' : 'gk'
 
 " open a terminal in $PWD
-nnoremap <silent> <Leader>tt :terminal<CR>
+" nnoremap <silent> <Leader>tt :terminal<CR>
 
 " tab control
 nnoremap <silent> <M-h> :tabmove -1<CR>
 nnoremap <silent> <M-l> :tabmove +1<CR>
 nnoremap <silent> <C-t> :tabnew<CR>
-nnoremap <Leader>tc :tabclose<CR>
+"nnoremap <Leader>tc :tabclose<CR>
 " close current buffer and/or tab
 nnoremap <silent> <Leader>q :B<CR>:silent tabclose<CR>gT
-nnoremap <silent> <Leader>tl :execute "tabn ".g:lasttab<CR>
+"nnoremap <silent> <Leader>tl :execute "tabn ".g:lasttab<CR>
 
 " open a new tab in the current directory with netrw
 nnoremap <silent> <Leader>- :tabedit <C-R>=expand("%:p:h")<CR><CR>
@@ -405,8 +433,8 @@ nnoremap <C-K> :resize +4<CR>
 let g:limelight_bop = '^#\zs'
 let g:limelight_eop = '\n^#\ze'
 let g:limelight_default_coefficient = 0.8
-nmap <F5> :Goyo <bar> Limelight!!<CR>
-nmap gn : /^#<CR>zt
+nmap <F8> :Goyo <bar> Limelight!!<CR>
+nmap gt : /^#<CR>zt
 "======================================================================
 "    MARKDOWN in EDITOR TEXTING BEHAVIOUR
 "======================================================================
@@ -457,9 +485,9 @@ autocmd Filetype markdown,rmd inoremap ,Y <ESC>:r ! ~/.local/bin/snippets/html-y
 "----------------------------------------------------------------------
 "  🔖 VSTAVLJANJE REFERENC = CITIRANJE
 "----------------------------------------------------------------------
-inoremap ,x [@]<ESC>:r ! ~/bin/markdown/insert_bibtex_author.sh<CR>v$xkf@pJxli
+inoremap ,x [@]<ESC>F@mt:w<CR>:r ! ~/bin/markdown/insert_bibtex_author.sh<CR>v$x`tpJxli
 inoremap ,f [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_figure.sh "%:p"<CR>v$x`tpJxli
-inoremap ,e [@]<ESC>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh "%:p"<CR>v$xkf@pJxli
+inoremap ,e [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh "%:p"<CR>v$x`tpJxli
 inoremap ,t [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/markdown/insert_reference_table.sh "%:p"<CR>v$x`tpJxli
 
 autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib<CR><CR>
@@ -467,8 +495,12 @@ autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-
 "   PDF CREATE
 "----------------------------------------------------------------------
 " pandoc --from markdown --template skripta --listings --pdf-engine=xelatex test.md -o index.pdf
-autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -V urlcolor=violet -F pandoc-crossref --citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/.pandoc.md.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc2notebook "%:p:t" 2> %:p:h/pandoc.md.log) & <CR><CR>
+" autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -V urlcolor=violet -F pandoc-crossref --citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/.pandoc.md.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>S :!(pandoc-save-as -f %:p) <CR>
+autocmd FileType markdown,rmd noremap <leader>d :silent !(pandoc -s "%:p" -o "%:p:t".docx) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>m :silent !(pandoc2notebook -f "%:p:t" &> .pan2note.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>M :silent !(pandoc2notebook -f "%:p:t" -t book &> .pan2note.log) & <CR><CR>
+"autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc2notebook -f "%:p:t" -t book 2> %:p:h/.pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
 autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>
 autocmd BufRead markdown,*.md normal zR

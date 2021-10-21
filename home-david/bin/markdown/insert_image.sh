@@ -1,7 +1,5 @@
 #! /bin/sh
 
-#figure=$(ls ./slike | dmenu -l 10)
-#echo "![<++>](./slike/$figure){#fig:$figure}<++>"
-
-figure=$(ls ./slike/* | sxiv -tioq)
-echo "![<++>]($figure){#fig:<++>}<++>"
+FIGURE_FILE=$(ls ./slike/* | sxiv -tioq)
+FIGURE_TAG=$(basename $FIGURE_FILE | sed 's/\..*//')
+echo "![<++>]($FIGURE_FILE){#fig:$FIGURE_TAG}<++>"

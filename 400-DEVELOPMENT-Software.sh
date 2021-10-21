@@ -29,7 +29,8 @@ trizen -S --noconfirm --needed ccls
 ######################################################################
 # ELECTRONICS SOFTWARE
 ######################################################################
-trizen -S --noconfirm --needed fritzing
+yay -S fritzing
+yay -S simulide
 
 #====================================================================
 # Yenka

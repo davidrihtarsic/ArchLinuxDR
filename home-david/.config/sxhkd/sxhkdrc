@@ -27,7 +27,8 @@ super + {b, B}
     feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
 
 super + {c, C}
-    {galculator, xterm -c "floating" -e insect}
+    {galculator, st -c "floating" -e qalc}
+#    {galculator, st -c "floating" -e insect}
 
 # program launcher
 super + e

@@ -89,7 +89,7 @@ alias q='exit'
 alias r='ranger'
 alias update='sudo pacman -Syu'
 alias weather='curl wttr.in/~begunje'
-alias howto='tldr'
+#alias howto='tldr'
 #++++++++++++++++++++++++++++++++++++++
 # DIRRECTORY MAPPINGS
 #++++++++++++++++++++++++++++++++++++++
@@ -180,7 +180,7 @@ RPROMPT='$(git_prompt_string)%{$fg[green]%}%{$reset_color%}'
 # RANGER
 #*******************
 #[ "$RANGER_LEVEL" -gt 0 ] && RANGER=' [=]'
-[ "$RANGER_LEVEL" -gt 0 ] && RANGER='Ranger' || RANGER='ArchLabsDR'
+[ "$RANGER_LEVEL" -gt 0 ] && RANGER='Ranger' || RANGER='ArchLaptopDR'
 
 #*********************
 # FZF settings
@@ -194,7 +194,9 @@ export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 # ***************
 # Včasih mi ni delalo, da bi se remap zgodil sam od sebe
 # zato tale skript, da preveri remap in če ni ga zažene
-[ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
+if [ -n "${DISPLAY+x}" ]; then
+  [ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
+fi
 #**************************************************************************
 
 #####################################

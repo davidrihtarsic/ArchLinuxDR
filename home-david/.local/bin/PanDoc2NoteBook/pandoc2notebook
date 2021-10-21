@@ -1,32 +1,76 @@
-#! /bin/sh
-# Skriipt naredi skripto z:
-#    - naslovnico
-#    - avtorjem...
+#! /bin/bash
 
-FILENAME=$(basename $1 .md)
-TITLE=$(echo ${FILENAME^^} | sed 's/_/ /g')
-#echo $FILENAME
-#echo ".md"
-#echo $TITLE
+help(){
+echo "Skripta naredi iz markdown dokumenta:
+- enostaven dokument ali
+- dokument z naslovnico, kazalom ...
 
-pandoc  $1 --to latex -o $FILENAME.pdf --from markdown \
-  --template skripta \
-  -V lang=sl \
-  -M listings \
-  -F pandoc-crossref \
-  -F pandoc-citeproc \
-  -V caption-justification=centering \
-  --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib \
-  -V table-use-row-colors \
-  -V urlcolor=violet \
-  --number-sections \
-  -V documentclass=book \
-  -V book \
-  --toc \
-  -M author:"dr. David Rihtaršič" \
-  -M date:"$(date '+%Y-%B')" \
-  -M titlepage \
-  -M title:"$TITLE" \
-  --pdf-engine=pdflatex
+PARAMETRI:
+-t tip dokumenta [bool, article]
+-f ime markdown dadoteke za pretvorbo v pdf
+-l koda jezika [en, sl]
 
+UPORABA:
+pandoc2notebook -f ~/Files/test.md -t book"
+}
 
+while getopts 'hf:t:l:' PAR
+do
+  case $PAR in
+    h)help;exit 0;;
+    t)DOC_TYPE=$OPTARG;;
+    f)FILE_LIST=$OPTARG;;
+    l)LN=$OPTARG;;
+  esac
+done
+
+[ -z "$FILE_LIST" ] && echo "No file specified..." && exit 1;
+for FILE in $FILE_LIST
+do
+  [ ! -f "$FILE" ] && echo "$FILE not exist..."
+  echo "Convering $FILE -> PDF"
+  BASE_FILENAME=$(basename $FILE .md)
+  if [ "$DOC_TYPE" == "book" ]
+  then
+    TITLE=$(echo ${BASE_FILENAME^^} | sed 's/_/ /g')
+    BOOK_SETTINGS='
+    -V documentclass=book
+    -V book
+    --toc
+    -M titlepage'
+  fi
+  
+  [ -z "LN" ] && LN=en
+  if [ "$LN" == "sl"  ]
+  then
+    CAPTIONS='
+    -M listingTitle=Program
+    -M figureTitle=Slika
+    -M figPrefix=sl.
+    -M eqnPrefix=en.
+    -M lstPrefix=prog. '
+  else
+    CAPTIONS=""
+  fi
+  
+  pandoc  $FILE --to latex -o $BASE_FILENAME.pdf \
+    --from markdown \
+    --template skripta \
+    -V lang=sl \
+    -M title="$TITLE" \
+    -M author:"dr. David Rihtaršič" \
+    -M date:"$(date '+%Y-%B')" \
+    --listings \
+    -M listings=True \
+    -M listings-no-page-break=True \
+    -M codeBlockCaptions=True \
+    $CAPTIONS \
+    -V table-use-row-colors \
+    -V urlcolor=violet \
+    -V caption-justification=centering \
+    --number-sections \
+    -F pandoc-crossref \
+    --citeproc \
+    --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib \
+    $BOOK_SETTINGS && echo Done.
+done
