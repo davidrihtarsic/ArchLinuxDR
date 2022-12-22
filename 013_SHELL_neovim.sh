@@ -11,7 +11,7 @@ curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs https://raw.g
 
 #yay -S --noconfirm --needed universal-ctags-git
 yay -S --noconfirm --needed markdown2ctags
-pip3 install --user neovim
+#pip3 install --user neovim
 
 #  install Coc
 yay -S --noconfirm --needed neovim-coc
