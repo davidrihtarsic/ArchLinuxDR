@@ -1,13 +1,11 @@
 #!/bin/zsh
 # sourced at boot by ~/.xinitrc and most display managers
 
-# for nicer setup I move ZSH files into:
-#export ZDOTDIR="$HOME/.config/zsh"
-
-XDG_CONFIG_HOME="$HOME/.config"
-export XDG_CONFIG_HOME
-XDG_DATA_HOME="$HOME/.local/share"
-export XDG_DATA_HOME
+# to je že v .zshenv
+#XDG_CONFIG_HOME="$HOME/.config"
+#export XDG_CONFIG_HOME
+#XDG_DATA_HOME="$HOME/.local/share"
+#export XDG_DATA_HOME
 
 [ "$PATH" == *"$HOME/bin"* ] || PATH="$HOME/bin:$PATH"
 # Add all sub-directories in PATH
@@ -18,16 +16,11 @@ if [[ "$PATH" != *"$add_sub_dir_in"* ]]
     for d in $(ls -d $add_sub_dir_in**/*(/)); do add_to_path="$add_to_path:$d"; done
     export PATH=$PATH:$add_to_path
 fi
-#[ "$PATH" == *"$HOME/.local/bin"* ] || PATH="$HOME/.local/bin:$PATH"
-# Add all sub-directories in PATH
-#add_sub_dir_in="$HOME/.local/bin"
-#if [[ "$PATH" != *"$add_sub_dir_in"* ]]
-#  then
-#    add_to_path=$add_sub_dir_in
-#    for d in $(ls -d $add_sub_dir_in**/*(/)); do add_to_path="$add_to_path:$d"; done
-#    #echo $add_to_path
-#    PATH=$add_to_path:$PATH
-#fi
+
+if [[ -n '$(xrandr | grep "^Virtual1 connected")' ]]
+then
+  xrandr --output Virtual1 --mode 1920x1080
+fi
 
 #compton -b &
 picom --backend xrender -b
