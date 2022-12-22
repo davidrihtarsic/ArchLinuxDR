@@ -1,15 +1,4 @@
 #export MANWIDTH=70
-############################################################
-# PREFERED APPLICATIONS
-############################################################
-export EDITOR='nvim'
-export BROWSER='brave'
-export TERM='alacritty'
-export GUI_EDITOR=''
-export FILEMANAGER='nemo'
-export IMG_VIEWER='sxiv'
-export MOV_PLAYRE='mpv'
-
 # Add all sub-directories in PATH
 add_sub_dir_in="$HOME/.local/bin"
 if [[ "$PATH" != *"$add_sub_dir_in"* ]]
