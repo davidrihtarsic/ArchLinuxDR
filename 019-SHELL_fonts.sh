@@ -21,9 +21,10 @@ echo "##########################################################################
 #trizen -S --noconfirm --needed noto-fonts-emoji
 #trizen -S --noconfirm --needed ttf-twemoji
 #trizen -S --noconfirm --needed ttf-twemoji-color
-trizen -S --noconfirm --needed tf-font-awesome
-trizen -S --noconfirm --needed ttf-font-awesome
-trizen -S --noconfirm --needed otf-font-awesome
+#
+#yay -S --noconfirm --needed tf-font-awesome
+#yay -S --noconfirm --needed ttf-font-awesome
+#yay -S --noconfirm --needed otf-font-awesome
 
 echo "################################################################################"
 echo "   Basic Fonts Completed"
@@ -36,7 +37,7 @@ echo "##########################################################################
 # Look for nerd-fonts... in AUR
 #--------------------------------------------
 
-trizen -S --noconfirm --needed otf-hermit
+#trizen -S --noconfirm --needed otf-hermit
 
 # ti fonti so za puščice
 yay -S --noconfirm --needed nerd-fonts-dejavu-complete
