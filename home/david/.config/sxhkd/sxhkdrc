@@ -107,7 +107,7 @@ XF86Favorites
 
 # scripts
 super + v
-    ~/bin/emoji/get_emoji.sh
+    get_emoji.sh
 
 super + m
     ~/bin/system/mountUSBdisk.sh 
