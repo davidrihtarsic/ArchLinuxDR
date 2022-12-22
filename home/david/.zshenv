@@ -9,7 +9,7 @@
 ############################################################
 export EDITOR='nvim'
 export BROWSER='brave'
-export TERM='st'
+export TERM='alacritty'
 export GUI_EDITOR=''
 export FILEMANAGER='nemo'
 export IMG_VIEWER='sxiv'
