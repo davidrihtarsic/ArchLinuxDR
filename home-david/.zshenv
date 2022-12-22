@@ -1,1 +1,1 @@
-/home/david/Files/GitHub_noSync/ArchLinuxDR/home/.zshenv
+/home/david/Files/GitHub_noSync/ArchLinuxDR/home/david/.zshenv
