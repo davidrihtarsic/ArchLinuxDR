@@ -1,0 +1,83 @@
+!Cursos settings
+Xcursor.theme: cursor-theme
+
+! Base colors
+*.foreground:  #E1E1E1
+*.background:  #1c2023
+*.cursorColor: #778899
+
+*.alpha: .7
+*.font: Hermit:size=12
+!*.font: Noto:size=12
+
+
+*.color0:  #282828
+*.color8:  #928374
+*.color1:  #CC241D
+*.color9:  #FB4934
+*.color2:  #88881A
+*.color10: #B8BB26
+*.color3:  #D79921
+*.color11: #FABD2F
+*.color4:  #458588
+*.color12: #83A598
+*.color5:  #B16286
+*.color13: #D3869B
+*.color6:  #689D6A
+*.color14: #8EC07C
+*.color7:  #A89984
+*.color15: #EBDBB2
+
+!SXIV
+Sxiv.foreground:#A89984
+Sxiv.background:#282828
+
+! Rofi
+rofi.font: Hermit 11
+rofi.padding: 20
+rofi.line-padding: 2
+rofi.color-enabled: true
+rofi.hide-scrollbar: true
+rofi.separator-style: solid
+rofi.color-window: #1c2023, #919ba0, #1c2023
+rofi.color-normal: #1c2023, #919ba0, #1c2023, #a4a4a4, #1c2023
+rofi.color-urgent: argb:00000000, #f43753, argb:00000000, argb:00000000, #e29a49
+rofi.color-active: argb:00000000, #49bbfb, argb:00000000, argb:00000000, #e29a49
+rofi.kb-cancel: Escape,Alt+F1
+
+! xterm
+xterm*termName: xterm-256color
+xterm*font: monospace
+xterm*faceName: monospace:size=11
+xterm*loginShell: true
+xterm*vt100*geometry: 90x34
+xterm*saveLines: 2000
+xterm*charClass: 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48
+xterm*eightBitInput: false
+
+! URxvt
+URxvt*saveline: 15000
+URxvt*termName: rxvt-256color
+URxvt*iso14755: false
+URxvt*depth: 32
+URxvt*background: [95]#1C2023
+URxvt*scrollBar: false
+URxvt*scrollBar_right: false
+URxvt*internalBorder: 0
+URxvt*externalBorder: 0
+URxvt*letterSpace: -1
+URxvt.font: xft:monospace:size=11
+URxvt.perl-ext-common: default,clipboard,url-select,keyboard-select
+URxvt.copyCommand: xclip -i -selection clipboard
+URxvt.pasteCommand: xclip -o -selection clipboard
+URxvt.keysym.m-c: perl:clipboard:copy
+URxvt.keysym.m-v: perl:clipboard:paste
+URxvt.urlLauncher: exo-open
+URxvt.underlineURLs: true
+URxvt.urlButton: 1
+URxvt.geometry: 90x34
+URxvt.tabbed.tabbar-fg: 4
+URxvt.tabbed.tabbar-bg: 16
+URxvt.tabbed.tab-fg: 15
+URxvt.tabbed.tab-bg: 4
+URxvt*buffered: false
