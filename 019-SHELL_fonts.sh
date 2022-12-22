@@ -35,23 +35,18 @@ echo "   Installing SYMBOLS & ICONS Fonts"
 echo "################################################################################"
 # Look for nerd-fonts... in AUR
 #--------------------------------------------
-#ta jih ima res veliko ampal so malo manjši znaki...
-#trizen -S --noconfirm --needed nerd-fonts-complete
+
 trizen -S --noconfirm --needed otf-hermit
 
-trizen -S --noconfirm --needed nerd-fonts-droid-sans-mono
-trizen -S --noconfirm --needed nerd-fonts-dejavu-complete
+# ti fonti so za puščice
+yay -S --noconfirm --needed nerd-fonts-dejavu-complete
+yay -S --noconfirm --needed nerd-fonts-droid-sans-mono
 
-# trizen -S --noconfirm --needed noto-fonts-emoji noto-fonts-emoji-blob noto-fonts-emoji-lollipop noto-fonts-emoji-marshmallow
+# ti fonti so za večino emoji smilijev, hrana...
 sudo pacman -S ttf-joypixels
-yay -S ttf-twemoji-color
-yay -S ttf-symbola
-sudo pacman -S noto-fonts-emoji
 
 # za terminalni addon spaceship potrebuješ fonte:
 yay -S powerline-fonts
-# in nato v .vimrc moraš prilepiti:
-# let g:airline_powerline_fonts = 1
 
 # install microsoft fonts (e.g. Arial, New Times Roman...)
 yay -S ttf-ms-fonts
