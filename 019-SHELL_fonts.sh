@@ -37,7 +37,7 @@ echo "##########################################################################
 # Look for nerd-fonts... in AUR
 #--------------------------------------------
 
-#trizen -S --noconfirm --needed otf-hermit
+sudo pacman -S --noconfirm --needed otf-hermit
 
 # ti fonti so za puščice
 yay -S --noconfirm --needed nerd-fonts-dejavu-complete
