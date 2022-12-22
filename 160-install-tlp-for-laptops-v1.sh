@@ -24,16 +24,16 @@ set -e
 
 echo "Install tlp for battery life - laptops"
 
-sudo pacman -S --noconfirm --needed tlp
+sudo pacman -S --noconfirm --needed tlp tlp-rdw
 sudo systemctl enable tlp.service
 # tega ni treba več od različice 1.2
-#sudo systemctl start tlp-sleep.service
+sudo systemctl start tlp-sleep.service
 # install tlp-rdw
-# sudo systemctl mask systemd-rfkill.service
-# sudo systemctl mask systemd-rfkill.socket
+sudo systemctl mask systemd-rfkill.service
+sudo systemctl mask systemd-rfkill.socket
 
-
-trizen -S --noconfirm --needed xautolock
+# yay -S --noconfirm --needed auto-cpufreq
+yay -S --noconfirm --needed xautolock
 # add to .xinitrc
 #     xautolock -time 7 -locker "systemctl suspend-then-hibernate" &  
 

@@ -22,6 +22,11 @@ trizen -S --noconfirm --needed python-pywal
 sudo pacman -S --noconfirm --needed zip unzip
 # primeri kako uporabljati razne ukaze zip, tar, convet, ffmpeg ...
 sudo pacman -S --noconfirm --needed tldr
+
+# za dostop do MTP naprave (mobilni telefon)
+# samo mountaš telefon: aft-mtp-mount ~/Files/Davids_Phone
+yay -S --noconfirm --needed android-file-transfer
+
 echo -e '\e[34m' #zelena
 echo "################################################################################"
 echo "   ALL Utils INSTALLED"

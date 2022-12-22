@@ -29,8 +29,8 @@ fi
 #    PATH=$add_to_path:$PATH
 #fi
 
-compton -b &
-#picom --backend xrender -b
+#compton -b &
+picom --backend xrender -b
 #feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
 feh --bg-fill ~/Pictures/wallpapers/ArchLabsLinux7.png
 

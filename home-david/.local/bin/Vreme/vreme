@@ -1,6 +1,7 @@
 #! /bin/sh
 
-vreme_padavine
 vreme_radar
+vreme_padavine
+vreme_aladin_napoved
 vreme_vertikalna_sondaza
 curl wttr.in/~begunje

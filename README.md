@@ -16,3 +16,18 @@ cd ~/build/trizen && makepkg -si
 ## DWM (Suckles)
 
 ## ZSH
+
+## Installing archlinux
+
+Nekaj zaporednih komand:
+
+    loadkeys slovene
+      pacman-key --init
+      pacman-key --populate archlinux
+    archinstall
+
+    packeges : git neovim ranger 
+
+... kot kaže, si lahko shraniš nastavitve... shraniš jih lahko
+
+probejmo it v chroot in inštalirat zsh

@@ -201,10 +201,10 @@ fi
 
 #####################################
 # PROMPT dir & vi-mode
-L_DIV="╭=["
+L_DIV="┌=["
 M_DIV="%B|%b"
 R_DIV="]==--"
-S_PRT="╰>"
+S_PRT="└>"
 bindkey -v
 function zle-line-init zle-keymap-select {
     case ${KEYMAP} in

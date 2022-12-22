@@ -33,6 +33,7 @@ Plug 'junegunn/goyo.vim'                "Center the text [ = ]      ,prezentacij
 " OTHER UTILS =======================================================
 Plug 'tpope/vim-obsession'              "Save/Load Vim session with files
 Plug 'tpope/vim-fugitive'               "GIT plugin
+Plug 'lambdalisue/suda.vim'             "read & write with sudo privilages
 "Plug 'Shougo/unite.vim'                "TUI for others funtionalaties
 "Plug 'vimwiki/vimwiki'                 "vim WIKI - module for Wiki page
 " GAMES =============================================================
@@ -260,6 +261,9 @@ nmap <leader>rn :call CocAction('rename')<CR>
         :FToC
     endfunction
     map <leader>ft :call Fuzzy_ToC()<CR>
+    command! ReadCppFile call fzf#run({
+        \ 'source':     'find ./',
+        \  'sink':      ':read !snip-md-code.sh '})
   "======================================================================
   "    TAGBAR
   "======================================================================
@@ -455,7 +459,6 @@ autocmd Filetype markdown,rmd inoremap ,s ~~~~<++><Esc>F~hi
 autocmd Filetype markdown,rmd inoremap ,i **<++><Esc>F*i
 autocmd Filetype markdown,rmd inoremap ,l [](<++>)<++><Esc>F[a
 autocmd Filetype markdown,rmd inoremap ,p ```python<CR>```<CR><CR><esc>2kO
-autocmd Filetype markdown,rmd inoremap ,c ```cpp<cr>```<cr><cr><esc>2kO
 autocmd Filetype markdown,rmd inoremap ,v > ### NALOGA: 
 autocmd Filetype markdown,rmd inoremap ,a <!--<CR><CR>--><ESC>ki
 
@@ -473,11 +476,13 @@ vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
 "----------------------------------------------------------------------
 "  🖼 📅  VSAVLJANJE ELEMENTOV
 "----------------------------------------------------------------------
-autocmd Filetype markdown,rmd inoremap ,n <Esc>gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
+"autocmd Filetype markdown,rmd inoremap ,n <Esc>gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
+autocmd Filetype markdown,rmd inoremap ,n <C-R>%<ESC>:s/^[0-9]*_*/# <CR><ESC>:s/_/ /g<CR><ESC><S-V>Uf.DA
 autocmd Filetype markdown,rmd inoremap ,w <Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
 autocmd Filetype markdown,rmd inoremap ,d <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_date.sh<CR>kJJi
 autocmd Filetype markdown,rmd inoremap ,h <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJi
 autocmd Filetype markdown,rmd inoremap ,F <ESC>:r ! ~/bin/markdown/insert_image.sh<CR>0
+autocmd Filetype markdown,rmd inoremap ,C <ESC>:ReadCppFile<CR><ESC>o
 autocmd Filetype markdown,rmd inoremap ,E $$  $${#eq:<++>}<++><Esc>F$2hi
 autocmd Filetype markdown,rmd inoremap ,T <ESC>:r ! ~/bin/markdown/insert_table.sh<CR>0{
 autocmd Filetype markdown,rmd inoremap $$ $$<++><ESC>F$i
@@ -490,7 +495,7 @@ inoremap ,f [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/
 inoremap ,e [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh "%:p"<CR>v$x`tpJxli
 inoremap ,t [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/markdown/insert_reference_table.sh "%:p"<CR>v$x`tpJxli
 
-autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib<CR><CR>
+autocmd Filetype markdown,rmd,md nnoremap <leader>wb <Esc>:split ~/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib<CR><CR>
 "----------------------------------------------------------------------
 "   PDF CREATE
 "----------------------------------------------------------------------
@@ -498,8 +503,8 @@ autocmd Filetype markdown,rmd,md nnoremap <leader>b <Esc>:split ~/Files/Work/UL-
 " autocmd FileType markdown,rmd noremap <leader>m :silent !(cd %:p:h && pandoc "%:p:t" --to latex -o "%:p:r.pdf" --from markdown --template skripta -V lang=sl -M figPrefix="sl." -M eqnPrefix="en." -M listings -V listings-no-page-break -V urlcolor=violet -F pandoc-crossref --citeproc -V caption-justification=centering --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib -V table-use-row-colors --number-sections --pdf-engine=pdflatex 2> %:p:h/.pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>S :!(pandoc-save-as -f %:p) <CR>
 autocmd FileType markdown,rmd noremap <leader>d :silent !(pandoc -s "%:p" -o "%:p:t".docx) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>m :silent !(pandoc2notebook -f "%:p:t" &> .pan2note.log) & <CR><CR>
-autocmd FileType markdown,rmd noremap <leader>M :silent !(pandoc2notebook -f "%:p:t" -t book &> .pan2note.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>m :silent !(pandoc2notebook -l sl -f "%:p:t" &> .pan2note.log) & <CR><CR>
+autocmd FileType markdown,rmd noremap <leader>M :silent !(pandoc2notebook -l sl -f "%:p:t" -t book &> .pan2note.log) & <CR><CR>
 "autocmd FileType markdown,rmd noremap <leader>M :silent !(cd %:p:h && pandoc2notebook -f "%:p:t" -t book 2> %:p:h/.pandoc.md.log) & <CR><CR>
 autocmd FileType markdown,rmd noremap <leader>l <Esc>:split %:p:r.log<CR><CR>
 autocmd FileType markdown,rmd noremap <C-p> :!(zathura %:p:r.pdf & )<CR><CR>

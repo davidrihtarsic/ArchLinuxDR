@@ -26,8 +26,9 @@
 super + {b, B}
     feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
 
-super + {c, C}
-    {galculator, st -c "floating" -e qalc}
+super + {C, c}
+    {galculator, st -f "Hermit:pixelsize=22" -c "floating" -e qalc}
+#    {galculator, st -c "floating" -e qalc}
 #    {galculator, st -c "floating" -e insect}
 
 # program launcher
@@ -47,7 +48,8 @@ super + n
     calcurse-caldav && st -e calcurse && calcurse-caldav
 
 super + w
-     brave
+     brave -no-sandbox &!
+#    brave
 #    firefox
 #    $BROWSER
 #    google-chrome-stable
@@ -71,8 +73,28 @@ XF86MonBrightnessDown
 XF86MonBrightnessUp
     ~/.local/bin/SystemControll/LcdBrightnesUP.sh
 
+XF86KbdBrightnessDown
+    brightnessctl --device='asus::kbd_backlight' set 0
+
+XF86KbdBrightnessUp
+    brightnessctl --device='asus::kbd_backlight' set 1
+
 super + F8
     ~/.local/bin/SystemControll/setMyMonitor.sh
+
+XF86Launch5
+    xrandr --output DP1-8 --off && xrandr --output DP1-9 --off
+
+XF86Launch6
+    ~/.local/bin/SystemControll/side_monitor_on_of -m DP1-8
+#    xrandr --output DP1-8 --mode 1920x1080 --pos 1920x0 && xrandr | grep DP1-8 | sed 's/(.*//' | xargs -I{} notify-send "{}"
+
+XF86Launch7
+    ~/.local/bin/SystemControll/side_monitor_on_of -m DP1-9
+#    xrandr --output DP1-9 --mode 1920x1080 --pos 3840x0 && xrandr | grep DP1-9 | sed 's/(.*//' | xargs -I{} notify-send "{}"
+
+XF86Favorites
+    ~/.local/bin/BloutoothObEx/bt_connect_JBL
 #super 
 #    rofi_run -r terminal emulator 
 #super + t exo-open --launch TerminalEmulator web browser 

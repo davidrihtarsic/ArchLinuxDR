@@ -6,14 +6,18 @@ echo "##########################################################################
 echo "    BAckLight"
 echo "################################################################################"
 
-sudo tee /etc/udev/rules.d/backlight.rules <<<'# controll backlight with Intel Graphic card 
-ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
-ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+#sudo tee /etc/udev/rules.d/backlight.rules <<<'# controll backlight with Intel Graphic card 
+#ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+#ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="intel_backlight", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+#
+## controll backlight with NVIDIA  
+#ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
+#ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
+#'
 
-# controll backlight with NVIDIA  
-ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", RUN+="/bin/chgrp video /sys/class/backlight/%k/brightness"
-ACTION=="add", SUBSYSTEM=="backlight", KERNEL=="acpi_video0", RUN+="/bin/chmod g+w /sys/class/backlight/%k/brightness"
-'
+# verjetno je boljši način, da uporabim programček brightnessctl
+
+yay -S brightnessctl
 
 echo -e '\e[32m' #zelena
 echo "################################################################################"

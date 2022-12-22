@@ -11,4 +11,5 @@ if [ "$LED" -gt "1500" ];
 	then LED=1500;
 fi;
 echo $LED;
-echo $LED > /sys/class/backlight/intel_backlight/brightness
+brightnessctl --device='intel_backlight' set $LED
+#echo $LED > /sys/class/backlight/intel_backlight/brightness

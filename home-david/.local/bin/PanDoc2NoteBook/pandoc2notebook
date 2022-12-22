@@ -1,25 +1,30 @@
 #! /bin/bash
 
+GR='\e[32m'
+DF='\e[0m'
+
 help(){
 echo "Skripta naredi iz markdown dokumenta:
 - enostaven dokument ali
 - dokument z naslovnico, kazalom ...
 
 PARAMETRI:
--t tip dokumenta [bool, article]
+-t tip dokumenta [book, article]
 -f ime markdown dadoteke za pretvorbo v pdf
+-s subtitle
 -l koda jezika [en, sl]
 
 UPORABA:
 pandoc2notebook -f ~/Files/test.md -t book"
 }
 
-while getopts 'hf:t:l:' PAR
+while getopts 'hf:t:s:l:' PAR
 do
   case $PAR in
     h)help;exit 0;;
     t)DOC_TYPE=$OPTARG;;
     f)FILE_LIST=$OPTARG;;
+    s)SUBTITLE=$OPTARG;;
     l)LN=$OPTARG;;
   esac
 done
@@ -28,7 +33,7 @@ done
 for FILE in $FILE_LIST
 do
   [ ! -f "$FILE" ] && echo "$FILE not exist..."
-  echo "Convering $FILE -> PDF"
+  echo -n "Convering $FILE -> PDF .."
   BASE_FILENAME=$(basename $FILE .md)
   if [ "$DOC_TYPE" == "book" ]
   then
@@ -37,6 +42,7 @@ do
     -V documentclass=book
     -V book
     --toc
+    --toc-depth=2
     -M titlepage'
   fi
   
@@ -46,18 +52,23 @@ do
     CAPTIONS='
     -M listingTitle=Program
     -M figureTitle=Slika
+    -M tableTitle=Tabela
     -M figPrefix=sl.
     -M eqnPrefix=en.
     -M lstPrefix=prog. '
   else
-    CAPTIONS=""
+    CAPTIONS='
+    -M listingTitle=Program
+    -M lstPrefix=prog.
+    '
   fi
   
   pandoc  $FILE --to latex -o $BASE_FILENAME.pdf \
     --from markdown \
-    --template skripta \
+    --template skripta\
     -V lang=sl \
     -M title="$TITLE" \
+    -M subtitle="$SUBTITLE" \
     -M author:"dr. David Rihtaršič" \
     -M date:"$(date '+%Y-%B')" \
     --listings \
@@ -69,8 +80,9 @@ do
     -V urlcolor=violet \
     -V caption-justification=centering \
     --number-sections \
+    --bibliography="/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib" \
     -F pandoc-crossref \
+    -F mermaid-filter \
     --citeproc \
-    --bibliography=/home/david/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib \
-    $BOOK_SETTINGS && echo Done.
+    $BOOK_SETTINGS && echo -e "..$GR Done $DF"
 done

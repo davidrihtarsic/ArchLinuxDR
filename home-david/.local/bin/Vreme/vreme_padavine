@@ -7,13 +7,17 @@
 # Napoved pa se verjetno izračuna vsakih 12 ur.
 # Torej od trenutnega časa odšteješ 12 ur:
 #   date -d '12 hours ago' "+%Y%m%d'
-
 SRV="https://meteo.arso.gov.si/uploads/probase/www/model/ecmwf/ef_"
 SLO="00_pp_SLOVENIA_NORTH-WEST_.png"
 
 DAT=$(date -d '12 hours ago' '+%Y%m%d')
+echo "date: $DAT"
 HOUR=$(date -d '12 hours ago' '+%H')
-[ $HOUR -gt 12 ] && HOUR=12 || $HOUR=00
+echo -n "hour: $HOUR ->"
+[ $HOUR -gt 11 ] && HOUR=12 || HOUR=00
+echo " $HOUR"
+echo "data form:"
+echo "$SRV$DAT-$HOUR$SLO"
 
-mpv --loop "$SRV$DAT-00$SLO"
+mpv --loop "$SRV$DAT-$HOUR$SLO"
 
