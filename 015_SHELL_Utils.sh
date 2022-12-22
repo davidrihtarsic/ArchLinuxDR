@@ -5,14 +5,13 @@ echo "##########################################################################
 echo "    Installing esential utils..."
 echo "################################################################################"
 
-sudo pacman -S --noconfirm --needed tree man neofetch fzf feh dmenu rofi
+sudo pacman -S --noconfirm --needed tree man neofetch fzf feh dmenu rofi notify-osd qalculate-gtk
 
 sudo pacman -S --noconfirm --needed sxhkd
 sudo pacman -S --noconfirm --needed xsel
 sudo pacman -S --noconfirm --needed xclip
 #terminal drag-and-drop
 yay -S --noconfirm --needed dragon-drop
-yay -S --noconfirm --needed qalc
 
 echo -e '\e[32m' #zelena
 echo "################################################################################"
