@@ -59,7 +59,7 @@ super + w
 #    rofi_run -r
 
 super + Menu
-    rofi_run -r
+    ~/.local/bin/rofi_run -r
 
 #ctrl + F2
 XF86WLAN
@@ -107,7 +107,7 @@ XF86Favorites
 
 # scripts
 super + v
-    get_emoji.sh
+    ~/.local/bin/emoji/get_emoji.sh
 
 super + m
     ~/bin/system/mountUSBdisk.sh 
@@ -152,7 +152,7 @@ super + shift + s
 
 # quit bspwm normally
 super + x
-    rofr.sh -l
+    ~/.local/bin/rofr.sh -l
 
 XF86Sleep
     systemctl hibernate
