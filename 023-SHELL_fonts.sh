@@ -1,6 +1,7 @@
 #!/bin/bash
 set -e
 
+echo -e '\e[33m' #rumena
 echo "################################################################################"
 echo "   Installling Basic Fonts"
 echo "################################################################################"
@@ -26,13 +27,15 @@ echo "##########################################################################
 
 sudo pacman -S --noconfirm --needed otf-hermit
 # install microsoft fonts (e.g. Arial, New Times Roman...)
-yay -S ttf-ms-fonts
+yay -S --noconfirm --needed ttf-ms-fonts
 
+echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "   Basic Fonts Completed"
 echo "################################################################################"
 
 
+echo -e '\e[33m' #rumena
 echo "################################################################################"
 echo "   Installing SYMBOLS & ICONS Fonts"
 echo "################################################################################"
@@ -44,12 +47,13 @@ yay -S --noconfirm --needed nerd-fonts-dejavu-complete
 yay -S --noconfirm --needed nerd-fonts-droid-sans-mono
 
 # ti fonti so za večino emoji smilijev, hrana...
-sudo pacman -S ttf-joypixels
+sudo pacman -S --noconfirm --needed ttf-joypixels
 
 # za terminalni addon spaceship potrebuješ fonte:
 yay -S powerline-fonts
 
 
+echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "   SYMBOLS & ICONS Font Installed"
 echo "################################################################################"
