@@ -28,7 +28,7 @@ fi
 #compton -b &
 picom --backend xrender -b
 #feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
-feh --bg-fill ~/Pictures/wallpapers/ArchLabsLinux7.png
+feh --bg-fill ~/.loca/share/wallpapers/ArchLabsLinux7.png
 
 # set dual monitor = home settup
 # add new mode
