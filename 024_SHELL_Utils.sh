@@ -5,7 +5,15 @@ echo "##########################################################################
 echo "    Installing esential utils..."
 echo "################################################################################"
 
-sudo pacman -S --noconfirm --needed tree man neofetch fzf feh dmenu rofi notify-osd qalculate-gtk
+sudo pacman -S --noconfirm --needed man
+sudo pacman -S --noconfirm --needed tree
+sudo pacman -S --noconfirm --needed neofetch
+sudo pacman -S --noconfirm --needed fzf
+sudo pacman -S --noconfirm --needed dmenu
+sudo pacman -S --noconfirm --needed rofi
+sudo pacman -S --noconfirm --needed notify-osd
+sudo pacman -S --noconfirm --needed qalculate-gtk
+sudo pacman -S --noconfirm --needed feh
 
 sudo pacman -S --noconfirm --needed sxhkd
 sudo pacman -S --noconfirm --needed xsel

@@ -8,7 +8,6 @@ PWD=$(pwd)
 
 yay -S ranger-git
 [ ! -d "$HOME/.deleted_files" ] && mkdir ~/.deleted_files
-sudo pacman -S --noconfirm --needed python-pip
 # IMAGEs preview
 sudo pip3 install ueberzug
 sudo pacman -S --noconfirm --needed ffmpegthumbnailer

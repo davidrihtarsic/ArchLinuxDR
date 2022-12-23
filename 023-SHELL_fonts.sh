@@ -16,15 +16,17 @@ echo "##########################################################################
 #sudo pacman -S ttf-roboto --noconfirm --needed
 #sudo pacman -S ttf-ubuntu-font-family --noconfirm --needed
 #sudo pacman -S tamsyn-font --noconfirm --needed
-
-# trizen -S --noconfirm --needed ttf-symbola
-#trizen -S --noconfirm --needed noto-fonts-emoji
-#trizen -S --noconfirm --needed ttf-twemoji
-#trizen -S --noconfirm --needed ttf-twemoji-color
-#
+#yay -S --noconfirm --needed ttf-symbola
+#yay -S --noconfirm --needed noto-fonts-emoji
+#yay -S --noconfirm --needed ttf-twemoji
+#yay -S --noconfirm --needed ttf-twemoji-color
 #yay -S --noconfirm --needed tf-font-awesome
 #yay -S --noconfirm --needed ttf-font-awesome
 #yay -S --noconfirm --needed otf-font-awesome
+
+sudo pacman -S --noconfirm --needed otf-hermit
+# install microsoft fonts (e.g. Arial, New Times Roman...)
+yay -S ttf-ms-fonts
 
 echo "################################################################################"
 echo "   Basic Fonts Completed"
@@ -37,8 +39,6 @@ echo "##########################################################################
 # Look for nerd-fonts... in AUR
 #--------------------------------------------
 
-sudo pacman -S --noconfirm --needed otf-hermit
-
 # ti fonti so za puščice
 yay -S --noconfirm --needed nerd-fonts-dejavu-complete
 yay -S --noconfirm --needed nerd-fonts-droid-sans-mono
@@ -49,8 +49,6 @@ sudo pacman -S ttf-joypixels
 # za terminalni addon spaceship potrebuješ fonte:
 yay -S powerline-fonts
 
-# install microsoft fonts (e.g. Arial, New Times Roman...)
-yay -S ttf-ms-fonts
 
 echo "################################################################################"
 echo "   SYMBOLS & ICONS Font Installed"
