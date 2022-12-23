@@ -9,7 +9,7 @@ PWD=$(pwd)
 sudo pacman -S --noconfirm --needed ranger
 [ ! -d "$HOME/.deleted_files" ] && mkdir ~/.deleted_files
 # IMAGEs preview
-sudo pip3 install ueberzug
+sudo pacman -S --noconfirm --needed ueberzug
 sudo pacman -S --noconfirm --needed ffmpegthumbnailer
 # CODE preview
 sudo pacman -S --noconfirm --needed highlight
