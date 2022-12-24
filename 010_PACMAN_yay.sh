@@ -6,6 +6,9 @@ echo "##########################################################################
 echo "   Installing YAY"
 echo "################################################################################"
 
+#installing known dependencies
+sudo pacman -S --noconfirm --needed go
+
 [[ -d ~/.local/build/yay ]] && rm -R ~/.local/build/yay
 git clone https://aur.archlinux.org/yay.git ~/.local/build/yay
 cd ~/.local/build/yay && makepkg -si

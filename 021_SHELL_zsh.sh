@@ -9,6 +9,8 @@ echo "##########################################################################
 sudo pacman -S --noconfirm --needed zsh
 chsh -s /bin/zsh
 
+./888_Sync_HomeDir.sh
+
 echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "    ZSH Installed"
