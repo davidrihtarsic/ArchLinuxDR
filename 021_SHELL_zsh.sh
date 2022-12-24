@@ -9,6 +9,10 @@ echo "##########################################################################
 sudo pacman -S --noconfirm --needed zsh
 chsh -s /bin/zsh
 
+echo -e '\e[32m' #rumena
+echo "LogOUT & LogIN to take efect!!"
+sleep 1
+
 ./888_Sync_HomeDir.sh
 
 echo -e '\e[32m' #zelena

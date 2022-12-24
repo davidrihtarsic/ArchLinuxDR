@@ -5,5 +5,6 @@ echo "##########################################################################
 echo "   Install generic DWM"
 echo "################################################################################"
 
-trizen -S --noconfirm --needed dwm
+yay -S --noconfirm --needed dwm
+
 sleep 1
