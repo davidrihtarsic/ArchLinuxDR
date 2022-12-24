@@ -11,8 +11,8 @@ fi
 # user init scripts and settings
 [ -r /etc/X11/xinit/.Xmodmap ] && xmodmap /etc/X11/xinit/.Xmodmap
 [ -r $HOME/.config/X11/.Xmodmap ] && xmodmap $HOME/.config/X11/.Xmodmap
-[ -r ~/.Xresources ] && xrdb -merge ~/.Xresources
-[ -r ~/.xprofile ] && . ~/.xprofile
+[ -r $HOME/.config/X11/.Xresources ] && xrdb -merge $HOME/.config/X11/.Xresources
+[ -r $HOME/.config/X11/.xprofile ] && . $HOME/.config/X11/.xprofile
 
 # Add all sub-directories in PATH
 add_sub_dir_in="$HOME/.local/bin"
@@ -22,6 +22,8 @@ if [[ "$PATH" != *"$add_sub_dir_in"* ]]
     for d in $(ls -d $add_sub_dir_in**/*(/)); do add_to_path="$add_to_path:$d"; done
     export PATH=$PATH:$add_to_path
 fi
+
+echo $PATH > test_PATH_from_xinitrc.md
 ################################
 # DWM testing
 ################################

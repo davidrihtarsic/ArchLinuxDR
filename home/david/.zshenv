@@ -3,7 +3,7 @@
 # it should not contain commands that produce output or
 # assume the shell is attached to a TTY. When this file
 # exists it will always be read.
-
+echo "test1"
 ############################################################
 # PREFERED APPLICATIONS
 ############################################################
@@ -23,7 +23,7 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 
 # ta HOME/bin je potrebno prestavit v $HOME/.local/bin
-[ "$PATH" == *"$HOME/bin"* ] || PATH="$HOME/bin:$PATH"
+[[ "$PATH" == *"$HOME/bin"* ]] || PATH="$HOME/bin:$PATH"
 
 # Add all sub-directories in PATH
 add_sub_dir_in="$HOME/.local/bin"
@@ -33,3 +33,4 @@ if [[ "$PATH" != *"$add_sub_dir_in"* ]]
     for d in $(ls -d $add_sub_dir_in**/*(/)); do add_to_path="$add_to_path:$d"; done
     export PATH=$PATH:$add_to_path
 fi
+echo $PATH > test_PATH_from_zshenv.md
