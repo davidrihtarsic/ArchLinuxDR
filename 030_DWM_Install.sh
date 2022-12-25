@@ -8,6 +8,7 @@ echo "##########################################################################
 # Instal DWM dependancies
 # compositor -> transparency
 sudo pacman -S --noconfirm --needed picom
+sudo pacman -S --noconfirm --needed feh
 
 # menus & notifier
 sudo pacman -S --noconfirm --needed dmenu
