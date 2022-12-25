@@ -34,5 +34,6 @@ echo "   Install generic DWM"
 echo "################################################################################"
 # yay -S --noconfirm --needed dwm
 git clone https://git.suckless.org/dwm ~/.local/build/dwm
+cd ~/.local/build/dwm && sudo make clean install
 
 sleep 1
