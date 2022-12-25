@@ -5,6 +5,7 @@ echo -e '\e[33m' #rumena
 echo "################################################################################"
 echo "    Enable ALL cores for Compiling!"
 echo "################################################################################"
+echo -e '\e[00m'
 
 numberofcores=$(grep -c ^processor /proc/cpuinfo)
 
