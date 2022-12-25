@@ -6,7 +6,7 @@ echo "   Installing DWM dependancies"
 echo "################################################################################"
 
 # ok ... first we need terminal emulator
-yay -S st-luke-git
+yay -S --noconfirm --needed st-luke-git
 sudo pacman -S --noconfirm --needed alacritty
 
 # Instal DWM dependancies
