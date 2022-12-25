@@ -39,6 +39,8 @@ echo "##########################################################################
 # yay -S --noconfirm --needed dwm
 [[ -d ~/.local/build/dwm ]] && rm -R ~/.local/build/dwm
 git clone https://git.suckless.org/dwm ~/.local/build/dwm
+cd ~/.local/build/dwm && make
+./888_Sync_HomeDir.sh
 cd ~/.local/build/dwm && sudo make clean install
 
 sleep 1
