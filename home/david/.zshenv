@@ -3,7 +3,6 @@
 # it should not contain commands that produce output or
 # assume the shell is attached to a TTY. When this file
 # exists it will always be read.
-echo "test1"
 ############################################################
 # PREFERED APPLICATIONS
 ############################################################
@@ -38,3 +37,5 @@ echo $PATH > test_PATH_from_zshenv.md
 #xset dpms 600 900 1200
 #xset r rate 250 70
 #sxhkd &
+
+[[ $(fgconsole)==1 ]] && startx
