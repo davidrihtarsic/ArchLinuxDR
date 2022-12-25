@@ -7,7 +7,8 @@ echo "##########################################################################
 
 # Instal DWM dependancies
 # compositor -> transparency
-sudo pacman -S --noconfirm --needed picom
+#sudo pacman -S --noconfirm --needed picom
+sudo pacman -S --noconfirm --needed xcompmgr
 sudo pacman -S --noconfirm --needed feh
 
 # menus & notifier
@@ -31,6 +32,7 @@ yay -S --noconfirm --needed networkmanager-dmenu-git
 echo "################################################################################"
 echo "   Install generic DWM"
 echo "################################################################################"
-yay -S --noconfirm --needed dwm
+# yay -S --noconfirm --needed dwm
+git clone https://git.suckless.org/dwm ~/.local/build/dwm
 
 sleep 1

@@ -183,9 +183,9 @@ export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 # ***************
 # Včasih mi ni delalo, da bi se remap zgodil sam od sebe
 # zato tale skript, da preveri remap in če ni ga zažene
-if [ -n "${DISPLAY+x}" ]; then
-  [ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
-fi
+#if [ -n "${DISPLAY+x}" ]; then
+#  [ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
+#fi
 #**************************************************************************
 
 #####################################

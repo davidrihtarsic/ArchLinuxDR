@@ -26,7 +26,8 @@ then
 fi
 
 #compton -b &
-picom --backend xrender -b
+#picom --backend xrender -b
+xcompmgr &
 #feh --randomize --bg-fill ~/Pictures/wallpapers/{*,ArchLabsLinux*.png}
 feh --bg-fill ~/.local/share/wallpapers/ArchLabsLinux7.png
 
