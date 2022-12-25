@@ -5,6 +5,7 @@ echo "##########################################################################
 echo "   Installing DWM dependancies"
 echo "################################################################################"
 
+PWD=$(pwd)
 # ok ... first we need terminal emulator
 yay -S --noconfirm --needed st-luke-git
 sudo pacman -S --noconfirm --needed alacritty
@@ -40,7 +41,7 @@ echo "##########################################################################
 [[ -d ~/.local/build/dwm ]] && rm -R ~/.local/build/dwm
 git clone https://git.suckless.org/dwm ~/.local/build/dwm
 cd ~/.local/build/dwm && make
-./888_Sync_HomeDir.sh
+$PWD/888_Sync_HomeDir.sh
 cd ~/.local/build/dwm && sudo make clean install
 
 sleep 1
