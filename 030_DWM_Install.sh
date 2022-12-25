@@ -15,6 +15,7 @@ sudo pacman -S --noconfirm --needed rofi
 sudo pacman -S --noconfirm --needed notify-osd
 
 # key bindings
+sudo pacman -S --noconfirm --needed xorg-xset
 sudo pacman -S --noconfirm --needed sxhkd
 sudo pacman -S --noconfirm --needed xsel
 sudo pacman -S --noconfirm --needed xclip
