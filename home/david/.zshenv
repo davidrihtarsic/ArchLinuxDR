@@ -34,3 +34,7 @@ if [[ "$PATH" != *"$add_sub_dir_in"* ]]
     export PATH=$PATH:$add_to_path
 fi
 echo $PATH > test_PATH_from_zshenv.md
+
+xset dpms 600 900 1200
+xset r rate 250 70
+#sxhkd &
