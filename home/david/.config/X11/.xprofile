@@ -42,7 +42,7 @@ feh --bg-fill ~/.local/share/wallpapers/ArchLabsLinux7.png
 #remap tipko [dz] - "/"
 #xmodmap -e "keycode 35 = slash"
 
-[ -r $HOME/.config/X11/.Xmodmap ] && xmodmap $HOME/.config/X11/.Xmodmap
+#[ -r $HOME/.config/X11/.Xmodmap ] && xmodmap $HOME/.config/X11/.Xmodmap
 xset dpms 600 900 1200
 xset r rate 250 70
 sxhkd &
