@@ -5,6 +5,10 @@ echo "##########################################################################
 echo "   Installing DWM dependancies"
 echo "################################################################################"
 
+# ok ... first we need terminal emulator
+yay -S st-luke-git
+sudo pacman -S --noconfirm --needed alacritty
+
 # Instal DWM dependancies
 # compositor -> transparency
 #sudo pacman -S --noconfirm --needed picom
@@ -33,6 +37,7 @@ echo "##########################################################################
 echo "   Install generic DWM"
 echo "################################################################################"
 # yay -S --noconfirm --needed dwm
+[[ -d ~/.local/build/dwm ]] && rm -R ~/.local/build/dwm
 git clone https://git.suckless.org/dwm ~/.local/build/dwm
 cd ~/.local/build/dwm && sudo make clean install
 
