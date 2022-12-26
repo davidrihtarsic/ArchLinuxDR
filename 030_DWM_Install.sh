@@ -10,7 +10,10 @@ echo -e '\e[00m' #default
 REPO=$(pwd)
 # ok ... first we need terminal emulator
 yay -S --noconfirm --needed st-luke-git
-sudo pacman -S --noconfirm --needed alacritty
+sudo pacman -S --noconfirm --needed polkit
+sudo pacman -S --noconfirm --needed firefox
+
+#sudo pacman -S --noconfirm --needed alacritty
 
 # Instal DWM dependancies
 # compositor -> transparency
