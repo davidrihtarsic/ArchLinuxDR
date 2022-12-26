@@ -47,7 +47,7 @@ echo "##########################################################################
 [[ -d ~/.local/build/dwm ]] && rm -R ~/.local/build/dwm
 git clone https://git.suckless.org/dwm ~/.local/build/dwm
 cd ~/.local/build/dwm && make
-$PWD/888_Sync_HomeDir.sh
+ln -f -s ~+/home/david/.local/build/dwm/config.h ~/.local/build/dwm/config.h
 cd ~/.local/build/dwm && sudo make clean install
 
 sleep 1
