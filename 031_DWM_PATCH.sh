@@ -20,7 +20,9 @@ echo "##########################################################################
 echo "   DWM patched"
 echo "################################################################################"
 
+cp -s ./home/.local/build/dwm/config.h ~/.local/build/dwm/config.h
 cd ~/.local/build/dwm && sudo make clean install
+
 echo -e '\e[32m' #zelena
 echo "################################################################################"
 echo "   DWM INSTALLED & PATCHED"

@@ -15,14 +15,17 @@ sudo pacman -S --noconfirm --needed alacritty
 #sudo pacman -S --noconfirm --needed picom
 sudo pacman -S --noconfirm --needed xcompmgr
 sudo pacman -S --noconfirm --needed feh
+sudo pacman -S --noconfirm --needed fzf
 
 # menus & notifier
 sudo pacman -S --noconfirm --needed dmenu
 sudo pacman -S --noconfirm --needed rofi
 sudo pacman -S --noconfirm --needed notify-osd
 
-# key bindings
+# xorg stuff
 sudo pacman -S --noconfirm --needed xorg-xset
+
+# key bindings
 sudo pacman -S --noconfirm --needed sxhkd
 sudo pacman -S --noconfirm --needed xsel
 sudo pacman -S --noconfirm --needed xclip
@@ -33,6 +36,9 @@ yay -S --noconfirm --needed dragon-drop
 # network
 #trizen -S --noconfirm --needed networkmanager-dmenu
 yay -S --noconfirm --needed networkmanager-dmenu-git
+
+# sleep and hibernate
+# sudo pacman -S --noconfirm --needed xautolock
 
 echo "################################################################################"
 echo "   Install generic DWM"
