@@ -31,3 +31,7 @@ Nekaj zaporednih komand:
 ... kot kaže, si lahko shraniš nastavitve... shraniš jih lahko
 
 probejmo it v chroot in inštalirat zsh
+
+## To-Do List
+
+- git check
