@@ -1,4 +1,52 @@
 #!/bin/sh
+
+if [[ $1 == "C-m" ]]
+then
+   echo "T E S T I N G"
+   echo "inputs:"
+   echo $1
+   echo $2
+   #dirpath="$HOME/Pictures/"
+   dirpath="$(pwd)/"
+   read selected_file
+   selected_file=$(echo $selected_file | sed 's/\.\///')
+   while [[ "$dirpath" != *\.\/ ]]
+   do
+       echo "dirpath is: $dirpath"
+       chunk="`ls -pa $dirpath | grep / | dmenu -i -l 8 -p "$selected_file -> $dirpath:"`"
+       echo "current chunk is: $chunk"
+       if [[ $chunk == './' ]]; then
+           #izbrali smo direktorij za premik slik
+           mv ./$selected_file $dirpath/$selected_file
+           while read file
+           do
+              ff=$(echo $file | sed 's/\.\///')
+              printf "\n$file -> $dirpath/$ff\n"
+              mv $file $dirpath/$ff
+           done
+           break
+       elif [[ $chunk == '../' ]]; then
+           parentdir=`dirname $dirpath`
+           dirpath=`realpath $parentdir`
+           dirpath=$dirpath/
+       elif [[ -n $chunk ]]; then
+           #preveri, če dir/chunk sploh obstaja, če ne, ga naredi
+           if [[ -d $dirpath$chunk ]]; then
+               echo "obstaja.."
+           else
+               echo "naredi dir: $dirpath$chunk"
+               mkdir $dirpath$chunk
+           fi
+           dirpath="$dirpath$chunk"
+           echo "yup, folder is existing, updated dirpath: $dirpath"
+       else
+           echo "folder selection interrupted, exiting program..."
+           exit 0
+       fi
+   done
+   printf "\ndest folder is $dirpath\n\n"
+fi
+
 while read file
 do
         fullpath="$(pwd)/$file"
@@ -8,7 +56,7 @@ do
         "i")
           notify-send -i "$fullpath" "EXIF DATA" "$(exiftool -common $file | awk -F "\n" '{printf "%-55s\n", $1}')";;
         "C-d")
-                mv "$file" ~/.trash ;;
+                mv "$file" ~/.cache/deleted_files ;;
         "C-r")
                 convert -rotate 90 "$file" "$file" ;;
         "C-c")

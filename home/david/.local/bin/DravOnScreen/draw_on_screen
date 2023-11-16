@@ -8,5 +8,6 @@ file_name=$HOME/Pictures/ScreenShots/img$(date "+%y-%m-%d-%H-%M-%S").png
 #import -window root -crop 1920x1080+0+0 $file_name
 # ker je bil import kar naenkrat počasen
 # sem šel na scrot
-scrot $file_name
+#scrot --focused $file_name
+scrot -a 0,0,1920,1080 $file_name
 mypaint -f $file_name

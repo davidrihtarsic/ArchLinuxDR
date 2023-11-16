@@ -45,11 +45,11 @@ super + t
     thunderbird
 
 super + n
-    calcurse-caldav && st -e calcurse && calcurse-caldav
+    st -e calcurse && calcurse-caldav
 
 super + w
-     brave -no-sandbox &!
-#    brave
+     brave
+#    brave -no-sandbox &!
 #    firefox
 #    $BROWSER
 #    google-chrome-stable
@@ -94,7 +94,8 @@ XF86Launch7
 #    xrandr --output DP1-9 --mode 1920x1080 --pos 3840x0 && xrandr | grep DP1-9 | sed 's/(.*//' | xargs -I{} notify-send "{}"
 
 XF86Favorites
-    ~/.local/bin/BloutoothObEx/bt_connect_JBL
+    ~/.local/bin/BloutoothObEx/bt_connect_Jabra
+#    ~/.local/bin/BloutoothObEx/bt_connect_JBL
 #super 
 #    rofi_run -r terminal emulator 
 #super + t exo-open --launch TerminalEmulator web browser 

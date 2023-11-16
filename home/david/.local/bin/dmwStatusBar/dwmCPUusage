@@ -1,7 +1,9 @@
 #!/bin/zsh
 
+
 #CPU_USAGE=$(ps -A -o pcpu | tail -n+2 | paste -sd+ | bc)
 #CPU_USAGE=$(top -n 1 | grep "Cpu(s)" | awk '{printf $2+$4+$6}')
 CPU_USAGE=`LC_ALL=C top -bn1 | grep "Cpu(s)" | awk '{printf $2+$4+$6}'`
-echo " $CPU_USAGE%"
+#printf "^c$color1^"
+echo " $CPU_USAGE%"
 

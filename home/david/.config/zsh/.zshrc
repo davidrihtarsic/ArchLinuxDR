@@ -70,12 +70,13 @@ alias f='~/.config/vifm/vifm_run.sh'
 alias g!='git add .;git commit -v -a;git push;'
 alias gs='git status'
 alias la='ls -A'
-alias ll='ls -llh --color'
+#alias ll='ls -llh --color'
+alias ll='exa --long --header --git --icons'
 alias ls='ls --color'
 alias less='less -R'
 alias mirror='reflector --number 10 --country Slovenia --country Finland --country Germany --country Italy --country Austria --verbose --sort rate'
 alias q='exit'
-alias r='ranger'
+alias r='ranger 2> /dev/null'
 alias update='sudo pacman -Syu'
 alias weather='curl wttr.in/~begunje'
 #alias howto='tldr'
@@ -183,17 +184,18 @@ export FZF_DEFAULT_OPTS="--layout=reverse --inline-info"
 # ***************
 # Včasih mi ni delalo, da bi se remap zgodil sam od sebe
 # zato tale skript, da preveri remap in če ni ga zažene
-#if [ -n "${DISPLAY+x}" ]; then
-#  [ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
-#fi
+if [ -n "${DISPLAY+x}" ]; then
+  [ -n "$(xmodmap | grep lock | grep Escape)" ] && xmodmap $HOME/.config/X11/.Xmodmap && xset r rate 250 70
+fi
 #**************************************************************************
 
 #####################################
 # PROMPT dir & vi-mode
 L_DIV="┌=["
-M_DIV="%B|%b"
+M_DIV="%B|>%b"
 R_DIV="]==--"
 S_PRT="└>"
+S_PRT="%{%G└%}>"
 bindkey -v
 function zle-line-init zle-keymap-select {
     case ${KEYMAP} in

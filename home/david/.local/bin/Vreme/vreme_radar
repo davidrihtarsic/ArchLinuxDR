@@ -2,6 +2,10 @@
 # Vremenska radarska slika se nahaja na url-ju:
 # http://meteo.arso.gov.si/uploads/probase/www/observ/radar/si0-rm-anim.gif
 
+VRM_DIR="/home/david/.local/bin/Vreme"
 SRV="http://meteo.arso.gov.si/uploads/probase/www/observ/radar/si0-rm-anim.gif"
-mpv --loop "$SRV"
+rm $VRM_DIR/Radar/si0-rm-anim.gif
+wget --directory-prefix="$VRM_DIR/Radar/" $SRV
+convert $VRM_DIR/Radar/si0-rm-anim.gif -strokewidth 2 -stroke 'darkgreen' -fill None -draw 'circle 322,277,322,280' $VRM_DIR/Radar/si0-rm-anim.gif
+mpv --loop "$VRM_DIR/Radar/si0-rm-anim.gif"
 

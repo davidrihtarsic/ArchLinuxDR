@@ -1,0 +1,4 @@
+#!/bin/zsh
+
+echo -n "⏰ "
+echo "$(date '+%H:%M')"

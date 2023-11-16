@@ -1,7 +1,8 @@
 #! /bin/sh
 
+vreme_aladin_update &
 vreme_radar
 vreme_padavine
 vreme_aladin_napoved
 vreme_vertikalna_sondaza
-curl wttr.in/~begunje
+curl v2.wttr.in/~begunje

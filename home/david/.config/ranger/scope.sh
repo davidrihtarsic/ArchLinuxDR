@@ -84,8 +84,8 @@ handle_extension() {
             exit 1
             ;;
         md)
-            pandoc -t plain --columns=$PV_WIDTH "${FILE_PATH}" && exit 5
             mdv -t 960.847 -n 1-3 -c $PV_WIDTH "${FILE_PATH}" && exit 5
+            pandoc -t plain --columns=$PV_WIDTH "${FILE_PATH}" && exit 5
             cat "${FILE_PATH}" && exit 5
             exit 2
             ;;

@@ -10,9 +10,9 @@
 SRV="https://meteo.arso.gov.si/uploads/probase/www/model/ecmwf/ef_"
 SLO="00_pp_SLOVENIA_NORTH-WEST_.png"
 
-DAT=$(date -d '12 hours ago' '+%Y%m%d')
+DAT=$(date -d '14 hours ago' '+%Y%m%d')
 echo "date: $DAT"
-HOUR=$(date -d '12 hours ago' '+%H')
+HOUR=$(date -d '14 hours ago' '+%H')
 echo -n "hour: $HOUR ->"
 [ $HOUR -gt 11 ] && HOUR=12 || HOUR=00
 echo " $HOUR"

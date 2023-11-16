@@ -33,9 +33,9 @@ window:
   #
   # Blank space added around the window in pixels. This padding is scaled
   # by DPI and the specified value is always added at both opposing sides.
-  #padding:
-  #  x: 0
-  #  y: 0
+  padding:
+    x: 2
+    y: 2
 
   # Spread additional padding evenly around the terminal content.
   #dynamic_padding: false
@@ -90,19 +90,26 @@ window:
 # Font configuration
 font:
   normal:
-    family: Hermit
+    #family: Hermit
+    family: FiraCode Nerd Font Propo
+    #family: Fira Code
   bold:
-    family: Hermit
+    #family: Hermit
+    #family: Fira Code
+    family: FiraCode Nerd Font Propo
     style: Bold
   italic:
     family: Hermit
+    #family: FiraCode Nerd Font Propo
     style: Italic
   bold_italic:
-    family: Hermit
+    #family: Hermit
+    #family: Fira Code
+    family: FiraCode Nerd Font Propo
     style: BoldItalic
 
   # Point size
-  size: 14.0
+  size: 10.0
 
   # Offset is the extra space around each character. `offset.y` can be thought of
   # as modifying the line spacing, and `offset.x` as modifying the letter spacing.

@@ -30,7 +30,7 @@ echo $PATH > test_PATH_from_xinitrc.md
 # key bindings
 # sxhkd &
 # compton &
-
+/usr/bin/prime-offload &
 # remap/switch caps and ecape
 # setxkbmap -option caps:escape
 
@@ -39,12 +39,25 @@ echo $PATH > test_PATH_from_xinitrc.md
 # xmodmap /home/david/.Xmodmap
 # launch the session, commands below this line will be ignored
 /home/david/.local/bin/dmwStatusBar/dwmStatusBar &
+#dwmbar &
 # /home/david/bin/system/dwm-status-dwd.sh &
 # slstatus &
+sleep_count_down(){
+  for i in {1..10}
+  do
+    notify-send -t $(( $i * 1000 + 20000 )) "Going to sleep in: $(( 11 - $i ))"
+  done
+}
+
 xautolock \
   -time 7 \
-  -locker "systemctl suspend-then-hibernate" \
+  -locker "systemctl hibernate" \
   -notify 30 \
-  -notifier "notify-send -t 30000 'GOING TO SLEEP in 30s.'"&  
+  -notifier "notify-send -t 30000 'Going to sleep in: 30s '" &  
+################################################
+# Auto strat my dayly apps
+################################################
+(sleep 1 && st -e nvim -S ~/.config/nvim/david_session.sav& brave& thunderbird&)&
 exec dwm
+/usr/bin/prime-switch
 ################################

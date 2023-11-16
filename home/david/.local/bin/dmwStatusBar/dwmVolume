@@ -1,7 +1,7 @@
 #!/bin/zsh
 
-AUDIO=""
-HEADSET=""
+AUDIO="🔊"
+HEADSET="🎧"
 [[ -n "$(pactl list sinks short | grep 'RUNNING' | grep bluez)" ]] && ICON=$HEADSET || ICON=$AUDIO
 echo "$ICON $(pamixer --get-volume-human)"
 

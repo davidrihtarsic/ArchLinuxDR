@@ -55,6 +55,8 @@ yay -S powerline-fonts
 
 # install microsoft fonts (e.g. Arial, New Times Roman...)
 yay -S ttf-ms-fonts
+# tole mogoče za acrobatreaderdc
+yay -S ttf-segoe-ui-variable
 
 echo "################################################################################"
 echo "   SYMBOLS & ICONS Font Installed"

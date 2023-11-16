@@ -1,4 +1,3 @@
 #!/bin/zsh
-
-# echo "$(date '+%F %A %H:%M')"
-echo "$(date '+%F %H:%M')"
+echo -n "⏰"
+echo "$(date '+%F %A %H:%M')"

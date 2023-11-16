@@ -8,7 +8,7 @@
 ############################################################
 export EDITOR='nvim'
 export BROWSER='brave'
-export TERM='alacritty'
+export TERM='st'
 export GUI_EDITOR=''
 export FILEMANAGER='nemo'
 export IMG_VIEWER='sxiv'
@@ -38,4 +38,4 @@ echo $PATH > test_PATH_from_zshenv.md
 #xset r rate 250 70
 #sxhkd &
 
-[[ $(fgconsole)==1 ]] && startx
+#[[ $(fgconsole)==1 ]] && startx

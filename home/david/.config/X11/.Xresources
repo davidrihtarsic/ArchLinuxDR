@@ -7,7 +7,9 @@ Xcursor.theme: cursor-theme
 *.cursorColor: #778899
 
 *.alpha: .7
+
 *.font: Hermit:size=12
+!*.font: Fira Code:size=12
 !*.font: Noto:size=12
 
 

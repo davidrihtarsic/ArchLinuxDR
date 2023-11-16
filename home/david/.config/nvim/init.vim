@@ -200,8 +200,8 @@ function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
-
-inoremap <silent><expr> <c-space> coc#refresh()                 " Use <c-space> to trigger completion.
+" Use <c-space> to trigger completion.
+inoremap <silent><expr> <c-space> coc#refresh()
 
 " Use <cr> to confirm completion, `<C-g>u` means break undo chain at current position.
 " Coc only does snippet and additional edit on confirm.
@@ -228,6 +228,10 @@ nmap <leader>rn :call CocAction('rename')<CR>
   let g:coc_snippet_next = '<c-n>'
   let g:coc_snippet_prev = '<c-p>'
   "======================================================================
+  "   AI
+  "======================================================================
+  nnoremap <leader>i :r !ai 
+  "======================================================================
   "    FUZZY FILE SEARCH
   "======================================================================
     "   - hitro iskanje filov
@@ -249,7 +253,7 @@ nmap <leader>rn :call CocAction('rename')<CR>
     map ff :call Fuzzy_Files()<CR>
     command! -bang -nargs=* FToC
       \ call fzf#vim#grep(
-      \   'grep --with-filename --color=always --line-number ^#'.shellescape(<q-args>).' '.shellescape(expand('%')) , 1,
+      \   'grep --with-filename --color=always --line-number --before-context=1 -E "^(-=){3,}"|grep --with-filename --color=always --line-number -v -E "^ *(-|=|$)"'.shellescape(<q-args>).' '.shellescape(expand('%')) , 1,
       \   fzf#vim#with_preview(), <bang>0)
     function! Fuzzy_ToC()
         let g:fzf_action = {
@@ -317,7 +321,7 @@ nmap <leader>rn :call CocAction('rename')<CR>
 "   NeoVIM
 "#####################################
 let g:nvimWiki="/home/david/Files/GitHub_noSync/davidrihtarsic.github.io/Linux/LinuxWiki"
-let g:homeWiki="/home/david/Files/Personal/HomeWiki/HomeWiki"
+let g:homeWiki="/home/david/Files/Personal/HomeWiki/_HomeWiki"
 nmap <leader>ww :execute "call OpenWikiPage('" . g:nvimWiki . "')"<CR>:lcd %:p:h<CR>
 nmap <leader>wh :execute "call OpenWikiPage('" . g:homeWiki . "')"<CR>:lcd %:p:h<CR>
 
@@ -393,7 +397,7 @@ nmap <buffer><silent><expr>j v:count ? 'j' : 'gj'
 nmap <buffer><silent><expr>k v:count ? 'k' : 'gk'
 
 " open a terminal in $PWD
-" nnoremap <silent> <Leader>tt :terminal<CR>
+ nnoremap <silent> <Leader>tt :terminal<CR>
 
 " tab control
 nnoremap <silent> <M-h> :tabmove -1<CR>
@@ -423,10 +427,10 @@ nnoremap <M-9> 9gt
 nnoremap _ <C-W>s<C-W><Down>
 nnoremap <Bar> <C-W>v<C-W><Right>
 " resize vertical
-nnoremap <C-H> :vertical resize -10<CR>
-nnoremap <C-L> :vertical resize +10<CR>
-nnoremap <C-J> :resize -4<CR>
-nnoremap <C-K> :resize +4<CR>
+"nnoremap <C-H> :vertical resize -10<CR>
+"nnoremap <C-L> :vertical resize +10<CR>
+"nnoremap <C-J> :resize -4<CR>
+"nnoremap <C-K> :resize +4<CR>
 "======================================================================
 "  Presentation of MARKDOWN documents
 "======================================================================
@@ -442,11 +446,10 @@ nmap gt : /^#<CR>zt
 "======================================================================
 "    MARKDOWN in EDITOR TEXTING BEHAVIOUR
 "======================================================================
-autocmd Filetype markdown,rmd nnoremap xxxyypVr-
 autocmd Filetype markdown,rmd TableModeEnable
-map ,n gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
-map ,w :r !	~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
-map ,h 0/<hh:mm><CR>"_c7l<CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJ
+nnoremap ,N gg:-1r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
+map ,w :r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
+map ,h 0/<hh:mm><CR>"_c7l<CR><Esc>:-1r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJ
 
 inoremap <Space><Tab> <Esc>/<++><Enter>"_c4l
 vnoremap <Space><Tab> <Esc>/<++><Enter>"_c4l
@@ -466,18 +469,21 @@ autocmd Filetype markdown,rmd inoremap ,a <!--<CR><CR>--><ESC>ki
 vnoremap ,b bexi***<ESC>P2li*<ESC>
 vnoremap ,s xi~~~<ESC>P2li~
 vnoremap ,i xi**<ESC>P2li
-vnoremap ( xi()<ESC>P2li
-vnoremap " xi""<ESC>P2li
-vnoremap ' xi''<ESC>P2li
-vnoremap [ xi[]<ESC>P2li
-vnoremap { xi{}<ESC>P2li
-vnoremap < xi<><ESC>P2li
-vnoremap * y/\V<C-R>=escape(@",'/\')<CR><CR>
+vnoremap ,( xi()<ESC>P2li
+vnoremap ," xi""<ESC>P2li
+vnoremap ,' xi''<ESC>P2li
+vnoremap ,[ xi[]<ESC>P2li
+vnoremap ,{ xi{}<ESC>P2li
+vnoremap ,< xi<><ESC>P2li
+vnoremap ,* y/\V<C-R>=escape(@",'/\')<CR><CR>
+
 "----------------------------------------------------------------------
 "  🖼 📅  VSAVLJANJE ELEMENTOV
 "----------------------------------------------------------------------
 "autocmd Filetype markdown,rmd inoremap ,n <Esc>gg:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/markdown_header.sh<CR>gg
-autocmd Filetype markdown,rmd inoremap ,n <C-R>%<ESC>:s/^[0-9]*_*/# <CR><ESC>:s/_/ /g<CR><ESC><S-V>Uf.DA
+"autocmd Filetype markdown,rmd inoremap ,n <C-R>%<ESC>:s/^[0-9]*_*/# <CR><ESC>:s/_/ /g<CR><ESC><S-V>Uf.DA
+autocmd Filetype markdown,rmd inoremap ,n <C-R>%<ESC>VU:s/[^a-zA-ZČŠŽ]\+/ /g<CR>:s/ MD//<CR>o<ESC>80i=<ESC>o
+autocmd Filetype markdown,rmd nnoremap ,n "%pVU:s/[^a-zA-ZČŠŽ]\+/ /g<CR>:s/ MD//<CR>o<ESC>80i=<ESC>o
 autocmd Filetype markdown,rmd inoremap ,w <Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/timesheetNotes.sh<CR>
 autocmd Filetype markdown,rmd inoremap ,d <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_date.sh<CR>kJJi
 autocmd Filetype markdown,rmd inoremap ,h <CR><Esc>:-1r ! ~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_time.sh<CR>kJJi
@@ -494,6 +500,7 @@ inoremap ,x [@]<ESC>F@mt:w<CR>:r ! ~/bin/markdown/insert_bibtex_author.sh<CR>v$x
 inoremap ,f [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_figure.sh "%:p"<CR>v$x`tpJxli
 inoremap ,e [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLabs/MyDotFiles/bin/markdown/insert_reference_equation.sh "%:p"<CR>v$x`tpJxli
 inoremap ,t [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLinuxDR/home-david/bin/markdown/insert_reference_table.sh "%:p"<CR>v$x`tpJxli
+inoremap ,c [@]<ESC>F@mt:w<CR>:r !~/Files/GitHub_noSync/ArchLinuxDR/home/david/.local/bin/markdown/insert_reference_code.sh "%:p"<CR>v$x`tpJxli
 
 autocmd Filetype markdown,rmd,md nnoremap <leader>wb <Esc>:split ~/Files/Work/UL-PeF/Articles/00-BibTex/bibtex.bib<CR><CR>
 "----------------------------------------------------------------------

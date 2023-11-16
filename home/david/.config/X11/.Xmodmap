@@ -110,8 +110,8 @@ keycode  46 = l L Right L lstroke Lstroke lstroke
 ! Map Caps_Lock → Escape
 ! Map shift+Caps_Lock → Caps_Lock
 ! keycode  66 = Caps_Lock NoSymbol Caps_Lock
-! remove lock = Caps_Lock
-clear lock
+clear Lock
+remove Lock = Caps_Lock
 keycode 66 = Escape Caps_Lock Caps_Lock
 ! add lock = Caps_Lock
 ! ==============================================================================

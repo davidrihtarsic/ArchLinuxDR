@@ -25,10 +25,18 @@ do
   esac
 done
 
-echo $PHONE_USER
-echo $PHONE_PAS
-echo $PHONE_IP
-echo $PHONE_DIR
+[ -z "$PHONE_USER" ] && PHONE_USER="u0_a304"
+[ -z "$PHONE_IP" ] && PHONE_IP="192.168.0.26"
+[ -z "$PHONE_DIR" ] && PHONE_DIR="/data/data/com.termux/files/home"
+[ -z "$PHONE_PAS" ] && PHONE_PAS="divad"
 
+echo "Try to mount phone:"
+echo "Phone user: $PHONE_USER"
+echo "Password  : $PHONE_PAS"
+echo "Phone IP  : $PHONE_IP"
+echo "Phone dir : $PHONE_DIR"
+
+#exit 0
 #sshfs -p 8022 -o follow_symlinks -o password_stdin u0_a199@192.168.0.15:/data/data/com.termux/files/home /home/david/Files/Davids_Phone <<<'divad'
-sshfs -p 8022 -o follow_symlinks -o password_stdin u0_a304@192.168.0.26:/data/data/com.termux/files/home /home/david/Files/Davids_Phone <<<'divad'
+sshfs -p 8022 -o follow_symlinks -o password_stdin $PHONE_USER@$PHONE_IP:$PHONE_DIR /home/david/Files/Davids_Phone <<<'divad'
+#sshfs -p 8022 -o follow_symlinks -o password_stdin $PHONE_USER@$PHONE_IP:$PHONE_DIR /home/david/Files/Davids_Phone <<<$PHONE_PAS

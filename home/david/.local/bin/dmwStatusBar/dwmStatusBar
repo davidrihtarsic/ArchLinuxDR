@@ -1,14 +1,25 @@
 #!/bin/zsh
 
+. ~/.local/bin/dmwStatusBar/theme_david
 MY_PATH="/home/david/.local/bin/dmwStatusBar"
+SEP="^c$color2^|"
 
 while true; do
+  CPU_USAGE=$(echo "^c$color10^$($MY_PATH/dwmCPUusage)")
+  CPU_TEMP=$(echo "^c$color3^$($MY_PATH/dwmCPUtemperature)")
+  BATTERY=$(echo "^c$color11^$($MY_PATH/dwmBattery)")
+  VOLUME=$(echo "^c$color9^$($MY_PATH/dwmVolume)")
+  NETWORK=$(echo "^c$color13^$($MY_PATH/dwmNetwork)")
+  DATE_TIME=$(echo "^c$color5^$($MY_PATH/dwmDateTime)")
+  DATE=$(echo "^c$color5^$($MY_PATH/dwmDate)")
+  TIME=$(echo "^c$color6^$($MY_PATH/dwmTime)")
 xsetroot -name " \
-| $($MY_PATH/dwmCPUusage) \
-| $($MY_PATH/dwmCPUtemperature) \
-| $($MY_PATH/dwmBattery) \
-| $($MY_PATH/dwmVolume) \
-| $($MY_PATH/dwmNetwork) \
-| $($MY_PATH/dwmDateTime)"
+$SEP $CPU_USAGE \
+$SEP $CPU_TEMP \
+$SEP $BATTERY \
+$SEP $VOLUME \
+$SEP $NETWORK \
+$SEP $DATE \
+$SEP $TIME"
 sleep 1
 done
